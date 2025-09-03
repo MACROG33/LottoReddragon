@@ -4,13 +4,13 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.red,
       body: Column(
         children: [
-          // ส่วนหัวสีแดง
           Container(
-            color: Colors.red,
-            padding: EdgeInsets.only(top: 40, bottom: 20),
+            color: Colors.grey,
+            padding: EdgeInsets.only(top: 30, bottom: 20, left: 50, right: 50),
+            margin: EdgeInsets.only(top: 10),
             child: Column(
               children: [
                 CircleAvatar(
