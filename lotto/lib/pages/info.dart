@@ -7,129 +7,152 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: Column(
+      body: Stack(
         children: [
-          // Top Profile Section with Red Background
-          Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+          Column(
+            children: [
+              // Top Profile Section with Red Background
+              Container(
+                width: double.infinity,
+                height: 280,
+                decoration: const BoxDecoration(color: Colors.red),
               ),
-            ),
-            padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
-            child: Column(
-              children: [
-                // Profile Avatar with Border
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.yellow[700]!, width: 3),
+
+              // Menu Items Section
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
+                  child: Column(
+                    children: [
+                      _buildMenuItem(
+                        icon: Icons.calendar_today,
+                        title: 'ฉลากของฉัน',
+                        onTap: () {},
+                      ),
+                      _buildMenuItem(
+                        icon: Icons.build,
+                        title: 'ประวัติการถูกรางวัล',
+                        onTap: () {},
+                      ),
+                      _buildMenuItem(
+                        icon: Icons.account_balance_wallet,
+                        title: 'ขึ้นเงินรางวัล',
+                        onTap: () {},
+                      ),
+
+                      const Spacer(),
+
+                      // Logout Button
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'ออกจากระบบ',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+                    ],
                   ),
-                  child: const CircleAvatar(
-                    radius: 48,
-                    backgroundColor: Colors.grey,
-                    child: Icon(Icons.person, size: 50, color: Colors.white),
+                ),
+              ),
+
+              // Bottom Navigation
+              Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
                 ),
-                const SizedBox(height: 15),
-                // Name
-                const Text(
-                  ' กานต์  กลางดี',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildBottomNavItem(Icons.home, 'หน้าหลัก'),
+                    _buildBottomNavItem(Icons.shopping_cart, 'ซื้อฉลาก'),
+                    _buildBottomNavItem(Icons.person, 'ฉัน'),
+                  ],
                 ),
-                const SizedBox(height: 5),
-                // Subtitle
-                const Text(
-                  'ยอดเงินคงเหลือ: 200',
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                ),
-                const SizedBox(height: 15),
-                // Email
-                const Text(
-                  'อีเมล:Karn.klangdee@gmail.com',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-                const SizedBox(height: 5),
-                // Date
-                const Text(
-                  'วันเกิด:01/01/1990',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
 
-          const SizedBox(height: 20),
-
-          // Menu Items
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  _buildMenuItem(
-                    icon: Icons.calendar_today,
-                    title: 'ความจองขัน',
-                    onTap: () {},
+          // Overlapping Grey Rectangle with Profile Content
+          Positioned(
+            top: 20,
+            left: 20,
+            right: 20,
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
                   ),
-                  _buildMenuItem(
-                    icon: Icons.build,
-                    title: 'ประวัติการกุมาพิจ',
-                    onTap: () {},
-                  ),
-                  _buildMenuItem(
-                    icon: Icons.account_balance_wallet,
-                    title: 'บัมแีนาระขี',
-                    onTap: () {},
-                  ),
-
-                  const Spacer(),
-
-                  // Logout Button
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'ออกจากระบบ',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
                 ],
               ),
-            ),
-          ),
-
-          // Bottom Navigation
-          Container(
-            height: 80,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+              child: Column(
+                children: [
+                  // Profile Avatar with Border
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.yellow[700]!, width: 3),
+                    ),
+                    child: const CircleAvatar(
+                      radius: 48,
+                      backgroundColor: Colors.grey,
+                      child: Icon(Icons.person, size: 50, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  // Name
+                  const Text(
+                    'กานต์ กลางดี',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  // Subtitle
+                  const Text(
+                    'ยอดเงินคงเหลือ: 200',
+                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                  ),
+                  const SizedBox(height: 15),
+                  // Email
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'อีเมล:Karn.klangdee@gmail.com',
+                      style: TextStyle(color: Colors.black87, fontSize: 14),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  // Date
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Text(
+                      'วันเกิด:01/01/1990',
+                      style: TextStyle(color: Colors.black87, fontSize: 14),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildBottomNavItem(Icons.home, 'หน้าหลัก'),
-                _buildBottomNavItem(Icons.shopping_cart, 'ช็อปปิ้ง'),
-                _buildBottomNavItem(Icons.person, 'ฉัน'),
-              ],
             ),
           ),
         ],
