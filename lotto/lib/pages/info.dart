@@ -48,7 +48,7 @@ class ProfilePage extends StatelessWidget {
                         child: const Text(
                           'ออกจากระบบ',
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: Colors.black,
                             fontSize: 16,
                             decoration: TextDecoration.underline,
                           ),
@@ -91,7 +91,7 @@ class ProfilePage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.grey[600],
+                color: Colors.grey[500],
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -134,11 +134,11 @@ class ProfilePage extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'ยอดเงินคงเหลือ:',
+                          text: 'ยอดเงินคงเหลือ : ',
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                         TextSpan(
-                          text: '200',
+                          text: '200 บาท',
                           style: TextStyle(color: Colors.yellow, fontSize: 14),
                         ),
                       ],
