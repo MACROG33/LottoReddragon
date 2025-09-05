@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lotto/pages/page_history_lotto.dart';
+import 'package:lotto/pages/page_claim_lotto.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const PageHistoryLotto(),
+      home: const PageClaimLotto(),
     );
   }
 }
