@@ -8,8 +8,10 @@ class PageRegister extends StatefulWidget {
 }
 
 class _PageRegisterState extends State<PageRegister> {
+  
   final TextEditingController _dateOfBirthController = TextEditingController();
   DateTime? _selectedDate;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
