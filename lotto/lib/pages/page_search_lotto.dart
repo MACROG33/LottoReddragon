@@ -71,7 +71,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                 ),
               ),
             ),
-
+    
             // หัวข้อตรึง
             Container(
               color: Colors.transparent,
@@ -87,30 +87,32 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                 ),
               ),
             ),
-
+    
             // การ์ดเลื่อน
-            ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 0),
-              itemCount: 100,
-              itemBuilder: (context, i) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                  child: Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      title: Text('123456'),
-                      subtitle: Text('งวดประจำวันที่ 16 มีนาคม 2567'),
-                      trailing: Text(
-                        '80 บาท',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFD10922),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(vertical: 0),
+                itemCount: 100,
+                itemBuilder: (context, i) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    child: Card(
+                      color: Colors.white,
+                      child: ListTile(
+                        title: Text('123456'),
+                        subtitle: Text('งวดประจำวันที่ 16 มีนาคม 2567'),
+                        trailing: Text(
+                          '80 บาท',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFD10922),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ],
         ),
