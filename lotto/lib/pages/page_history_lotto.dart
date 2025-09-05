@@ -128,6 +128,3 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
     );
   }
 }
-
-
-
