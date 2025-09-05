@@ -25,17 +25,17 @@ class ProfilePage extends StatelessWidget {
                   child: Column(
                     children: [
                       _buildMenuItem(
-                        icon: Icons.calendar_today,
+                        imagePath: 'assets/images/slip.jpg',
                         title: 'ฉลากของฉัน',
                         onTap: () {},
                       ),
                       _buildMenuItem(
-                        icon: Icons.build,
+                        imagePath: 'assets/images/celebate.jpg',
                         title: 'ประวัติการถูกรางวัล',
                         onTap: () {},
                       ),
                       _buildMenuItem(
-                        icon: Icons.account_balance_wallet,
+                        imagePath: 'assets/images/money.jpg',
                         title: 'ขึ้นเงินรางวัล',
                         onTap: () {},
                       ),
@@ -91,7 +91,7 @@ class ProfilePage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Colors.grey[600],
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -114,7 +114,7 @@ class ProfilePage extends StatelessWidget {
                     child: const CircleAvatar(
                       radius: 48,
                       backgroundColor: Colors.grey,
-                      child: Icon(Icons.person, size: 50, color: Colors.white),
+                      backgroundImage: AssetImage('assets/images/person.jpg'),
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -128,18 +128,29 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5),
+
                   // Subtitle
-                  const Text(
-                    'ยอดเงินคงเหลือ: 200',
-                    style: TextStyle(color: Colors.black54, fontSize: 14),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'ยอดเงินคงเหลือ:',
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                        ),
+                        TextSpan(
+                          text: '200',
+                          style: TextStyle(color: Colors.yellow, fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 15),
+                  SizedBox(height: 15),
                   // Email
                   Align(
                     alignment: Alignment.centerLeft,
                     child: const Text(
                       'อีเมล:Karn.klangdee@gmail.com',
-                      style: TextStyle(color: Colors.black87, fontSize: 14),
+                      style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -148,7 +159,7 @@ class ProfilePage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: const Text(
                       'วันเกิด:01/01/1990',
-                      style: TextStyle(color: Colors.black87, fontSize: 14),
+                      style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
                 ],
@@ -161,7 +172,8 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildMenuItem({
-    required IconData icon,
+    IconData? icon,
+    String? imagePath, // Add this parameter for image path
     required String title,
     required VoidCallback onTap,
   }) {
@@ -180,7 +192,27 @@ class ProfilePage extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        leading: Icon(icon, color: Colors.grey[600]),
+        leading: imagePath != null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  4,
+                ), // Optional: rounded corners
+                child: Image.asset(
+                  imagePath,
+                  width: 24,
+                  height: 24,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Fallback icon if image fails to load
+                    return Icon(
+                      Icons.image_not_supported,
+                      color: Colors.grey[600],
+                      size: 24,
+                    );
+                  },
+                ),
+              )
+            : Icon(icon, color: Colors.grey[600]),
         title: Text(
           title,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
