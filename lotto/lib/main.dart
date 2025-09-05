@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lotto/pages/page_register.dart';
 import 'package:lotto/pages/page_search_lotto.dart';
 
 void main() {
