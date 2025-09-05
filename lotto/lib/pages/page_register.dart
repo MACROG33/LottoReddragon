@@ -93,7 +93,7 @@ class _PageRegisterState extends State<PageRegister> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'จำนวนเงินในระบบ',
+                    'จำนวนเงินในระบบ (บาท)',
                     style: TextStyle(color: Colors.white),
                   ),
                   TextField(
@@ -141,6 +141,7 @@ class _PageRegisterState extends State<PageRegister> {
       ),
     );
   }
+
   //Progress Date Picker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
