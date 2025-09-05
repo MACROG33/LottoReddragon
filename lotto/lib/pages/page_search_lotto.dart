@@ -114,8 +114,17 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                 },
               ),
             ),
+            
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_basket), label: 'ซื้อสลาก'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ฉัน'),
+        ],
       ),
     );
   }
