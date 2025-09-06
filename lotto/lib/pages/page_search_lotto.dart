@@ -39,7 +39,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                         child: Text(
                           'ค้นหาสลากกินแบ่งรัฐบาล',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 23,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFFD10922),
                           ),
