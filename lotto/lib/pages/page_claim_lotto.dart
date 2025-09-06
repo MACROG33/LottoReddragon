@@ -34,7 +34,7 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text('Page Claim Lotto', style: TextStyle(fontSize: 18)),
-                const SizedBox(height: 16),
+                const SizedBox(height: 15),
                 FilledButton(
                   style: FilledButton.styleFrom(
                     backgroundColor: Color(0xFFFFD700),
