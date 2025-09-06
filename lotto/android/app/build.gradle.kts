@@ -9,6 +9,8 @@ android {
     namespace = "com.example.lotto"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+    
+     
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -42,3 +44,4 @@ android {
 flutter {
     source = "../.."
 }
+
