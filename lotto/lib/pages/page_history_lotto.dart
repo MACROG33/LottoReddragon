@@ -90,7 +90,7 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                     Text(
                                       '123456',
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 21,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                       ),
