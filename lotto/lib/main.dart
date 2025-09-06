@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lotto/pages/page_register.dart';
+import 'package:lotto/page_admin_lotto.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const PageRegister(),
+      home: const PageAdminLotto(),
     );
   }
 }
