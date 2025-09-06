@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lotto/pages/home.dart';
+import 'package:lotto/pages/page_login.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: HomePage(),
+      home: const LoginScreen(),
     );
   }
 }
