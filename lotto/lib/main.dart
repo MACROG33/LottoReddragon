@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lotto/pages/info.dart';
+import 'package:lotto/pages/page_login.dart';
 
 
 void main() {
