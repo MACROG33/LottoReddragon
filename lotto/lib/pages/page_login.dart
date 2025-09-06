@@ -1,13 +1,24 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-class LoginScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:lotto/model/request/Users_login_Post_Req.dart';
+import 'package:lotto/model/response/Users_login_Post_Res.dart';
+import 'package:lotto/pages/page_register.dart';
+
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red,
       body: Padding(
@@ -27,6 +38,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     TextField(
                       controller: emailController,
+
                       decoration: const InputDecoration(
                         labelText: "อีเมล",
                         filled: true,
@@ -50,9 +62,13 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: () {}, child: const Text("เข้าสู่ระบบ")),
+            ElevatedButton(onPressed: login, child: const Text("เข้าสู่ระบบ")),
             TextButton(
               onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PageRegister()),
+                );
               },
               child: const Text(
                 "สมัครสมาชิก",
@@ -66,5 +82,30 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // http://10.160.95.151:3000/auth/login
+  void login() {
+    String email = emailController.text;
+    String password = passwordController.text;
+    UsersLoginPostRequest req = UsersLoginPostRequest(
+      email: email,
+      password: password,
+    );
+    http
+        .post(
+          Uri.parse("http://10.160.95.151:3000/auth/login"),
+          headers: {"Content-Type": "application/json; charset=utf-8"},
+          body: usersLoginPostRequestToJson(req),
+        )
+        .then((value) {
+          UsersLoginPostResponse res = usersLoginPostResponseFromJson(
+            value.body,
+          );
+          log(res.user.lastName + " " + res.user.firstname);
+        })
+        .catchError((error) {
+          log('Error $error');
+        });
   }
 }
