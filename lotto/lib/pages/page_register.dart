@@ -78,6 +78,7 @@ class _PageRegisterState extends State<PageRegister> {
                   SizedBox(height: 10),
                   Text('รหัสผ่าน', style: TextStyle(color: Colors.white)),
                   TextField(
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -87,6 +88,7 @@ class _PageRegisterState extends State<PageRegister> {
                   SizedBox(height: 10),
                   Text('ยืนยันรหัสผ่าน', style: TextStyle(color: Colors.white)),
                   TextField(
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -99,6 +101,7 @@ class _PageRegisterState extends State<PageRegister> {
                     style: TextStyle(color: Colors.white),
                   ),
                   TextField(
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
