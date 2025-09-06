@@ -66,8 +66,14 @@ class _HomePageState extends State<HomePage> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Color(0xFFD10934),
+                          ),
                           onPressed: LottoCheck,
-                          child: const Text("ตรวจสลาก ของคุณ"),
+                          child: const Text(
+                            "ตรวจสลาก ของคุณ",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ],
@@ -77,7 +83,8 @@ class _HomePageState extends State<HomePage> {
 
               Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Container(
+
+                child: SizedBox(
                   height: 220,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
@@ -96,7 +103,7 @@ class _HomePageState extends State<HomePage> {
               Text("เงินการถูกรางวัล", style: TextStyle(fontSize: 30)),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Container(
+                child: SizedBox(
                   height: 500, // ความสูงของ Card
                   child: ListView(
                     padding: const EdgeInsets.symmetric(
@@ -131,7 +138,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildFlashSaleCard(String imagePath) {
-    return Container(
+    return SizedBox(
       width: 300,
       child: Card(
         color: Colors.white,
@@ -172,6 +179,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget TextFieldRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -204,6 +212,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   void LottoCheck() {
     String lotto = controllers.map((c) => c.text).join();
     log(lotto);
