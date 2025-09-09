@@ -8,6 +8,11 @@ class PageSearchLotto extends StatefulWidget {
 }
 
 class _PageSearchLottoState extends State<PageSearchLotto> {
+  List<TextEditingController> controllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
+  List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +51,9 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                         ),
                       ),
                       SizedBox(height: 16),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: 'หมายเลขสลาก',
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFieldRow(),
                       ),
                       SizedBox(height: 16),
                       SizedBox(
@@ -71,7 +72,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                 ),
               ),
             ),
-    
+
             // หัวข้อตรึง
             Container(
               color: Colors.transparent,
@@ -87,7 +88,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                 ),
               ),
             ),
-    
+
             // การ์ดเลื่อน
             Expanded(
               child: ListView.builder(
@@ -114,7 +115,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                 },
               ),
             ),
-            
           ],
         ),
       ),
@@ -122,11 +122,44 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_basket), label: 'ซื้อสลาก'),
+            icon: Icon(Icons.shopping_basket),
+            label: 'ซื้อสลาก',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ฉัน'),
         ],
       ),
     );
   }
-}
 
+  Widget TextFieldRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(6, (index) {
+        return Container(
+          width: 40,
+          margin: EdgeInsets.symmetric(horizontal: 4),
+          child: TextField(
+            controller: controllers[index],
+            focusNode: focusNodes[index],
+            keyboardType: TextInputType.number,
+            textAlign: TextAlign.center,
+            maxLength: 1,
+            decoration: InputDecoration(
+              counterText: '',
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              if (value.length == 1 && index < 5) {
+                FocusScope.of(context).requestFocus(focusNodes[index + 1]);
+              }
+
+              if (value.isEmpty && index > 0) {
+                FocusScope.of(context).requestFocus(focusNodes[index - 1]);
+              }
+            },
+          ),
+        );
+      }),
+    );
+  }
+}
