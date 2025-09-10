@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lotto/pages/home.dart';
+import 'package:lotto/pages/info.dart';
 
 class PageSearchLotto extends StatefulWidget {
   const PageSearchLotto({super.key});
@@ -13,6 +15,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     (_) => TextEditingController(),
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,16 +77,18 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
             ),
 
             // หัวข้อตรึง
-            Container(
-              color: Colors.transparent,
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Center(
-                child: Text(
-                  "ใบสลาก ราคา 80 บาท",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFD10922),
+            SingleChildScrollView(
+              child: Container(
+                color: Colors.transparent,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: Text(
+                    "ใบสลาก ราคา 80 บาท",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFD10922),
+                    ),
                   ),
                 ),
               ),
@@ -99,17 +104,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                     padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                     child: Card(
                       color: Colors.white,
-                      child: ListTile(
-                        title: Text('123456'),
-                        subtitle: Text('งวดประจำวันที่ 16 มีนาคม 2567'),
-                        trailing: Text(
-                          '80 บาท',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFD10922),
-                          ),
-                        ),
-                      ),
+                      child: Image.asset("assets/images/lotto.png")
                     ),
                   );
                 },
@@ -119,6 +114,20 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (value) {
+            setState(() {
+              selectedIndex = value;
+            });
+
+            if(value == 1){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PageSearchLotto()));
+            }else if(value == 0){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+            }else if(value == 2){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+            }
+          },
+          currentIndex: selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
           BottomNavigationBarItem(

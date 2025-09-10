@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotto/pages/page_history_lotto.dart';
 import 'package:lotto/pages/page_login.dart';
 import 'package:lotto/pages/page_search_lotto.dart';
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const LoginScreen(),
+      home: const PageHistoryLotto(),
     );
   }
 }
