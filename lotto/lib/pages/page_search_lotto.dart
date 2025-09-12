@@ -98,13 +98,42 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(vertical: 0),
-                itemCount: 100,
+                itemCount: 2,
                 itemBuilder: (context, i) {
                   return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    padding: const EdgeInsets.all(8.0),
                     child: Card(
                       color: Colors.white,
-                      child: Image.asset("assets/images/lotto.png")
+                      child: Stack(
+                        children: [
+                          Image.asset("assets/images/lotto.png"),
+
+                          // กล่องสีขาวทับเลขเดิม
+                          Positioned(
+                            left: 195,
+                            top: 15,
+                            child: Container(
+                              width: 155,
+                              height: 40,
+                              color: Colors.grey,
+                            ),
+                          ),
+
+                          // ตัวเลขที่เอามาจาก Db
+                          Positioned(
+                            left: 205,
+                            top: 15,
+                            child: Text(
+                              "9 9 9 9 9 9",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -115,19 +144,28 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
-            setState(() {
-              selectedIndex = value;
-            });
+          setState(() {
+            selectedIndex = value;
+          });
 
-            if(value == 1){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => PageSearchLotto()));
-            }else if(value == 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-            }else if(value == 2){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-            }
-          },
-          currentIndex: selectedIndex,
+          if (value == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PageSearchLotto()),
+            );
+          } else if (value == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          } else if (value == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          }
+        },
+        currentIndex: selectedIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
           BottomNavigationBarItem(
