@@ -25,102 +25,85 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
       ),
       body: Column(
         children: [
-          // ปุ่มคงที่ ไม่เลื่อน
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Color(0xFFD10922),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Color(0xFFD10922),
+                    ),
+                    onPressed: () {},
+                    child: const Text('ทั้งหมด'),
                   ),
-                  onPressed: () {},
-                  child: const Text('ทั้งหมด'),
-                ),
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Color(0xFFD10922),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Color(0xFFD10922),
+                    ),
+                    onPressed: () {},
+                    child: const Text('ประวัติการถูกรางวัล'),
                   ),
-                  onPressed: () {},
-                  child: const Text('ประวัติการถูกรางวัล'),
-                ),
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Color(0xFFD10922),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Color(0xFFD10922),
+                    ),
+                    onPressed: () {},
+                    child: const Text('ประวัติไม่ถูกรางวัล'),
                   ),
-                  onPressed: () {},
-                  child: const Text('ประวัติไม่ถูกรางวัล'),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
 
           // การ์ดเลื่อน
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Loop Card 10 อัน
-                  ...List.generate(
-                    10,
-                    (index) => Card(
-                      margin: const EdgeInsets.all(16.0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'งวดประจำวันที่ 16 มีนาคม 2567 (${index + 1})',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text('รางวัลที่ 1'),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      '123456',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text('เลขท้าย 2 ตัว'),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      '78',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(vertical: 0),
+              itemCount: 100,
+              itemBuilder: (context, i) {
+                // สมมติว่าเรามีตัวเลขใหม่เก็บใน list ของ int
+                int newNumber = i + 1; // หรือเอามาจาก list ของตัวเลขจริง
+
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                  child: Card(
+                    color: Colors.white,
+                    child: Stack(
+                      children: [
+                        Image.asset("assets/images/lotto.png"),
+
+                        // กล่องสีขาวทับเลขเดิม
+                        Positioned(
+                          left: 50, // ปรับตำแหน่ง x
+                          top: 30, // ปรับตำแหน่ง y
+                          child: Container(
+                            width: 100, // กว้างพอที่จะทับเลขเดิม
+                            height: 40, // สูงพอ
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
+
+                        // ตัวเลขใหม่
+                        Positioned(
+                          left: 50,
+                          top: 30,
+                          child: Text(
+                            "$newNumber",
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ],
