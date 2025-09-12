@@ -32,26 +32,35 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Color(0xFFD10922),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FilledButton(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Color(0xFFD10922),
+                      ),
+                      onPressed: () {},
+                      child: const Text('ทั้งหมด'),
                     ),
-                    onPressed: () {},
-                    child: const Text('ทั้งหมด'),
                   ),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Color(0xFFD10922),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FilledButton(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Color(0xFFD10922),
+                      ),
+                      onPressed: () {},
+                      child: const Text('ประวัติการถูกรางวัล'),
                     ),
-                    onPressed: () {},
-                    child: const Text('ประวัติการถูกรางวัล'),
                   ),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Color(0xFFD10922),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FilledButton(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Color(0xFFD10922),
+                      ),
+                      onPressed: () {},
+                      child: const Text('ประวัติไม่ถูกรางวัล'),
                     ),
-                    onPressed: () {},
-                    child: const Text('ประวัติไม่ถูกรางวัล'),
                   ),
                 ],
               ),
@@ -64,34 +73,31 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
               padding: EdgeInsets.symmetric(vertical: 0),
               itemCount: 100,
               itemBuilder: (context, i) {
-                // สมมติว่าเรามีตัวเลขใหม่เก็บใน list ของ int
-                int newNumber = i + 1; // หรือเอามาจาก list ของตัวเลขจริง
-
                 return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                  padding: const EdgeInsets.all(8.0),
                   child: Card(
                     color: Colors.white,
                     child: Stack(
                       children: [
                         Image.asset("assets/images/lotto.png"),
-
+                  
                         // กล่องสีขาวทับเลขเดิม
                         Positioned(
-                          left: 50, // ปรับตำแหน่ง x
-                          top: 30, // ปรับตำแหน่ง y
+                          left: 195,
+                          top: 15,
                           child: Container(
-                            width: 100, // กว้างพอที่จะทับเลขเดิม
-                            height: 40, // สูงพอ
-                            color: Colors.white,
+                            width: 155,
+                            height: 40,
+                            color: Colors.grey,
                           ),
                         ),
-
-                        // ตัวเลขใหม่
+                  
+                        // ตัวเลขที่เอามาจาก Db
                         Positioned(
-                          left: 50,
-                          top: 30,
+                          left: 205,
+                          top: 15,
                           child: Text(
-                            "$newNumber",
+                            "9 9 9 9 9 9",
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -100,7 +106,9 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                           ),
                         ),
                       ],
+                      
                     ),
+                    
                   ),
                 );
               },
