@@ -75,40 +75,42 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
               itemBuilder: (context, i) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: Colors.white,
-                    child: Stack(
-                      children: [
-                        Image.asset("assets/images/lotto.png"),
-                  
-                        // กล่องสีขาวทับเลขเดิม
-                        Positioned(
-                          left: 195,
-                          top: 15,
-                          child: Container(
-                            width: 155,
-                            height: 40,
-                            color: Colors.grey,
-                          ),
-                        ),
-                  
-                        // ตัวเลขที่เอามาจาก Db
-                        Positioned(
-                          left: 205,
-                          top: 15,
-                          child: Text(
-                            "9 9 9 9 9 9",
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                  child: Center(
+                    child: Card(
+                      color: Colors.white,
+                      child: Stack(
+                        children: [
+                          Image.asset("assets/images/lotto.png"),
+                    
+                          // กล่องสีขาวทับเลขเดิม
+                          Positioned(
+                            left: 195,
+                            top: 15,
+                            child: Container(
+                              width: 155,
+                              height: 40,
+                              color: Colors.grey,
                             ),
                           ),
-                        ),
-                      ],
+                    
+                          // ตัวเลขที่เอามาจาก Db
+                          Positioned(
+                            left: 205,
+                            top: 15,
+                            child: Text(
+                              "9 9 9 9 9 9",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                        
+                      ),
                       
                     ),
-                    
                   ),
                 );
               },
