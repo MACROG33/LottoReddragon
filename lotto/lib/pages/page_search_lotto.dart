@@ -16,11 +16,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   int selectedIndex = 0;
-  List<TextEditingController> controllers = List.generate(
-    6,
-    (_) => TextEditingController(),
-  );
-  List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +58,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFieldRow(),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFieldRow(),
@@ -84,7 +81,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
               ),
             ),
 
-
             // หัวข้อตรึง
             SingleChildScrollView(
               child: Container(
@@ -103,7 +99,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
               ),
             ),
 
-
             // การ์ดเลื่อน
             Expanded(
               child: ListView.builder(
@@ -120,52 +115,52 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                             Image.asset("assets/images/lotto.png"),
 
                             // กล่องทับเลขเดิม
-                          Positioned(
-                            left: 195,
-                            top: 15,
-                            child: Container(
-                              width: 155,
-                              height: 40,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          // กล่องทับเลขวันที่
-                          Positioned(
-                            left: 195,
-                            top: 65,
-                            child: Container(
-                              width: 155,
-                              height: 20,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          //เอาวันที่มาจาก DB
-                          Positioned(
-                            left: 200,
-                            top: 65,
-                            child: Text(
-                              "วันที่ 1 ธันวาคม 2569",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                            Positioned(
+                              left: 195,
+                              top: 15,
+                              child: Container(
+                                width: 155,
+                                height: 40,
+                                color: Colors.grey,
                               ),
                             ),
-                          ),
+                            // กล่องทับเลขวันที่
+                            Positioned(
+                              left: 195,
+                              top: 65,
+                              child: Container(
+                                width: 155,
+                                height: 20,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            //เอาวันที่มาจาก DB
+                            Positioned(
+                              left: 200,
+                              top: 65,
+                              child: Text(
+                                "วันที่ 1 ธันวาคม 2569",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
 
-                          // ตัวเลขที่เอามาจาก Db
-                          Positioned(
-                            left: 205,
-                            top: 15,
-                            child: Text(
-                              "9 9 9 9 9 9",
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                            // ตัวเลขที่เอามาจาก Db
+                            Positioned(
+                              left: 205,
+                              top: 15,
+                              child: Text(
+                                "9 9 9 9 9 9",
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-                          ),
                           ],
                         ),
                       ),
@@ -207,47 +202,12 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
             icon: Icon(Icons.shopping_basket),
             label: 'ซื้อสลาก',
           ),
-            icon: Icon(Icons.shopping_basket),
-            label: 'ซื้อสลาก',
-          ),
+
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ฉัน'),
         ],
       ),
     );
   }
-
-  Widget TextFieldRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(6, (index) {
-        return Container(
-          width: 40,
-          margin: EdgeInsets.symmetric(horizontal: 4),
-          child: TextField(
-            controller: controllers[index],
-            focusNode: focusNodes[index],
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            maxLength: 1,
-            decoration: InputDecoration(
-              counterText: '',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (value) {
-              if (value.length == 1 && index < 5) {
-                FocusScope.of(context).requestFocus(focusNodes[index + 1]);
-              }
-
-              if (value.isEmpty && index > 0) {
-                FocusScope.of(context).requestFocus(focusNodes[index - 1]);
-              }
-            },
-          ),
-        );
-      }),
-    );
-  }
-}
 
   Widget TextFieldRow() {
     return Row(
