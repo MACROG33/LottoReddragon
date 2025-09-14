@@ -19,7 +19,8 @@ class ProfilePage extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 280,
-                decoration: const BoxDecoration(color: Colors.red),
+                decoration: const BoxDecoration(color: Color(0xFFD10922)),
+
               ),
 
               // Menu Items Section
