@@ -20,7 +20,6 @@ class ProfilePage extends StatelessWidget {
                 width: double.infinity,
                 height: 280,
                 decoration: const BoxDecoration(color: Color(0xFFD10922)),
-
               ),
 
               // Menu Items Section
@@ -33,21 +32,36 @@ class ProfilePage extends StatelessWidget {
                         imagePath: 'assets/images/slip.jpg',
                         title: 'ฉลากของฉัน',
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PageLottoTicketScreen()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PageLottoTicketScreen(),
+                            ),
+                          );
                         },
                       ),
                       _buildMenuItem(
                         imagePath: 'assets/images/celebate.jpg',
                         title: 'ประวัติการถูกรางวัล',
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PageHistoryLotto()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PageHistoryLotto(),
+                            ),
+                          );
                         },
                       ),
                       _buildMenuItem(
                         imagePath: 'assets/images/money.jpg',
                         title: 'ขึ้นเงินรางวัล',
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PageClaimLotto()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PageClaimLotto(),
+                            ),
+                          );
                         },
                       ),
 
