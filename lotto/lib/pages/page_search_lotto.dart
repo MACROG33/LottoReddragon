@@ -108,31 +108,54 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                         child: Stack(
                           children: [
                             Image.asset("assets/images/lotto.png"),
-                      
-                            // กล่องสีขาวทับเลขเดิม
-                            Positioned(
-                              left: 195,
-                              top: 15,
-                              child: Container(
-                                width: 155,
-                                height: 40,
-                                color: Colors.grey,
+
+                            // กล่องทับเลขเดิม
+                          Positioned(
+                            left: 195,
+                            top: 15,
+                            child: Container(
+                              width: 155,
+                              height: 40,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          // กล่องทับเลขวันที่
+                          Positioned(
+                            left: 195,
+                            top: 65,
+                            child: Container(
+                              width: 155,
+                              height: 20,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          //เอาวันที่มาจาก DB
+                          Positioned(
+                            left: 200,
+                            top: 65,
+                            child: Text(
+                              "วันที่ 1 ธันวาคม 2569",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ),
-                      
-                            // ตัวเลขที่เอามาจาก Db
-                            Positioned(
-                              left: 205,
-                              top: 15,
-                              child: Text(
-                                "9 9 9 9 9 9",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
+                          ),
+
+                          // ตัวเลขที่เอามาจาก Db
+                          Positioned(
+                            left: 205,
+                            top: 15,
+                            child: Text(
+                              "9 9 9 9 9 9",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ),
+                          ),
                           ],
                         ),
                       ),

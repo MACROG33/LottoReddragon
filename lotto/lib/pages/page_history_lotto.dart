@@ -77,39 +77,88 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Card(
-                      color: Colors.white,
-                      child: Stack(
+                      color: Color(0xFFD9D9D9),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Image.asset("assets/images/lotto.png"),
-                    
-                          // กล่องสีขาวทับเลขเดิม
-                          Positioned(
-                            left: 195,
-                            top: 15,
-                            child: Container(
-                              width: 155,
-                              height: 40,
-                              color: Colors.grey,
-                            ),
-                          ),
-                    
-                          // ตัวเลขที่เอามาจาก Db
-                          Positioned(
-                            left: 205,
-                            top: 15,
-                            child: Text(
-                              "9 9 9 9 9 9",
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                          Stack(
+                            children: [
+                              Image.asset("assets/images/lotto.png"),
+
+                              // กล่องทับเลขเดิม
+                              Positioned(
+                                left: 195,
+                                top: 15,
+                                child: Container(
+                                  width: 155,
+                                  height: 40,
+                                  color: Colors.grey,
+                                ),
                               ),
+                              // กล่องทับเลขวันที่
+                              Positioned(
+                                left: 195,
+                                top: 65,
+                                child: Container(
+                                  width: 155,
+                                  height: 20,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              // เอาวันที่มาจาก DB
+                              Positioned(
+                                left: 200,
+                                top: 65,
+                                child: Text(
+                                  "วันที่ 1 ธันวาคม 2569",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              // ตัวเลขจาก DB
+                              Positioned(
+                                left: 205,
+                                top: 15,
+                                child: Text(
+                                  "9 9 9 9 9 9",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          // พื้นที่ด้านล่างของ Card
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "ถูกรางวัลที่ 1",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                Text(
+                                  "จำนวนเงิน 6,000,000 บาท",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
-                        
                       ),
-                      
                     ),
                   ),
                 );
