@@ -20,154 +20,140 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFD10934), Color(0xFFD10934), Colors.white],
-            stops: [0.0, 0.3, 0.0],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      body: Stack(
+        children: [
+          // BG Gradient ตรึง
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFFD10934), Color(0xFFD10934), Colors.white],
+                stops: [0.0, 0.3, 0.0],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            SizedBox(height: 50),
-            Center(
-              child: Image.asset('assets/images/logo_lotto.png', width: 200),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Card(
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Text(
-                          'ค้นหาสลากกินแบ่งรัฐบาล',
-                          style: TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFD10922),
+          // เนื้อหาเลื่อน
+          ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              SizedBox(height: 50),
+              Center(
+                child: Image.asset('assets/images/logo_lotto.png', width: 200),
+              ),
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: Card(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            'ค้นหาสลากกินแบ่งรัฐบาล',
+                            style: TextStyle(
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFD10922),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFieldRow(),
-                      ),
-
-                      SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton(
-                          onPressed: () {},
-                          style: FilledButton.styleFrom(
-                            backgroundColor: Color(0xFFD10922),
-                            foregroundColor: Colors.white,
-                          ),
-                          child: Text('ค้นหาสลากกินแบ่งรัฐบาล'),
+                        SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFieldRow(),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: FilledButton(
+                            onPressed: () {},
+                            style: FilledButton.styleFrom(
+                              backgroundColor: Color(0xFFD10922),
+                              foregroundColor: Colors.white,
+                            ),
+                            child: Text('ค้นหาสลากกินแบ่งรัฐบาล'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-
-            // หัวข้อตรึง
-            SingleChildScrollView(
-              child: Container(
-                color: Colors.transparent,
+              Container(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                child: Center(
-                  child: Text(
-                    "ใบสลาก ราคา 80 บาท",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFD10922),
-                    ),
+                alignment: Alignment.center,
+                child: Text(
+                  "ใบสลาก ราคา 80 บาท",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFD10922),
                   ),
                 ),
               ),
-            ),
-
-            // การ์ดเลื่อน
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(vertical: 0),
-                itemCount: 2,
-                itemBuilder: (context, i) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Card(
-                        color: Colors.white,
-                        child: Stack(
-                          children: [
-                            Image.asset("assets/images/lotto.png"),
-
-                            // กล่องทับเลขเดิม
-                            Positioned(
-                              left: 195,
-                              top: 15,
-                              child: Container(
-                                width: 155,
-                                height: 40,
-                                color: Colors.grey,
+              ...List.generate(10, (i) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Card(
+                      color: Colors.white,
+                      child: Stack(
+                        children: [
+                          Image.asset("assets/images/lotto.png"),
+                          Positioned(
+                            left: 195,
+                            top: 15,
+                            child: Container(
+                              width: 155,
+                              height: 40,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Positioned(
+                            left: 195,
+                            top: 65,
+                            child: Container(
+                              width: 155,
+                              height: 20,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Positioned(
+                            left: 200,
+                            top: 65,
+                            child: Text(
+                              "วันที่ 1 ธันวาคม 2569",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ),
-                            // กล่องทับเลขวันที่
-                            Positioned(
-                              left: 195,
-                              top: 65,
-                              child: Container(
-                                width: 155,
-                                height: 20,
-                                color: Colors.grey,
+                          ),
+                          Positioned(
+                            left: 205,
+                            top: 15,
+                            child: Text(
+                              "9 9 9 9 9 9",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ),
-                            //เอาวันที่มาจาก DB
-                            Positioned(
-                              left: 200,
-                              top: 65,
-                              child: Text(
-                                "วันที่ 1 ธันวาคม 2569",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-
-                            // ตัวเลขที่เอามาจาก Db
-                            Positioned(
-                              left: 205,
-                              top: 15,
-                              child: Text(
-                                "9 9 9 9 9 9",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
@@ -195,7 +181,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
             icon: Icon(Icons.shopping_basket),
             label: 'ซื้อสลาก',
           ),
-
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ฉัน'),
         ],
       ),
@@ -223,7 +208,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
               if (value.length == 1 && index < 5) {
                 FocusScope.of(context).requestFocus(focusNodes[index + 1]);
               }
-
               if (value.isEmpty && index > 0) {
                 FocusScope.of(context).requestFocus(focusNodes[index - 1]);
               }
