@@ -59,10 +59,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFieldRow(),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFieldRow(),
-                      ),
+
                       SizedBox(height: 16),
                       SizedBox(
                         width: double.infinity,
@@ -179,7 +176,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
           });
 
           if (value == 1) {
-            
           } else if (value == 0) {
             Navigator.push(
               context,
