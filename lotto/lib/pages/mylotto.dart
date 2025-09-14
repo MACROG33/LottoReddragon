@@ -1,119 +1,98 @@
 import 'package:flutter/material.dart';
 
-class LotteryTicketScreen extends StatelessWidget {
+class PageLottoTicketScreen extends StatefulWidget {
+  const PageLottoTicketScreen({super.key});
+
+  @override
+  State<PageLottoTicketScreen> createState() => _PageLottoTicketScreenState();
+}
+
+class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
-        leading: Icon(Icons.arrow_back, color: Colors.white),
-        title: Text(
-          'สลากของฉัน',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        centerTitle: true,
+        title: const Center(
+          child: Text('สลากของฉัน', style: TextStyle(color: Colors.white)),
+        ),
+        backgroundColor: const Color(0xFFD10922),
       ),
       backgroundColor: Colors.grey[100],
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            LotteryTicket(),
-            SizedBox(height: 12),
-            LotteryTicket(),
-            SizedBox(height: 12),
-            LotteryTicket(),
-            SizedBox(height: 100), // Extra space at bottom
-          ],
-        ),
-      ),
-    );
-  }
-}
+      body: Expanded(
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(vertical: 0),
+          itemCount: 100,
+          itemBuilder: (context, i) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Card(
+                  color: Color(0xFFD9D9D9),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Stack(
+                        children: [
+                          Image.asset("assets/images/lotto.png"),
 
-class LotteryTicket extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Row(
-          children: [
-            // Main ticket content
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/lotto.png'),
-                    fit: BoxFit.cover,
-                    opacity: 1, // Make it subtle so text remains readable
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header row with logo and numbers
-                    Row(
-                      children: [
-                        // "THAI GOVERNMENT LOTTERY" text
-                        Spacer(),
-
-                        // Main lottery numbers
-                        Text(
-                          '999999',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
+                          // กล่องทับเลขเดิม
+                          Positioned(
+                            left: 195,
+                            top: 15,
+                            child: Container(
+                              width: 155,
+                              height: 40,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 8),
-
-                    // Middle section with horse cart image and details
-                    Row(
-                      children: [
-                        Spacer(),
-
-                        // Date and details
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              'งวดที่ 1 ธันวาคม 2569',
+                          // กล่องทับเลขวันที่
+                          Positioned(
+                            left: 195,
+                            top: 65,
+                            child: Container(
+                              width: 155,
+                              height: 20,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          // เอาวันที่มาจาก DB
+                          Positioned(
+                            left: 200,
+                            top: 65,
+                            child: Text(
+                              "วันที่ 1 ธันวาคม 2569",
                               style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                          ),
+                          // ตัวเลขจาก DB
+                          Positioned(
+                            left: 205,
+                            top: 15,
+                            child: Text(
+                              "9 9 9 9 9 9",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lotto/pages/mylotto.dart';
+import 'package:lotto/pages/page_claim_lotto.dart';
+import 'package:lotto/pages/page_history_lotto.dart';
 import 'package:lotto/pages/page_login.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -28,17 +31,23 @@ class ProfilePage extends StatelessWidget {
                       _buildMenuItem(
                         imagePath: 'assets/images/slip.jpg',
                         title: 'ฉลากของฉัน',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PageLottoTicketScreen()));
+                        },
                       ),
                       _buildMenuItem(
                         imagePath: 'assets/images/celebate.jpg',
                         title: 'ประวัติการถูกรางวัล',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PageHistoryLotto()));
+                        },
                       ),
                       _buildMenuItem(
                         imagePath: 'assets/images/money.jpg',
                         title: 'ขึ้นเงินรางวัล',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PageClaimLotto()));
+                        },
                       ),
 
                       const Spacer(),

@@ -29,7 +29,7 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Card(
-                color: Colors.white,
+                color: Color(0xFFD9D9D9),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
