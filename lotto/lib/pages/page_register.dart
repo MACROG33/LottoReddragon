@@ -1,9 +1,11 @@
 import 'dart:developer';
+
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:lotto/model/request/Users_Register_Post_Req.dart';
 import 'package:lotto/model/response/Users_Register_Post_Res.dart';
+import 'package:lotto/pages/page_login.dart';
 
 class PageRegister extends StatefulWidget {
   const PageRegister({super.key});
@@ -154,15 +156,16 @@ class _PageRegisterState extends State<PageRegister> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
                         },
-
                         child: Text(
-                          "เข้าสู่ระบบ",
-                          style: TextStyle(
-                            color: Color(0xFFFFD700),
-                            fontWeight: FontWeight.bold,
-                          ),
+                          'เข้าสู่ระบบ',
+                          style: TextStyle(color: Color(0xFFFFD700)),
                         ),
                       ),
                     ],
@@ -195,7 +198,7 @@ class _PageRegisterState extends State<PageRegister> {
 
         http
             .post(
-              Uri.parse("http://10.160.95.151:3000/auth/register"),
+              Uri.parse("http://192.168.1.31:3000/auth/register"),
               headers: {"Content-Type": "application/json; charset=utf-8"},
               body: usersRegisterPostResRequestToJson(req),
             )

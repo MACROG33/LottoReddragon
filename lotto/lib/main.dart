@@ -3,7 +3,7 @@ import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/page_claim_lotto.dart';
 import 'package:lotto/pages/page_history_lotto.dart';
 import 'package:lotto/pages/page_login.dart';
-import 'package:lotto/pages/page_search_lotto.dart';
+
 void main() {
   runApp(const MyApp());
 }

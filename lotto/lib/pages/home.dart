@@ -18,7 +18,6 @@ class _HomePageState extends State<HomePage> {
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

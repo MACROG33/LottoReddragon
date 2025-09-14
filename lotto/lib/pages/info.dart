@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotto/pages/page_login.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -44,7 +45,14 @@ class ProfilePage extends StatelessWidget {
 
                       // Logout Button
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
                         child: const Text(
                           'ออกจากระบบ',
                           style: TextStyle(
@@ -120,7 +128,7 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 15),
                   // Name
                   const Text(
-                    'กานต์ กลางดี',
+                    'Admin Admin',
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 20,

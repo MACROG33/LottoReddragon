@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:lotto/model/request/Users_login_Post_Req.dart';
 import 'package:lotto/model/response/Users_login_Post_Res.dart';
+import 'package:lotto/pages/home.dart';
+import 'package:lotto/pages/info.dart';
 import 'package:lotto/pages/page_register.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -145,24 +147,39 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() {
     String email = emailController.text;
     String password = passwordController.text;
-    UsersLoginPostRequest req = UsersLoginPostRequest(
-      email: email,
-      password: password,
-    );
-    http
-        .post(
-          Uri.parse("http://10.160.95.151:3000/auth/login"),
-          headers: {"Content-Type": "application/json; charset=utf-8"},
-          body: usersLoginPostRequestToJson(req),
-        )
-        .then((value) {
-          UsersLoginPostResponse res = usersLoginPostResponseFromJson(
-            value.body,
-          );
-          log(res.user.lastName + " " + res.user.firstname);
-        })
-        .catchError((error) {
-          log('Error $error');
-        });
+    if (email != '' && password != '') {
+      UsersLoginPostRequest req = UsersLoginPostRequest(
+        email: email,
+        password: password,
+      );
+      http
+          .post(
+            Uri.parse("http://192.168.1.31:3000/auth/login"),
+            headers: {"Content-Type": "application/json; charset=utf-8"},
+            body: usersLoginPostRequestToJson(req),
+          )
+          .then((value) {
+            UsersLoginPostResponse res = usersLoginPostResponseFromJson(
+              value.body,
+            );
+            log(value.body);
+            if (res.user.role == "admin") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+            }
+          })
+          .catchError((error) {
+            log('Error $error');
+          });
+    } else {
+      log("Email and Password NUll");
+    }
   }
 }
