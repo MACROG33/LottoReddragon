@@ -25,7 +25,7 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
       body: Expanded(
         child: ListView.builder(
           padding: EdgeInsets.symmetric(vertical: 0),
-          itemCount: 100,
+          itemCount: 5,
           itemBuilder: (context, i) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
