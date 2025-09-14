@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lotto/pages/home.dart';
-import 'package:lotto/pages/page_claim_lotto.dart';
-import 'package:lotto/pages/page_history_lotto.dart';
 import 'package:lotto/pages/page_login.dart';
 
 void main() {

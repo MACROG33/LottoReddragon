@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/mylotto.dart';
 import 'package:lotto/pages/page_claim_lotto.dart';
 import 'package:lotto/pages/page_history_lotto.dart';
 import 'package:lotto/pages/page_login.dart';
+import 'package:lotto/pages/page_search_lotto.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  int selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +30,6 @@ class ProfilePage extends StatelessWidget {
                 height: 280,
                 decoration: const BoxDecoration(color: Color(0xFFD10922)),
               ),
-
               // Menu Items Section
               Expanded(
                 child: Padding(
@@ -64,13 +72,11 @@ class ProfilePage extends StatelessWidget {
                           );
                         },
                       ),
-
                       const Spacer(),
-
                       // Logout Button
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const LoginScreen(),
@@ -86,35 +92,13 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
-
-              // Bottom Navigation
-              Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildBottomNavItem(Icons.home, 'หน้าหลัก'),
-                    _buildBottomNavItem(Icons.shopping_cart, 'ซื้อฉลาก'),
-                    _buildBottomNavItem(Icons.person, 'ฉัน'),
-                  ],
-                ),
-              ),
             ],
           ),
-
           // Overlapping Grey Rectangle with Profile Content
           Positioned(
             top: 20,
@@ -122,8 +106,10 @@ class ProfilePage extends StatelessWidget {
             right: 20,
             child: Container(
               padding: const EdgeInsets.all(20),
+              
               decoration: BoxDecoration(
                 color: Colors.grey[500],
+                borderRadius:BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -160,7 +146,6 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5),
-
                   // Subtitle
                   RichText(
                     text: TextSpan(
@@ -176,7 +161,7 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   // Email
                   Align(
                     alignment: Alignment.centerLeft,
@@ -200,12 +185,41 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (value) {
+          setState(() {
+            selectedIndex = value;
+          });
+          if (value == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          } else if (value == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PageSearchLotto()),
+            );
+          } else if (value == 2) {
+            // อยู่หน้า Profile อยู่แล้ว
+          }
+        },
+        currentIndex: selectedIndex,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_basket),
+            label: 'ซื้อสลาก',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ฉัน'),
+        ],
+      ),
     );
   }
 
   Widget _buildMenuItem({
     IconData? icon,
-    String? imagePath, // Add this parameter for image path
+    String? imagePath,
     required String title,
     required VoidCallback onTap,
   }) {
@@ -226,16 +240,13 @@ class ProfilePage extends StatelessWidget {
       child: ListTile(
         leading: imagePath != null
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  4,
-                ), // Optional: rounded corners
+                borderRadius: BorderRadius.circular(4),
                 child: Image.asset(
                   imagePath,
                   width: 24,
                   height: 24,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    // Fallback icon if image fails to load
                     return Icon(
                       Icons.image_not_supported,
                       color: Colors.grey[600],
@@ -252,17 +263,6 @@ class ProfilePage extends StatelessWidget {
         trailing: const Icon(Icons.chevron_right, color: Colors.grey),
         onTap: onTap,
       ),
-    );
-  }
-
-  Widget _buildBottomNavItem(IconData icon, String label) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: Colors.grey[600], size: 28),
-        const SizedBox(height: 4),
-        Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-      ],
     );
   }
 }
