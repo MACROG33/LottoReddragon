@@ -109,10 +109,9 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                             child: FilledButton(
                               onPressed: () {},
                               style: FilledButton.styleFrom(
-                                backgroundColor: Color(0xFFFFD700), // สีทอง
-                                foregroundColor: Colors.black, // สีตัวอักษร
+                                backgroundColor: Color(0xFFFFD700),
+                                foregroundColor: Colors.black, 
                                 shape: RoundedRectangleBorder(
-                                  // ขอบโค้ง
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 minimumSize: Size(

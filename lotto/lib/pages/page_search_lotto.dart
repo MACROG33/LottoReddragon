@@ -174,10 +174,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
           });
 
           if (value == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PageSearchLotto()),
-            );
+            
           } else if (value == 0) {
             Navigator.push(
               context,

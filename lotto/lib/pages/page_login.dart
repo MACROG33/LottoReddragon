@@ -20,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: Color(0xFFD10922),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -36,47 +36,104 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 320,
                 child: Column(
                   children: [
-                    TextField(
-                      controller: emailController,
-
-                      decoration: const InputDecoration(
-                        labelText: "อีเมล",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(),
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 50, 0, 2),
+                          child: Text(
+                            "อีเมล์",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ),
+                        TextField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 10,
+                            ), // ปรับ padding ภายในช่อง
+                          ),
+                        ),
+                      ],
                     ),
+
                     const SizedBox(height: 10),
-                    TextField(
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        labelText: "รหัสผ่าน",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(),
-                      ),
-                      obscureText: true,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+                          child: Text(
+                            "รหัสผ่าน",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ),
+                        TextField(
+                          controller: passwordController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 10,
+                            ), // ปรับ padding ภายในช่อง
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: login, child: const Text("เข้าสู่ระบบ")),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PageRegister()),
-                );
-              },
-              child: const Text(
-                "สมัครสมาชิก",
-                style: TextStyle(
-                  color: Colors.white, // ให้เข้ากับธีม
-                  fontWeight: FontWeight.bold,
+            ElevatedButton.icon(
+              onPressed: login,
+              icon: Icon(Icons.login),
+              label: Text("เข้าสู่ระบบ"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFFD700),
+                foregroundColor: Colors.black,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                textStyle: TextStyle(fontSize: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("ไม่มีบัญชี?",
+                  style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PageRegister(),
+                      ),
+                    );
+                  },
+            
+                  child: Text(
+                    "สมัครสมาชิก",
+                    style: TextStyle(
+                      color: Color(0xFFFFD700),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

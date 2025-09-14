@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:lotto/pages/info.dart';
+import 'package:lotto/pages/page_search_lotto.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +17,7 @@ class _HomePageState extends State<HomePage> {
     (_) => TextEditingController(),
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -125,13 +128,32 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (value) {
+          setState(() {
+            selectedIndex = value;
+          });
+
+          if (value == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PageSearchLotto()),
+            );
+          } else if (value == 0) {
+          } else if (value == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          }
+        },
+        currentIndex: selectedIndex,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "หน้าหลัก"),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_basket),
-            label: "shop",
+            label: "ซื้อสลาก",
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "ฉัน"),
         ],
       ),
     );

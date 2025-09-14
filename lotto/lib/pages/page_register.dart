@@ -129,7 +129,11 @@ class _PageRegisterState extends State<PageRegister> {
                     child: FilledButton(
                       style: FilledButton.styleFrom(
                         backgroundColor: Color(0xFFFFD700),
-                        textStyle: TextStyle(fontWeight: FontWeight.bold),
+                        textStyle: TextStyle(fontSize: 16),
+                        padding: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 20,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -148,9 +152,18 @@ class _PageRegisterState extends State<PageRegister> {
                         'มีบัญชีอยู่แล้ว?',
                         style: TextStyle(color: Colors.white),
                       ),
-                      Text(
-                        ' เข้าสู่ระบบ',
-                        style: TextStyle(color: Color(0xFFFFD700)), // สีทอง
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+
+                        child: Text(
+                          "เข้าสู่ระบบ",
+                          style: TextStyle(
+                            color: Color(0xFFFFD700),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
