@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     mainAxisSize:
-                        MainAxisSize.min, // ให้ Card ขนาดพอดีกับเนื้อหา
+                        MainAxisSize.min,
                     children: [
                       const Text(
                         "ตรวจผลสลากกินแบ่งรัฐบาล",
