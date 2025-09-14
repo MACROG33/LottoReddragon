@@ -55,10 +55,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                         ),
                       ),
                       SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFieldRow(),
-                      ),
+
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFieldRow(),
