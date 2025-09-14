@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
     (_) => TextEditingController(),
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
-
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,6 +133,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
+        currentIndex: selectedIndex,
       ),
     );
   }
