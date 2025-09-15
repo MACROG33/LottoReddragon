@@ -21,36 +21,119 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
         ),
         backgroundColor: const Color(0xFFD10922),
       ),
-      body: Center(
-        child: Card(
-          elevation: 6,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.all(20),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('Page Claim Lotto', style: TextStyle(fontSize: 18)),
-                const SizedBox(height: 15),
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Color(0xFFFFD700),
-                    foregroundColor: Colors.black,
-                    side: const BorderSide(
-                      color: Colors.black, // สีเส้นขอบ
-                      width: 2.0, // ความหนาของเส้นขอบ
+      body: ListView.builder(
+        padding: EdgeInsets.symmetric(vertical: 0),
+        itemCount: 2,
+        itemBuilder: (context, i) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Card(
+                color: Color(0xFFD9D9D9),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // รูป + overlay อยู่ใน Stack
+                    Stack(
+                      children: [
+                        Image.asset("assets/images/lotto.png"),
+
+                        // กล่องทับเลขเดิม
+                        Positioned(
+                          left: 195,
+                          top: 15,
+                          child: Container(
+                            width: 155,
+                            height: 40,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        // กล่องทับเลขวันที่
+                        Positioned(
+                          left: 195,
+                          top: 65,
+                          child: Container(
+                            width: 155,
+                            height: 20,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        //เอาวันที่มาจาก DB
+                        Positioned(
+                          left: 200,
+                          top: 65,
+                          child: Text(
+                            "วันที่ 1 ธันวาคม 2569",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        // ตัวเลขที่เอามาจาก Db
+                        Positioned(
+                          left: 205,
+                          top: 15,
+                          child: Text(
+                            "9 9 9 9 9 9",
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  onPressed: () {},
-                  child: const Text('ขึ้นเงินรางวัล'),
+
+                    // ส่วนข้อความด้านล่าง
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            "ถูกรางวัลที่ 1",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF28A745),
+                            ),
+                          ),
+                          Text(
+                            "จำนวนเงิน 6,000,000 บาท",
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: FilledButton(
+                              onPressed: () {},
+                              style: FilledButton.styleFrom(
+                                backgroundColor: Color(0xFFFFD700),
+                                foregroundColor: Colors.black, 
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                minimumSize: Size(
+                                  300,
+                                  48,
+                                ), // ความกว้างเต็ม + สูง 48px
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ), // padding เพิ่มความสูง
+                              ),
+                              child: Text("ขึ้นเงินรางวัล"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

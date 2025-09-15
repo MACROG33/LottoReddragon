@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:lotto/pages/home.dart';
-import 'package:lotto/pages/mylotto.dart';
-import 'package:lotto/pages/page_claim_lotto.dart';
-import 'package:lotto/pages/page_history_lotto.dart';
-import 'package:lotto/pages/page_login.dart';
-import 'package:lotto/pages/page_search_lotto.dart';
+import 'package:lotto/pages/admin/Random.dart';
+import 'package:lotto/pages/admin/Test.dart';
+import 'package:lotto/pages/admin/make.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class AdminPage extends StatefulWidget {
+  const AdminPage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<AdminPage> createState() => _AdminPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  int selectedIndex = 2;
-
+class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,60 +19,59 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Column(
             children: [
-              // Top Profile Section with Red Background
               Container(
                 width: double.infinity,
                 height: 280,
-                decoration: const BoxDecoration(color: Color(0xFFD10922)),
+                decoration: const BoxDecoration(color: Colors.red),
               ),
-              // Menu Items Section
+
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
                   child: Column(
                     children: [
                       _buildMenuItem(
-                        imagePath: 'assets/images/slip.jpg',
-                        title: 'ฉลากของฉัน',
+                        imagePath: 'assets/images/create.png',
+                        title: 'สร้าง lotto',
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PageLottoTicketScreen(),
+                              builder: (context) => const MakePage(),
                             ),
                           );
                         },
                       ),
                       _buildMenuItem(
-                        imagePath: 'assets/images/celebate.jpg',
-                        title: 'ประวัติการถูกรางวัล',
+                        imagePath: 'assets/images/random.png',
+                        title: 'สุ่ม lotto',
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PageHistoryLotto(),
+                              builder: (context) => const RandomPage(),
                             ),
                           );
                         },
                       ),
                       _buildMenuItem(
-                        imagePath: 'assets/images/money.jpg',
-                        title: 'ขึ้นเงินรางวัล',
+                        imagePath: 'assets/images/reset.png',
+                        title: 'รีเช็ตระบบ',
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PageClaimLotto(),
+                              builder: (context) => const DropdownButtonApp(),
                             ),
                           );
                         },
                       ),
+
                       const Spacer(),
+
                       // Logout Button
                       TextButton(
-                        onPressed: () async {
-                          Get.offAll(() => LoginScreen());//ทำการล้างทุกอย่างเพื่อออกระบบ
-                        },
+                        onPressed: () {},
                         child: const Text(
                           'ออกจากระบบ',
                           style: TextStyle(
@@ -89,6 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
+
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -96,17 +89,16 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ],
           ),
-          // Overlapping Grey Rectangle with Profile Content
+
           Positioned(
             top: 20,
             left: 20,
             right: 20,
+            bottom: 500,
             child: Container(
               padding: const EdgeInsets.all(20),
-
               decoration: BoxDecoration(
                 color: Colors.grey[500],
-                borderRadius: BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -135,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 15),
                   // Name
                   const Text(
-                    'Admin Admin',
+                    'Admin',
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 20,
@@ -143,27 +135,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  // Subtitle
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'ยอดเงินคงเหลือ : ',
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                        TextSpan(
-                          text: '200 บาท',
-                          style: TextStyle(color: Colors.yellow, fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  // Email
+
+                  SizedBox(height: 15),
+
                   Align(
                     alignment: Alignment.centerLeft,
                     child: const Text(
-                      'อีเมล:Karn.klangdee@gmail.com',
+                      'อีเมล: Admin@Admin.com',
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
@@ -182,41 +160,12 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-          setState(() {
-            selectedIndex = value;
-          });
-          if (value == 0) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          } else if (value == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PageSearchLotto()),
-            );
-          } else if (value == 2) {
-            // อยู่หน้า Profile อยู่แล้ว
-          }
-        },
-        currentIndex: selectedIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_basket),
-            label: 'ซื้อสลาก',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ฉัน'),
-        ],
-      ),
     );
   }
 
   Widget _buildMenuItem({
     IconData? icon,
-    String? imagePath,
+    String? imagePath, // Add this parameter for image path
     required String title,
     required VoidCallback onTap,
   }) {
@@ -237,13 +186,16 @@ class _ProfilePageState extends State<ProfilePage> {
       child: ListTile(
         leading: imagePath != null
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(
+                  4,
+                ), // Optional: rounded corners
                 child: Image.asset(
                   imagePath,
                   width: 24,
                   height: 24,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
+                    // Fallback icon if image fails to load
                     return Icon(
                       Icons.image_not_supported,
                       color: Colors.grey[600],
@@ -260,6 +212,17 @@ class _ProfilePageState extends State<ProfilePage> {
         trailing: const Icon(Icons.chevron_right, color: Colors.grey),
         onTap: onTap,
       ),
+    );
+  }
+
+  Widget _buildBottomNavItem(IconData icon, String label) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: Colors.grey[600], size: 28),
+        const SizedBox(height: 4),
+        Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+      ],
     );
   }
 }
