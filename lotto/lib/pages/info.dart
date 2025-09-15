@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/mylotto.dart';
 import 'package:lotto/pages/page_claim_lotto.dart';
@@ -75,13 +77,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       const Spacer(),
                       // Logout Button
                       TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
+                        onPressed: () async {
+                          Get.offAll(() => LoginScreen());//ทำการล้างทุกอย่างเพื่อออกระบบ
                         },
                         child: const Text(
                           'ออกจากระบบ',
@@ -106,10 +103,10 @@ class _ProfilePageState extends State<ProfilePage> {
             right: 20,
             child: Container(
               padding: const EdgeInsets.all(20),
-              
+
               decoration: BoxDecoration(
                 color: Colors.grey[500],
-                borderRadius:BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
