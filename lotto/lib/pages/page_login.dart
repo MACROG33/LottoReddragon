@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lotto/config/config.dart';
 
 import 'package:lotto/model/request/Users_login_Post_Req.dart';
 import 'package:lotto/model/response/Users_login_Post_Res.dart';
@@ -19,6 +20,17 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  String url = '';
+
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      url = config['apiEndpoint'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: const EdgeInsets.fromLTRB(0, 50, 0, 2),
                             child: Text(
                               "อีเมล์",
-                              style: TextStyle(fontSize: 16, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                           TextField(
@@ -63,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-        
+
                       const SizedBox(height: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +87,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
                             child: Text(
                               "รหัสผ่าน",
-                              style: TextStyle(fontSize: 16, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                           TextField(
@@ -114,8 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("ไม่มีบัญชี?",
-                    style: TextStyle(color: Colors.white),
+                    child: Text(
+                      "ไม่มีบัญชี?",
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   TextButton(
@@ -127,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     },
-              
+
                     child: Text(
                       "สมัครสมาชิก",
                       style: TextStyle(
@@ -156,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       http
           .post(
-            Uri.parse("http://192.168.1.31:3000/auth/login"),
+            Uri.parse("$url/auth/login"),
             headers: {"Content-Type": "application/json; charset=utf-8"},
             body: usersLoginPostRequestToJson(req),
           )

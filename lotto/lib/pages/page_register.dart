@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:lotto/config/config.dart';
 import 'package:lotto/model/request/Users_Register_Post_Req.dart';
 import 'package:lotto/model/response/Users_Register_Post_Res.dart';
 import 'package:lotto/pages/page_login.dart';
@@ -24,6 +27,17 @@ class _PageRegisterState extends State<PageRegister> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController checkPasswordController = TextEditingController();
   TextEditingController walletController = TextEditingController();
+
+  String url = '';
+
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      url = config['apiEndpoint'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,7 +155,7 @@ class _PageRegisterState extends State<PageRegister> {
                         ),
                         foregroundColor: Colors.black,
                       ),
-                      onPressed: register,
+                      onPressed: _showCustomDialog,
                       child: Text('สมัครสมาชิก'),
                     ),
                   ),
@@ -198,7 +212,7 @@ class _PageRegisterState extends State<PageRegister> {
 
         http
             .post(
-              Uri.parse("http://192.168.1.31:3000/auth/register"),
+              Uri.parse("$url/auth/register"),
               headers: {"Content-Type": "application/json; charset=utf-8"},
               body: usersRegisterPostResRequestToJson(req),
             )
@@ -216,6 +230,78 @@ class _PageRegisterState extends State<PageRegister> {
     } catch (e) {
       log("Error");
     }
+  }
+
+  //Dialog register
+  void _showCustomDialog() {
+    Get.dialog(
+      AlertDialog(
+        insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+        content: const Text(
+          'ยืนยันการสมัครสมาชิก',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD700),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  Get.back();
+                  register();
+
+                  Get.dialog(
+                    const AlertDialog(
+                      content: Text(
+                        "สมัครสมาชิกสำเร็จ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    barrierDismissible: false,
+                  );
+
+                  Future.delayed(const Duration(seconds: 1), () {
+                    Get.back();
+                    Get.offAll(() => const LoginScreen());
+                  });
+                },
+                child: const Text(
+                  'ยืนยัน',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD700),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () => Get.back(),
+                child: const Text(
+                  'ยกเลิก',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   //Progress Date Picker
