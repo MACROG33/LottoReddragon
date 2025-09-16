@@ -16,6 +16,10 @@ class _MakePageState extends State<MakePage> {
     (_) => TextEditingController(),
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+
+  // เก็บเลขล็อตโต้ที่สุ่มได้
+  List<String> lottoList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +38,7 @@ class _MakePageState extends State<MakePage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, // ให้ Card ขนาดพอดีกับเนื้อหา
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
                       "สร้างสลากกินแบ่ง",
@@ -87,6 +91,8 @@ class _MakePageState extends State<MakePage> {
                 ),
               ),
             ),
+
+            
           ],
         ),
       ),
@@ -94,21 +100,25 @@ class _MakePageState extends State<MakePage> {
   }
 
   void makeLotto() {
-    int count = 100;
+    int count = 10;
 
     Random random = Random();
     Set<String> lottoNumbers = {};
 
     while (lottoNumbers.length < count) {
-      String number = random.nextInt(1000000).toString().padLeft(6, '0');
+      String number =
+          random.nextInt(1000000).toString().padLeft(6, '0');
       lottoNumbers.add(number);
     }
 
-    List<String> lottoList = lottoNumbers.toList();
+    setState(() {
+      lottoList = lottoNumbers.toList();
+    });
 
     log(lottoList.toString());
     log(lottoList.length.toString());
   }
+
 
   Widget TextFieldRow() {
     return Row(

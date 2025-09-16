@@ -1,0 +1,6 @@
+flutter_native_splash:
+  color: "#D10922"
+  image: assets/images/logo_lotto.png
+  android: true
+  ios: true
+  web: false
