@@ -1,4 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:lotto/config/config.dart';
+import 'package:lotto/model/response/lotto_all_get_Res.dart';
 import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/info.dart';
 
@@ -16,6 +21,18 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   int selectedIndex = 1;
+  String url = '';
+  List<GetLottoRes> lottoGetPes = [];
+  List<GetLottoRes> setloadData = [];
+  late Future<void> loadData;
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      url = config['apiEndpoint'];
+      loadData = getloaddate();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +86,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                           SizedBox(
                             width: double.infinity,
                             child: FilledButton(
-                              onPressed: () {},
+                              onPressed: LottoCheck,
                               style: FilledButton.styleFrom(
                                 backgroundColor: Color(0xFFD10922),
                                 foregroundColor: Colors.white,
@@ -94,64 +111,103 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                     ),
                   ),
                 ),
-                ...List.generate(10, (i) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Card(
-                        color: Colors.white,
-                        child: Stack(
-                          children: [
-                            Image.asset("assets/images/lotto.png"),
-                            Positioned(
-                              left: 195,
-                              top: 15,
-                              child: Container(
-                                width: 155,
-                                height: 40,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Positioned(
-                              left: 195,
-                              top: 65,
-                              child: Container(
-                                width: 155,
-                                height: 20,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Positioned(
-                              left: 200,
-                              top: 65,
-                              child: Text(
-                                "วันที่ 1 ธันวาคม 2569",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+
+                // ...List.generate(10, (i) {
+                //   return Padding(
+                //     padding: const EdgeInsets.all(8.0),
+                //     child: Center(
+                //       child: Card(
+                //         color: Colors.white,
+                //         child: Stack(
+                //           children: [
+                //             Image.asset("assets/images/lotto.png"),
+                //             Positioned(
+                //               left: 195,
+                //               top: 15,
+                //               child: Container(
+                //                 width: 155,
+                //                 height: 40,
+                //                 color: Colors.grey,
+                //               ),
+                //             ),
+                //             Positioned(
+                //               left: 195,
+                //               top: 65,
+                //               child: Container(
+                //                 width: 155,
+                //                 height: 20,
+                //                 color: Colors.grey,
+                //               ),
+                //             ),
+                //             Positioned(
+                //               left: 200,
+                //               top: 65,
+                //               child: Text(
+                //                 "วันที่ 1 ธันวาคม 2569",
+                //                 style: TextStyle(
+                //                   fontSize: 16,
+                //                   fontWeight: FontWeight.bold,
+                //                   color: Colors.black,
+                //                 ),
+                //               ),
+                //             ),
+                //             Positioned(
+                //               left: 205,
+                //               top: 15,
+                //               child: Text(
+                //                 "9 9 9 9 9 9",
+                //                 style: TextStyle(
+                //                   fontSize: 30,
+                //                   fontWeight: FontWeight.bold,
+                //                   color: Colors.black,
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   );
+                // }),
+                // SizedBox(height: 30),
+                FutureBuilder(
+                  future: loadData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return SizedBox(
+                      height: 400,
+                      child: ListView(
+                        children: lottoGetPes
+                            .map(
+                              (trip) => Card(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                elevation: 3,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(width: 12),
+                                      Text(
+                                        trip.lottoNumber.toString(),
+                                      ), // ถ้าเป็น int ต้อง .toString()
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              left: 205,
-                              top: 15,
-                              child: Text(
-                                "9 9 9 9 9 9",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                            )
+                            .toList(),
                       ),
-                    ),
-                  );
-                }),
-                SizedBox(height: 30),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -214,5 +270,24 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
         );
       }),
     );
+  }
+
+  void LottoCheck() {
+    String lotto = controllers.map((c) => c.text).join();
+    log(lotto);
+  }
+
+  //http://10.34.10.244:3000/lotto/showall
+
+  Future<void> getloaddate() async {
+    try {
+      var res = await http.get(Uri.parse('$url/lotto/showall'));
+      log(res.body);
+      lottoGetPes = getLottoResFromJson(res.body);
+      setloadData = lottoGetPes;
+      log(lottoGetPes.length.toString());
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:lotto/config/config.dart';
 import 'package:lotto/pages/admin/Random.dart';
-import 'package:lotto/pages/admin/Test.dart';
 import 'package:lotto/pages/admin/make.dart';
+import 'package:lotto/pages/page_login.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -11,6 +15,15 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+  String url = '';
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      url = config['apiEndpoint'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,21 +70,21 @@ class _AdminPageState extends State<AdminPage> {
                       _buildMenuItem(
                         imagePath: 'assets/images/reset.png',
                         title: 'รีเช็ตระบบ',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DropdownButtonApp(),
-                            ),
-                          );
-                        },
+                        onTap: reSet,
                       ),
 
                       const Spacer(),
 
                       // Logout Button
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
                         child: const Text(
                           'ออกจากระบบ',
                           style: TextStyle(
@@ -161,6 +174,17 @@ class _AdminPageState extends State<AdminPage> {
         ],
       ),
     );
+  }
+
+  void reSet() {
+    http
+        .delete(Uri.parse("$url/lotto/draws/delete"))
+        .then((value) {
+          log(value.body);
+        })
+        .catchError((err) {
+          log(err.toString());
+        });
   }
 
   Widget _buildMenuItem({
