@@ -112,12 +112,22 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                 color: Colors.grey,
                               ),
                             ),
+                            
                             Positioned(
                               left: 195,
                               top: 65,
                               child: Container(
                                 width: 155,
                                 height: 20,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Positioned(
+                              left: 25,
+                              top: 115,
+                              child: Container(
+                                width: 70,
+                                height: 60,
                                 color: Colors.grey,
                               ),
                             ),
@@ -145,6 +155,19 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                 ),
                               ),
                             ),
+                            Positioned(
+                              left: 40,
+                              top: 115,
+                              child: Text(
+                                "80\nบาท",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            
                           ],
                         ),
                       ),

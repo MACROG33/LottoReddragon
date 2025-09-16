@@ -85,7 +85,6 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                             children: [
                               Image.asset("assets/images/lotto.png"),
 
-                              // กล่องทับเลขเดิม
                               Positioned(
                                 left: 195,
                                 top: 15,
@@ -95,7 +94,7 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                   color: Colors.grey,
                                 ),
                               ),
-                              // กล่องทับเลขวันที่
+
                               Positioned(
                                 left: 195,
                                 top: 65,
@@ -105,7 +104,15 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                   color: Colors.grey,
                                 ),
                               ),
-                              // เอาวันที่มาจาก DB
+                              Positioned(
+                                left: 25,
+                                top: 115,
+                                child: Container(
+                                  width: 70,
+                                  height: 60,
+                                  color: Colors.grey,
+                                ),
+                              ),
                               Positioned(
                                 left: 200,
                                 top: 65,
@@ -118,7 +125,6 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                   ),
                                 ),
                               ),
-                              // ตัวเลขจาก DB
                               Positioned(
                                 left: 205,
                                 top: 15,
@@ -126,6 +132,18 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                   "9 9 9 9 9 9",
                                   style: TextStyle(
                                     fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 40,
+                                top: 115,
+                                child: Text(
+                                  "80\nบาท",
+                                  style: TextStyle(
+                                    fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
