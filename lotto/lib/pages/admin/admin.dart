@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:lotto/config/config.dart';
@@ -197,7 +199,7 @@ class _AdminPageState extends State<AdminPage> {
         .catchError((err) {
           log(err.toString());
         });
-
+  }
   void resetData() {
     Get.dialog(
       AlertDialog(
@@ -222,7 +224,7 @@ class _AdminPageState extends State<AdminPage> {
         ],
       ),
     );
-
+  
   }
 
   Widget _buildMenuItem({
