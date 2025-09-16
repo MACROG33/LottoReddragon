@@ -6,6 +6,7 @@ import 'package:lotto/config/config.dart';
 
 import 'package:lotto/model/request/Users_login_Post_Req.dart';
 import 'package:lotto/model/response/Users_login_Post_Res.dart';
+import 'package:lotto/pages/admin/admin.dart';
 import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/info.dart';
 import 'package:lotto/pages/page_register.dart';
@@ -187,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
             if (res.user.role == "admin") {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ProfilePage()),
+                MaterialPageRoute(builder: (context) => const AdminPage()),
               );
             } else {
               Navigator.push(
