@@ -21,6 +21,7 @@ class _MakePageState extends State<MakePage> {
     (_) => TextEditingController(),
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+
   TextEditingController controllerCount = TextEditingController();
   TextEditingController controllerPrice = TextEditingController();
 
@@ -36,6 +37,10 @@ class _MakePageState extends State<MakePage> {
       loadData = getloaddate();
     });
   }
+
+
+  // เก็บเลขล็อตโต้ที่สุ่มได้
+  List<String> lottoList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +60,7 @@ class _MakePageState extends State<MakePage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, // ให้ Card ขนาดพอดีกับเนื้อหา
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
                       "สร้างสลากกินแบ่ง",
@@ -112,11 +117,14 @@ class _MakePageState extends State<MakePage> {
                 ),
               ),
             ),
+
+            
           ],
         ),
       ),
     );
   }
+
 
   Widget TextFieldRow() {
     return Row(
