@@ -1,7 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:math' hide log;
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:lotto/config/config.dart';
+import 'package:lotto/model/request/admin_make_post_Req.dart';
+import 'package:lotto/model/response/lotto_all_get_Res.dart';
 
 class MakePage extends StatefulWidget {
   const MakePage({super.key});
@@ -16,6 +21,22 @@ class _MakePageState extends State<MakePage> {
     (_) => TextEditingController(),
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+  TextEditingController controllerCount = TextEditingController();
+  TextEditingController controllerPrice = TextEditingController();
+
+  List<GetLottoRes> lottoGetPes = [];
+  List<GetLottoRes> setloadData = [];
+  late Future<void> loadData;
+  String url = '';
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      url = config['apiEndpoint'];
+      loadData = getloaddate();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,19 +75,23 @@ class _MakePageState extends State<MakePage> {
                         children: [
                           Text("จำนวน"),
                           SizedBox(
-                            width: 100,
+                            width: 70,
                             child: TextField(
+                              controller: controllerCount,
                               keyboardType: TextInputType.number,
                             ),
                           ),
+                          Text("ใบ"),
                           SizedBox(width: 16),
                           Text("ราคา"),
                           SizedBox(
-                            width: 100,
+                            width: 70,
                             child: TextField(
-                              keyboardType: TextInputType.number,
+                              controller: controllerPrice,
+                              keyboardType: TextInputType.text,
                             ),
                           ),
+                          Text("บาท"),
                         ],
                       ),
                     ),
@@ -93,30 +118,13 @@ class _MakePageState extends State<MakePage> {
     );
   }
 
-  void makeLotto() {
-    int count = 100;
-
-    Random random = Random();
-    Set<String> lottoNumbers = {};
-
-    while (lottoNumbers.length < count) {
-      String number = random.nextInt(1000000).toString().padLeft(6, '0');
-      lottoNumbers.add(number);
-    }
-
-    List<String> lottoList = lottoNumbers.toList();
-
-    log(lottoList.toString());
-    log(lottoList.length.toString());
-  }
-
   Widget TextFieldRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(6, (index) {
         return Container(
           width: 40,
-          margin: EdgeInsets.symmetric(horizontal: 10),
+          margin: EdgeInsets.symmetric(horizontal: 5),
           child: TextField(
             controller: controllers[index],
             focusNode: focusNodes[index],
@@ -141,5 +149,75 @@ class _MakePageState extends State<MakePage> {
         );
       }),
     );
+  }
+  // {
+  //   "lotto_number": "931233",
+  //   "price_lotto": 100.00,
+  //   "date_lotto": "2025-09-05"
+  // }
+
+  void makeLotto() async {
+    if (controllerCount.text.isNotEmpty && controllerPrice.text.isNotEmpty) {
+      int count = int.parse(controllerCount.text);
+      int price = int.parse(controllerPrice.text);
+      Random random = Random();
+
+      Set<String> lottoNumbers = {};
+
+      while (lottoNumbers.length < count) {
+        String number = random.nextInt(1000000).toString().padLeft(6, '0');
+        lottoNumbers.add(number);
+      }
+
+      DateTime now = DateTime.now();
+      String dateLotto = now.toIso8601String().split("T")[0];
+
+      //  Make list ของ request objects
+      List<AdminMakeLottoReq> reqList = lottoNumbers.map((lottoNumber) {
+        return AdminMakeLottoReq(
+          lottoNumber: lottoNumber,
+          priceLotto: price,
+          dateLotto: dateLotto,
+        );
+      }).toList();
+      log(url);
+      try {
+        try {
+          await http
+              .post(
+                Uri.parse("$url/lotto/insert"),
+                headers: {"Content-Type": "application/json; charset=utf-8"},
+                body: jsonEncode(reqList.map((e) => e.toJson()).toList()),
+              )
+              .then((value) {
+                log(value.body);
+              })
+              .catchError((onError) {
+                log(onError);
+              });
+        } catch (error) {
+          log("Error: $error");
+        }
+      } catch (error) {
+        log("Error: $error");
+      }
+    } else {
+      log("Error Null");
+    }
+  }
+
+  Future<void> getloaddate() async {
+    try {
+      if (url.isEmpty) return; // ป้องกัน url ยังไม่ถูกตั้งค่า
+      var res = await http.get(Uri.parse('$url/lotto/showall'));
+      log(res.body);
+      lottoGetPes = getLottoResFromJson(res.body);
+      setloadData = lottoGetPes;
+
+      if (!mounted) return; // ป้องกัน widget ถูก dispose แล้ว
+      setState(() {});
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

@@ -27,7 +27,7 @@ class _AdminPageState extends State<AdminPage> {
 
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 150, 20, 0),
                   child: Column(
                     children: [
                       _buildMenuItem(
@@ -113,7 +113,7 @@ class _AdminPageState extends State<AdminPage> {
                   // Profile Avatar with Border
                   Container(
                     width: 100,
-                    height: 100,
+                    height: 50,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.yellow[700]!, width: 3),
@@ -165,7 +165,7 @@ class _AdminPageState extends State<AdminPage> {
 
   Widget _buildMenuItem({
     IconData? icon,
-    String? imagePath, // Add this parameter for image path
+    String? imagePath,
     required String title,
     required VoidCallback onTap,
   }) {
