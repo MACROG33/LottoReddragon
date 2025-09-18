@@ -19,7 +19,6 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-
   String url = '';
   @override
   void initState() {
@@ -30,7 +29,6 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   int selectedIndex = 2;
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +47,6 @@ class _AdminPageState extends State<AdminPage> {
               // Menu Items Section
               Expanded(
                 child: Padding(
-
-
                   padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
 
                   child: Column(
@@ -73,7 +69,6 @@ class _AdminPageState extends State<AdminPage> {
                         icon: Icons.refresh,
                         title: 'รีเซ็ตระบบ',
                         onTap: resetData,
-
                       ),
                       const Spacer(),
                       // Logout Button
@@ -82,7 +77,6 @@ class _AdminPageState extends State<AdminPage> {
                           Get.offAll(
                             () => LoginScreen(),
                           ); //ทำการล้างทุกอย่างเพื่อออกระบบ
-
                         },
                         child: const Text(
                           'ออกจากระบบ',
@@ -189,17 +183,15 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-
-  void reSet() {
-    http
-        .delete(Uri.parse("$url/lotto/draws/delete"))
-        .then((value) {
-          log(value.body);
-        })
-        .catchError((err) {
-          log(err.toString());
-        });
+  Future<void> reSet() async {
+    try {
+      final response = await http.delete(Uri.parse("$url/lotto/draws/delete"));
+      log(response.body);
+    } catch (err) {
+      log(err.toString());
+    }
   }
+
   void resetData() {
     Get.dialog(
       AlertDialog(
@@ -216,15 +208,15 @@ class _AdminPageState extends State<AdminPage> {
               foregroundColor: Colors.white,
             ),
             onPressed: () {
+              reSet();
               Get.back();
             },
             child: Text("ยืนยันการรีเซ็ตระบบ", textAlign: TextAlign.center),
           ),
-          // TextButton(onPressed: () => Get.back(), child: Text("ยกเลิก")),
+          TextButton(onPressed: () => Get.back(), child: Text("ยกเลิก")),
         ],
       ),
     );
-  
   }
 
   Widget _buildMenuItem({

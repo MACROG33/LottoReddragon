@@ -3,10 +3,13 @@ import 'dart:developer';
 import 'dart:math' hide log;
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:lotto/config/config.dart';
 import 'package:lotto/model/request/admin_make_post_Req.dart';
 import 'package:lotto/model/response/lotto_all_get_Res.dart';
+import 'package:intl/intl.dart';
 
 class MakePage extends StatefulWidget {
   const MakePage({super.key});
@@ -38,14 +41,20 @@ class _MakePageState extends State<MakePage> {
     });
   }
 
-
   // เก็บเลขล็อตโต้ที่สุ่มได้
   List<String> lottoList = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("MakePage")),
+      appBar: AppBar(
+        backgroundColor: Color(0xFFD10922),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text("สร้างสลากกินแบ่ง", style: TextStyle(color: Colors.white),),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -117,14 +126,95 @@ class _MakePageState extends State<MakePage> {
                 ),
               ),
             ),
+            ...List.generate(lottoGetPes.length, (i) {
+              final lotto = lottoGetPes[i];
+              final date = DateTime.parse(lotto.dateLotto);
+              final formattedDate = DateFormat('dd/MM/yyyy').format(date);
 
-            
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Card(
+                    color: Colors.white,
+                    child: Stack(
+                      children: [
+                        Image.asset("assets/images/lotto.png"),
+                        // กล่องตกแต่ง
+                        Positioned(
+                          left: 195,
+                          top: 15,
+                          child: Container(
+                            width: 155,
+                            height: 40,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Positioned(
+                          left: 195,
+                          top: 65,
+                          child: Container(
+                            width: 155,
+                            height: 20,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Positioned(
+                          left: 25,
+                          top: 115,
+                          child: Container(
+                            width: 70,
+                            height: 60,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        // ใช้ข้อมูลจริงจาก backend
+                        Positioned(
+                          left: 205,
+                          top: 15,
+                          child: Text(
+                            lotto.lottoNumber.split('').join(' '),
+                            style: const TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 200,
+                          top: 65,
+                          child: Text(
+                            "วันที่ $formattedDate",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 40,
+                          top: 115,
+                          child: Text(
+                            "${lotto.priceLotto}\nบาท",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
           ],
         ),
       ),
     );
   }
-
 
   Widget TextFieldRow() {
     return Row(
