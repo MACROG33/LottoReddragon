@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color.fromRGBO(209, 9, 34, 1)),
+      
       body: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(
