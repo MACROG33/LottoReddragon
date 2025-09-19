@@ -30,8 +30,9 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     super.initState();
     Configuration.getConfig().then((config) {
       url = config['apiEndpoint'];
-      loadData = getloaddate();
+      
     });
+    loadData = getloaddate();
   }
 
  @override
@@ -44,7 +45,6 @@ Widget build(BuildContext context) {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFFD10934), Color(0xFFD10934), Colors.white],
-              // stops ต้องตรงกับจำนวนสี
               stops: [0.0, 0.165, 1.0],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,

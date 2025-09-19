@@ -10,6 +10,7 @@ import 'package:lotto/config/config.dart';
 import 'package:lotto/model/request/admin_make_post_Req.dart';
 import 'package:lotto/model/response/lotto_all_get_Res.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class MakePage extends StatefulWidget {
   const MakePage({super.key});
@@ -35,7 +36,8 @@ class _MakePageState extends State<MakePage> {
   @override
   void initState() {
     super.initState();
-    Configuration.getConfig().then((config) {
+    Configuration.getConfig().then((config) async {
+      await initializeDateFormatting('th_TH', null);
       url = config['apiEndpoint'];
       loadData = getloaddate();
     });
@@ -53,7 +55,10 @@ class _MakePageState extends State<MakePage> {
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title: const Text("สร้างสลากกินแบ่ง", style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "สร้างสลากกินแบ่ง",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -129,7 +134,11 @@ class _MakePageState extends State<MakePage> {
             ...List.generate(lottoGetPes.length, (i) {
               final lotto = lottoGetPes[i];
               final date = DateTime.parse(lotto.dateLotto);
-              final formattedDate = DateFormat('dd/MM/yyyy').format(date);
+              final buddhistYear = date.year + 543;
+              // วัน/เดือน ภาษาไทย
+              final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
+              final formattedDate = '$dayMonth $buddhistYear';
+              
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -167,7 +176,7 @@ class _MakePageState extends State<MakePage> {
                             color: Colors.grey,
                           ),
                         ),
-                        // ใช้ข้อมูลจริงจาก backend
+                      
                         Positioned(
                           left: 205,
                           top: 15,
@@ -186,7 +195,7 @@ class _MakePageState extends State<MakePage> {
                           child: Text(
                             "วันที่ $formattedDate",
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
@@ -196,7 +205,8 @@ class _MakePageState extends State<MakePage> {
                           left: 40,
                           top: 115,
                           child: Text(
-                            "${lotto.priceLotto}\nบาท",
+                            "${double.parse(lotto.priceLotto).toInt()}\nบาท",
+
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -259,8 +269,8 @@ class _MakePageState extends State<MakePage> {
       int count = int.parse(controllerCount.text);
       int price = int.parse(controllerPrice.text);
       Random random = Random();
-
-      Set<String> lottoNumbers = {};
+      log(url);
+      Set<String> lottoNumbers = {};  
 
       while (lottoNumbers.length < count) {
         String number = random.nextInt(1000000).toString().padLeft(6, '0');
@@ -306,11 +316,12 @@ class _MakePageState extends State<MakePage> {
 
   Future<void> getloaddate() async {
     try {
-      if (url.isEmpty) return; // ป้องกัน url ยังไม่ถูกตั้งค่า
+      if (url.isEmpty) return;
       var res = await http.get(Uri.parse('$url/lotto/showall'));
       log(res.body);
       lottoGetPes = getLottoResFromJson(res.body);
       setloadData = lottoGetPes;
+      
 
       if (!mounted) return; // ป้องกัน widget ถูก dispose แล้ว
       setState(() {});

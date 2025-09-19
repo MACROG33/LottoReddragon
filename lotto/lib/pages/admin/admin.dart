@@ -185,7 +185,7 @@ class _AdminPageState extends State<AdminPage> {
 
   Future<void> reSet() async {
     try {
-      final response = await http.delete(Uri.parse("$url/lotto/draws/delete"));
+      final response = await http.delete(Uri.parse("$url/admin/reset/app"));
       log(response.body);
     } catch (err) {
       log(err.toString());
