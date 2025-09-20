@@ -21,6 +21,7 @@ class _MakePageState extends State<MakePage> {
     (_) => TextEditingController(),
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
+
   TextEditingController controllerCount = TextEditingController();
   TextEditingController controllerPrice = TextEditingController();
 
@@ -36,6 +37,9 @@ class _MakePageState extends State<MakePage> {
       loadData = getloaddate();
     });
   }
+
+  // เก็บเลขล็อตโต้ที่สุ่มได้
+  List<String> lottoList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +59,7 @@ class _MakePageState extends State<MakePage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, // ให้ Card ขนาดพอดีกับเนื้อหา
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
                       "สร้างสลากกินแบ่ง",
@@ -111,44 +115,6 @@ class _MakePageState extends State<MakePage> {
                   ],
                 ),
               ),
-            ),
-            FutureBuilder(
-              future: loadData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return SizedBox(
-                  height: 400,
-                  child: ListView(
-                    children: setloadData
-                        .map(
-                          (trip) => Card(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    trip.lottoNumber.toString(),
-                                  ), // ถ้าเป็น int ต้อง .toString()
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                );
-              },
             ),
           ],
         ),

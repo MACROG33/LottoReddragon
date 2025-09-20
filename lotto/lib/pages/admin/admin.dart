@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:lotto/config/config.dart';
+
 import 'package:lotto/pages/admin/Random.dart';
 import 'package:lotto/pages/admin/make.dart';
 import 'package:lotto/pages/page_login.dart';
@@ -15,6 +17,7 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+
   String url = '';
   @override
   void initState() {
@@ -24,6 +27,9 @@ class _AdminPageState extends State<AdminPage> {
     });
   }
 
+  int selectedIndex = 2;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,58 +38,49 @@ class _AdminPageState extends State<AdminPage> {
         children: [
           Column(
             children: [
+              // Top Profile Section with Red Background
               Container(
                 width: double.infinity,
                 height: 280,
-                decoration: const BoxDecoration(color: Colors.red),
+                decoration: const BoxDecoration(color: Color(0xFFD10922)),
               ),
-
+              // Menu Items Section
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 150, 20, 0),
+
+
+                  padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
+
                   child: Column(
                     children: [
                       _buildMenuItem(
-                        imagePath: 'assets/images/create.png',
-                        title: 'สร้าง lotto',
+                        icon: Icons.create,
+                        title: 'สร้าง Lotto',
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MakePage(),
-                            ),
-                          );
+                          Get.to(() => MakePage());
                         },
                       ),
                       _buildMenuItem(
-                        imagePath: 'assets/images/random.png',
-                        title: 'สุ่ม lotto',
+                        icon: Icons.shuffle,
+                        title: 'สุ่ม Lotto',
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const RandomPage(),
-                            ),
-                          );
+                          Get.to(() => RandomPage());
                         },
                       ),
                       _buildMenuItem(
-                        imagePath: 'assets/images/reset.png',
-                        title: 'รีเช็ตระบบ',
-                        onTap: reSet,
-                      ),
+                        icon: Icons.refresh,
+                        title: 'รีเซ็ตระบบ',
+                        onTap: resetData,
 
+                      ),
                       const Spacer(),
-
                       // Logout Button
                       TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
+                        onPressed: () async {
+                          Get.offAll(
+                            () => LoginScreen(),
+                          ); //ทำการล้างทุกอย่างเพื่อออกระบบ
+
                         },
                         child: const Text(
                           'ออกจากระบบ',
@@ -94,7 +91,6 @@ class _AdminPageState extends State<AdminPage> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -102,16 +98,17 @@ class _AdminPageState extends State<AdminPage> {
               ),
             ],
           ),
-
+          // Overlapping Grey Rectangle with Profile Content
           Positioned(
             top: 20,
             left: 20,
             right: 20,
-            bottom: 500,
             child: Container(
               padding: const EdgeInsets.all(20),
+
               decoration: BoxDecoration(
                 color: Colors.grey[500],
+                borderRadius: BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -140,7 +137,7 @@ class _AdminPageState extends State<AdminPage> {
                   const SizedBox(height: 15),
                   // Name
                   const Text(
-                    'Admin',
+                    'Admin Admin',
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 20,
@@ -148,13 +145,27 @@ class _AdminPageState extends State<AdminPage> {
                     ),
                   ),
                   const SizedBox(height: 5),
-
-                  SizedBox(height: 15),
-
+                  // Subtitle
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'ยอดเงินคงเหลือ : ',
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                        ),
+                        TextSpan(
+                          text: '200 บาท',
+                          style: TextStyle(color: Colors.yellow, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  // Email
                   Align(
                     alignment: Alignment.centerLeft,
                     child: const Text(
-                      'อีเมล: Admin@Admin.com',
+                      'อีเมล:Karn.klangdee@gmail.com',
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
@@ -176,6 +187,7 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
+
   void reSet() {
     http
         .delete(Uri.parse("$url/lotto/draws/delete"))
@@ -185,6 +197,32 @@ class _AdminPageState extends State<AdminPage> {
         .catchError((err) {
           log(err.toString());
         });
+
+  void resetData() {
+    Get.dialog(
+      AlertDialog(
+        content: Text(
+          "รีเซ็ตระบบใหม่ทั้งหมด",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              Get.back();
+            },
+            child: Text("ยืนยันการรีเซ็ตระบบ", textAlign: TextAlign.center),
+          ),
+          // TextButton(onPressed: () => Get.back(), child: Text("ยกเลิก")),
+        ],
+      ),
+    );
+
   }
 
   Widget _buildMenuItem({
@@ -210,16 +248,13 @@ class _AdminPageState extends State<AdminPage> {
       child: ListTile(
         leading: imagePath != null
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  4,
-                ), // Optional: rounded corners
+                borderRadius: BorderRadius.circular(4),
                 child: Image.asset(
                   imagePath,
                   width: 24,
                   height: 24,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    // Fallback icon if image fails to load
                     return Icon(
                       Icons.image_not_supported,
                       color: Colors.grey[600],
@@ -236,17 +271,6 @@ class _AdminPageState extends State<AdminPage> {
         trailing: const Icon(Icons.chevron_right, color: Colors.grey),
         onTap: onTap,
       ),
-    );
-  }
-
-  Widget _buildBottomNavItem(IconData icon, String label) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: Colors.grey[600], size: 28),
-        const SizedBox(height: 4),
-        Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-      ],
     );
   }
 }

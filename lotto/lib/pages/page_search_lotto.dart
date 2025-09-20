@@ -114,6 +114,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                   ),
                 ),
 
+
                 // ...List.generate(10, (i) {
                 //   return Padding(
                 //     padding: const EdgeInsets.all(8.0),
@@ -187,6 +188,54 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: 12,
                                   vertical: 8,
+
+                ...List.generate(10, (i) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Card(
+                        color: Colors.white,
+                        child: Stack(
+                          children: [
+                            Image.asset("assets/images/lotto.png"),
+                            Positioned(
+                              left: 195,
+                              top: 15,
+                              child: Container(
+                                width: 155,
+                                height: 40,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            
+                            Positioned(
+                              left: 195,
+                              top: 65,
+                              child: Container(
+                                width: 155,
+                                height: 20,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Positioned(
+                              left: 25,
+                              top: 115,
+                              child: Container(
+                                width: 70,
+                                height: 60,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Positioned(
+                              left: 200,
+                              top: 65,
+                              child: Text(
+                                "วันที่ 1 ธันวาคม 2569",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+
                                 ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -209,8 +258,27 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                   ),
                                 ),
                               ),
+
                             )
                             .toList(),
+=======
+                            ),
+                            Positioned(
+                              left: 40,
+                              top: 115,
+                              child: Text(
+                                "80\nบาท",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            
+                          ],
+                        ),
+
                       ),
                     );
                   },
