@@ -4,8 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto/config/config.dart';
-import 'package:lotto/model/request/Users_login_Post_Req.dart';
-import 'package:lotto/model/response/Users_login_Post_Res.dart';
 import 'package:lotto/model/response/lotto_all_get_Res.dart';
 import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/info.dart';
