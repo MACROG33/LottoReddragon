@@ -112,6 +112,44 @@ class _MakePageState extends State<MakePage> {
                 ),
               ),
             ),
+            FutureBuilder(
+              future: loadData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return SizedBox(
+                  height: 400,
+                  child: ListView(
+                    children: setloadData
+                        .map(
+                          (trip) => Card(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                children: [
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    trip.lottoNumber.toString(),
+                                  ), // ถ้าเป็น int ต้อง .toString()
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

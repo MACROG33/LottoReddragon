@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +52,7 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
-                    mainAxisSize:
-                        MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text(
                         "ตรวจผลสลากกินแบ่งรัฐบาล",
