@@ -38,7 +38,6 @@ class _MakePageState extends State<MakePage> {
     });
   }
 
-
   // เก็บเลขล็อตโต้ที่สุ่มได้
   List<String> lottoList = [];
 
@@ -117,14 +116,11 @@ class _MakePageState extends State<MakePage> {
                 ),
               ),
             ),
-
-            
           ],
         ),
       ),
     );
   }
-
 
   Widget TextFieldRow() {
     return Row(

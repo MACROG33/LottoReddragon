@@ -31,8 +31,8 @@ class _RandomPageState extends State<RandomPage> {
     super.initState();
     Configuration.getConfig().then((config) {
       url = config['apiEndpoint'];
-      loadData = loadDataShow();
     });
+    loadData = loadDataShow();
   }
 
   @override

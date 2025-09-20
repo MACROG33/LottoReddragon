@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lotto/config/config.dart';
+import 'package:lotto/model/request/Users_login_Post_Req.dart';
+import 'package:lotto/model/response/Users_login_Post_Res.dart';
 import 'package:lotto/model/response/lotto_all_get_Res.dart';
 import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/info.dart';
@@ -30,8 +32,8 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     super.initState();
     Configuration.getConfig().then((config) {
       url = config['apiEndpoint'];
-      loadData = getloaddate();
     });
+    loadData = getloaddate();
   }
 
   @override
@@ -86,7 +88,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                           SizedBox(
                             width: double.infinity,
                             child: FilledButton(
-                              onPressed: LottoCheck,
+                              onPressed: lottoSearch,
                               style: FilledButton.styleFrom(
                                 backgroundColor: Color(0xFFD10922),
                                 foregroundColor: Colors.white,
@@ -244,8 +246,13 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                   child: Row(
                                     children: [
                                       const SizedBox(width: 12),
-                                      Text(
-                                        trip.lottoNumber.toString(),
+                                      Text(trip.lottoNumber.toString()),
+
+                                      FilledButton(
+                                        onPressed: () => buylotto(
+                                          trip.lottoTicketId.toString(),
+                                        ),
+                                        child: Text("buy"),
                                       ), // ถ้าเป็น int ต้อง .toString()
                                     ],
                                   ),
@@ -311,6 +318,10 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     );
   }
 
+  void buylotto(String lotto) {
+    log(lotto);
+  }
+
   Widget TextFieldRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -340,15 +351,32 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     );
   }
 
-  void LottoCheck() {
+  Future<void> lottoSearch() async {
     String lotto = controllers.map((c) => c.text).join();
-    log(lotto);
+    try {
+      var res = await http.get(
+        Uri.parse('$url/lotto/search/fields?lotto_name=$lotto'),
+      );
+      lottoGetPes = getLottoResFromJson(res.body);
+      setloadData = lottoGetPes;
+
+      setState(() {
+        setloadData = lottoGetPes;
+      });
+
+      log(lottoGetPes.length.toString());
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   //http://10.34.10.244:3000/lotto/showall
 
   Future<void> getloaddate() async {
     try {
+      var config = await Configuration.getConfig();
+      url = config['apiEndpoint'];
+      log(url);
       var res = await http.get(Uri.parse('$url/lotto/showall'));
       log(res.body);
       lottoGetPes = getLottoResFromJson(res.body);
