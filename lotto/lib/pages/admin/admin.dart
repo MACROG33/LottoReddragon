@@ -119,7 +119,7 @@ class _AdminPageState extends State<AdminPage> {
                   // Profile Avatar with Border
                   Container(
                     width: 100,
-                    height: 50,
+                    height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.yellow[700]!, width: 3),
@@ -204,7 +204,7 @@ class _AdminPageState extends State<AdminPage> {
         actions: [
           FilledButton(
             style: FilledButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: Color(0xFFD10934),
               foregroundColor: Colors.white,
             ),
             onPressed: () {

@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lotto/pages/admin/Random.dart';
 import 'package:lotto/pages/admin/admin.dart';
 import 'package:lotto/pages/admin/make.dart';
+import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/info.dart';
+import 'package:lotto/pages/page_claim_lotto.dart';
 import 'package:lotto/pages/page_login.dart';
 import 'package:lotto/pages/page_search_lotto.dart';
 
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(textTheme: GoogleFonts.notoSansThaiLoopedTextTheme(),),
-      home: const ProfilePage(),
+      home: const LoginScreen(),
     );
   }
 }
