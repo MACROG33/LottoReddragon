@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -165,42 +166,64 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   // http://10.160.95.151:3000/auth/login
-  void login() {
-    String email = emailController.text;
-    String password = passwordController.text;
-    if (email != '' && password != '') {
-      UsersLoginPostRequest req = UsersLoginPostRequest(
-        email: email,
-        password: password,
-      );
-      http
-          .post(
-            Uri.parse("$url/auth/login"),
-            headers: {"Content-Type": "application/json; charset=utf-8"},
-            body: usersLoginPostRequestToJson(req),
-          )
-          .then((value) {
-            UsersLoginPostResponse res = usersLoginPostResponseFromJson(
-              value.body,
-            );
-            log(value.body);
-            if (res.user.role == "admin") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AdminPage()),
-              );
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );
-            }
-          })
-          .catchError((error) {
-            log('Error $error');
-          });
-    } else {
-      log("Email and Password NUll");
-    }
+  void login() async {
+  String email = emailController.text;
+  String password = passwordController.text;
+
+  if (email.isEmpty || password.isEmpty) {
+    showError("โปรดใส่อีเมลและรหัสผ่าน");
+    return;
   }
+
+  try {
+    final response = await http.post(
+      Uri.parse("$url/auth/login"),
+      headers: {"Content-Type": "application/json; charset=utf-8"},
+      body: usersLoginPostRequestToJson(
+        UsersLoginPostRequest(email: email, password: password),
+      ),
+    );
+
+    final data = jsonDecode(response.body);
+
+    if (response.statusCode == 200 && data['success'] == true) {
+      // login สำเร็จ
+      if (data['user']['role'] == "admin") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AdminPage()),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } else {
+      showError("รหัสผ่านหรืออีเมลไม่ถูกต้อง");
+    }
+  } catch (e) {
+    showError("เกิดข้อผิดพลาด กรุณาลองใหม่");
+    log("Login error: $e");
+  }
+}
+
+void showError(String message) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      content: Text(message,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      actions: [
+        Center(
+          child: TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("ปิด"),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 }
