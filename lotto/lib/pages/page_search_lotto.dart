@@ -227,6 +227,10 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                     right: 16,
                                     bottom: 16,
                                     child: FilledButton(
+                                      style: FilledButton.styleFrom(
+                                        backgroundColor: Color(0xFFD10922),
+                                        foregroundColor: Colors.white,
+                                      ),
                                       onPressed: () => buylotto(
                                         lotto.lottoTicketId.toString(),
                                       ),

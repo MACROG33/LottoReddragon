@@ -6,6 +6,7 @@ import 'package:lotto/pages/admin/admin.dart';
 import 'package:lotto/pages/admin/make.dart';
 import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/info.dart';
+import 'package:lotto/pages/mylotto.dart';
 import 'package:lotto/pages/page_claim_lotto.dart';
 import 'package:lotto/pages/page_login.dart';
 import 'package:lotto/pages/page_search_lotto.dart';
