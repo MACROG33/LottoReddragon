@@ -38,8 +38,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
       url = config['apiEndpoint'];
 
       return getloaddate();
-
-
     });
     loadData = getloaddate();
   }
@@ -145,12 +143,15 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                         ).format(date);
                         final formattedDate = '$dayMonth $buddhistYear';
 
-
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Card(
                               color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 3,
                               child: Stack(
                                 children: [
                                   Image.asset("assets/images/lotto.png"),
@@ -163,27 +164,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                       height: 40,
                                       color: Colors.grey,
                                     ),
-
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                elevation: 3,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(width: 12),
-                                      Text(trip.lottoNumber.toString()),
-
-                                      FilledButton(
-                                        onPressed: () => buylotto(
-                                          trip.lottoTicketId.toString(),
-                                        ),
-                                        child: Text("buy"),
-                                      ), // ถ้าเป็น int ต้อง .toString()
-                                    ],
-
                                   ),
                                   Positioned(
                                     left: 195,
@@ -240,6 +220,17 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       ),
+                                    ),
+                                  ),
+                                  // ปุ่มซื้อ
+                                  Positioned(
+                                    right: 16,
+                                    bottom: 16,
+                                    child: FilledButton(
+                                      onPressed: () => buylotto(
+                                        lotto.lottoTicketId.toString(),
+                                      ),
+                                      child: const Text("ซื้อ"),
                                     ),
                                   ),
                                 ],
@@ -325,24 +316,21 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     String lotto = controllers.map((c) => c.text).join();
 
     log(lotto);
-    // TODO: ทำการค้นหาตามหมายเลขที่กรอก
 
     try {
       var res = await http.get(
         Uri.parse('$url/lotto/search/fields?lotto_name=$lotto'),
       );
       lottoGetPes = getLottoResFromJson(res.body);
-      setloadData = lottoGetPes;
 
       setState(() {
-        setloadData = lottoGetPes;
+        lottoGetPes = lottoGetPes;
       });
 
       log(lottoGetPes.length.toString());
     } catch (e) {
       log(e.toString());
     }
-
   }
 
   Future<void> getloaddate() async {
@@ -351,7 +339,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
       url = config['apiEndpoint'];
       log(url);
       var res = await http.get(Uri.parse('$url/lotto/showall'));
-      log(res.body);
       final data = getLottoResFromJson(res.body);
       setState(() {
         lottoGetPes = data;
