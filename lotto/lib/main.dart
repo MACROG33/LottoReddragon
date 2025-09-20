@@ -10,7 +10,6 @@ import 'package:lotto/pages/page_claim_lotto.dart';
 import 'package:lotto/pages/page_login.dart';
 import 'package:lotto/pages/page_search_lotto.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(textTheme: GoogleFonts.notoSansThaiLoopedTextTheme(),),
+      theme: ThemeData(textTheme: GoogleFonts.notoSansThaiLoopedTextTheme()),
       home: const LoginScreen(),
     );
   }

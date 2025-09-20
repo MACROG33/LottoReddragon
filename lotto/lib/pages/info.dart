@@ -9,7 +9,8 @@ import 'package:lotto/pages/page_login.dart';
 import 'package:lotto/pages/page_search_lotto.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  int idx = 0;
+  ProfilePage({Key? key, required this.idx}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -45,7 +46,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PageLottoTicketScreen(),
+                              builder: (context) =>
+                                  PageLottoTicketScreen(idx: widget.idx),
                             ),
                           );
                         },
@@ -69,7 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PageClaimLotto(),
+                              builder: (context) =>
+                                  PageClaimLotto(idx: widget.idx),
                             ),
                           );
                         },
@@ -78,7 +81,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       // Logout Button
                       TextButton(
                         onPressed: () async {
-                          Get.offAll(() => LoginScreen());//ทำการล้างทุกอย่างเพื่อออกระบบ
+                          Get.offAll(
+                            () => LoginScreen(),
+                          ); //ทำการล้างทุกอย่างเพื่อออกระบบ
                         },
                         child: const Text(
                           'ออกจากระบบ',
@@ -190,12 +195,14 @@ class _ProfilePageState extends State<ProfilePage> {
           if (value == 0) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()),
+              MaterialPageRoute(builder: (context) => HomePage(idx: 0)),
             );
           } else if (value == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PageSearchLotto()),
+              MaterialPageRoute(
+                builder: (context) => PageSearchLotto(idx: widget.idx),
+              ),
             );
           } else if (value == 2) {
             // อยู่หน้า Profile อยู่แล้ว

@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto/config/config.dart';
+import 'package:lotto/model/request/User_buy_lotto_req.dart';
 import 'package:lotto/model/request/Users_login_Post_Req.dart';
 import 'package:lotto/model/response/Users_login_Post_Res.dart';
 import 'package:lotto/model/response/lotto_all_get_Res.dart';
@@ -11,7 +13,8 @@ import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/info.dart';
 
 class PageSearchLotto extends StatefulWidget {
-  const PageSearchLotto({super.key});
+  int idx = 0;
+  PageSearchLotto({super.key, required this.idx});
 
   @override
   State<PageSearchLotto> createState() => _PageSearchLottoState();
@@ -28,6 +31,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
   int selectedIndex = 1;
   String url = '';
   List<GetLottoRes> lottoGetPes = [];
+  List<GetLottoRes> setloadData = [];
   late Future<void> loadData;
 
   @override
@@ -38,8 +42,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
       url = config['apiEndpoint'];
 
       return getloaddate();
-
-
     });
     loadData = getloaddate();
   }
@@ -145,7 +147,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                         ).format(date);
                         final formattedDate = '$dayMonth $buddhistYear';
 
-
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
@@ -153,7 +154,17 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                               color: Colors.white,
                               child: Stack(
                                 children: [
-                                  Image.asset("assets/images/lotto.png"),
+                                  InkWell(
+                                    onTap: () => confirmBuyLotto(
+                                      context,
+                                      lotto.lottoNumber,
+                                      lotto.priceLotto,
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/lotto.png',
+                                    ),
+                                  ),
+
                                   // กล่องตกแต่ง
                                   Positioned(
                                     left: 195,
@@ -163,28 +174,8 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                       height: 40,
                                       color: Colors.grey,
                                     ),
-
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                elevation: 3,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(width: 12),
-                                      Text(trip.lottoNumber.toString()),
-
-                                      FilledButton(
-                                        onPressed: () => buylotto(
-                                          trip.lottoTicketId.toString(),
-                                        ),
-                                        child: Text("buy"),
-                                      ), // ถ้าเป็น int ต้อง .toString()
-                                    ],
-
                                   ),
+
                                   Positioned(
                                     left: 195,
                                     top: 65,
@@ -264,12 +255,14 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
           if (value == 0) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
+              MaterialPageRoute(builder: (context) => HomePage(idx: 0)),
             );
           } else if (value == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ProfilePage()),
+              MaterialPageRoute(
+                builder: (context) => ProfilePage(idx: widget.idx),
+              ),
             );
           }
         },
@@ -286,8 +279,66 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     );
   }
 
-  void buylotto(String lotto) {
-    log(lotto);
+  void buylotto(String lotto, String money) async {
+    log("$lotto $money ${widget.idx}");
+
+    ReqBuyLotto reqBuyLotto = ReqBuyLotto(
+      userId: widget.idx,
+      lottoNumber: lotto,
+      priceLotto: double.parse(money),
+    );
+    log(jsonEncode(reqBuyLotto));
+    try {
+      await http
+          .post(
+            Uri.parse("$url/lotto/buy"),
+            headers: {"Content-Type": "application/json; charset=utf-8"},
+            body: jsonEncode(reqBuyLotto.toJson()),
+          )
+          .then((value) {
+            log(value.body);
+          })
+          .catchError((onError) {
+            log(onError);
+          });
+    } catch (error) {
+      log("Error: $error");
+    }
+  }
+
+  void confirmBuyLotto(BuildContext context, String lotto, String money) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("ยืนยันการซื้อ"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [Text("เลขที่เลือก: $lotto"), Text("ราคา: $money บาท")],
+          ),
+          actions: [
+            TextButton(
+              child: const Text("ไม่ใช่"),
+              onPressed: () {
+                Navigator.of(context).pop(false); // กด No
+              },
+            ),
+            ElevatedButton(
+              child: const Text("ใช่"),
+              onPressed: () {
+                Navigator.of(context).pop(true); // กด Yes
+              },
+            ),
+          ],
+        );
+      },
+    ).then((value) {
+      if (value == true) {
+        buylotto(lotto, money);
+      } else {
+        debugPrint(" ยกเลิกการซื้อ");
+      }
+    });
   }
 
   Widget TextFieldRow() {
@@ -342,7 +393,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     } catch (e) {
       log(e.toString());
     }
-
   }
 
   Future<void> getloaddate() async {

@@ -220,7 +220,6 @@ class _MakePageState extends State<MakePage> {
                 ),
               );
             }),
-
           ],
         ),
       ),
@@ -290,26 +289,23 @@ class _MakePageState extends State<MakePage> {
         );
       }).toList();
       log(url);
+
       try {
-        try {
-          await http
-              .post(
-                Uri.parse("$url/lotto/insert"),
-                headers: {"Content-Type": "application/json; charset=utf-8"},
-                body: jsonEncode(reqList.map((e) => e.toJson()).toList()),
-              )
-              .then((value) {
-                log(value.body);
-                setState(() {
-                  loadData = getloaddate();
-                });
-              })
-              .catchError((onError) {
-                log(onError);
+        await http
+            .post(
+              Uri.parse("$url/lotto/insert"),
+              headers: {"Content-Type": "application/json; charset=utf-8"},
+              body: jsonEncode(reqList.map((e) => e.toJson()).toList()),
+            )
+            .then((value) {
+              log(value.body);
+              setState(() {
+                loadData = getloaddate();
               });
-        } catch (error) {
-          log("Error: $error");
-        }
+            })
+            .catchError((onError) {
+              log(onError);
+            });
       } catch (error) {
         log("Error: $error");
       }

@@ -1,15 +1,35 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:http/http.dart' as http;
+import 'package:lotto/config/config.dart';
+import 'package:lotto/model/response/%E0%B9%8AUser_claim_lotto_res.dart';
 
 class PageClaimLotto extends StatefulWidget {
-  const PageClaimLotto({super.key});
+  int idx = 0;
+  PageClaimLotto({super.key, required this.idx});
 
   @override
   State<PageClaimLotto> createState() => _PageClaimLottoState();
 }
 
 class _PageClaimLottoState extends State<PageClaimLotto> {
+  late Future<void> loadData;
+
+  List<ResLottoCkeckLotto> lottoGetPes = [];
+  List<ResLottoCkeckLotto> setloadData = [];
+  String url = '';
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      url = config['apiEndpoint'];
+      loadData = loadDataShow();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,132 +43,91 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
         ),
         backgroundColor: const Color(0xFFD10922),
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.symmetric(vertical: 0),
-        itemCount: 2,
-        itemBuilder: (context, i) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Card(
-                color: Color(0xFFD9D9D9),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // รูป + overlay อยู่ใน Stack
-                    Stack(
-                      children: [
-                        Image.asset("assets/images/lotto.png"),
+      body: Container(
+        child: Column(
+          children: [
+            FutureBuilder(
+              future: loadData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (lottoGetPes.isEmpty) {
+                  return const Center(child: Text('ไม่พบข้อมูลสลาก'));
+                }
 
-                        Positioned(
-                          left: 195,
-                          top: 15,
-                          child: Container(
-                            width: 155,
-                            height: 40,
-                            color: Colors.grey,
-                          ),
-                        ),
+                return Column(
+                  children: List.generate(lottoGetPes.length, (i) {
+                    final lotto = lottoGetPes[i];
 
-                        Positioned(
-                          left: 195,
-                          top: 65,
-                          child: Container(
-                            width: 155,
-                            height: 20,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Positioned(
-                          left: 25,
-                          top: 115,
-                          child: Container(
-                            width: 70,
-                            height: 60,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Positioned(
-                          left: 200,
-                          top: 65,
-                          child: Text(
-                            "วันที่ 1 ธันวาคม 2569",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 205,
-                          top: 15,
-                          child: Text(
-                            "9 9 9 9 9 9",
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 40,
-                          top: 115,
-                          child: Text(
-                            "80\nบาท",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    // ส่วนข้อความด้านล่าง
-                    Padding(
+                    return Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "ถูกรางวัลที่ 1",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF28A745),
-                            ),
-                          ),
-                          Text(
-                            "จำนวนเงิน 6,000,000 บาท",
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: FilledButton(
-                              onPressed: popUpClaimLotto,
-                              style: FilledButton.styleFrom(
-                                backgroundColor: Color(0xFFFFD700),
-                                foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                minimumSize: Size(300, 48),
-                                padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Center(
+                        child: Card(
+                          color: Colors.white,
+                          child: Stack(
+                            children: [
+                              InkWell(
+                                child: Image.asset('assets/images/lotto.png'),
                               ),
-                              child: Text("ขึ้นเงินรางวัล"),
-                            ),
+
+                              // กล่องตกแต่ง
+                              Positioned(
+                                left: 195,
+                                top: 15,
+                                child: Container(
+                                  width: 155,
+                                  height: 40,
+                                  color: Colors.grey,
+                                ),
+                              ),
+
+                              Positioned(
+                                left: 195,
+                                top: 65,
+                                child: Container(
+                                  width: 155,
+                                  height: 20,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Positioned(
+                                left: 25,
+                                top: 115,
+                                child: Container(
+                                  width: 70,
+                                  height: 60,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              // เลขสลาก
+                              Positioned(
+                                left: 205,
+                                top: 15,
+                                child: Text(
+                                  lotto.lottoNumber.split('').join(' '),
+                                  style: const TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    );
+                  }),
+                );
+              },
             ),
-          );
-        },
+            FilledButton(
+              onPressed: popUpClaimLotto,
+              child: Text("ขึ้นเงิยรางวัล"),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -220,5 +199,20 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
         ],
       ),
     );
+  }
+
+  Future<void> loadDataShow() async {
+    try {
+      var res = await http.get(
+        Uri.parse('$url/user/checkLotto?user_id=${widget.idx}'),
+      );
+      log(res.body);
+      lottoGetPes = resLottoCkeckLottoFromJson(res.body);
+      setloadData = lottoGetPes;
+      log(setloadData.length.toString());
+      setState(() {});
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

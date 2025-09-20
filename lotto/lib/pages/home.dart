@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:lotto/pages/info.dart';
 import 'package:lotto/pages/page_search_lotto.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  int idx = 0;
+  HomePage({super.key, required this.idx});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -36,7 +38,6 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -174,13 +175,17 @@ class _HomePageState extends State<HomePage> {
           if (value == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PageSearchLotto()),
+              MaterialPageRoute(
+                builder: (context) => PageSearchLotto(idx: widget.idx),
+              ),
             );
           } else if (value == 0) {
           } else if (value == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
+              MaterialPageRoute(
+                builder: (context) => ProfilePage(idx: widget.idx),
+              ),
             );
           }
         },
@@ -272,9 +277,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ignore: non_constant_identifier_names
-  void LottoCheck() {
+  Future<void> LottoCheck() async {
     String lotto = controllers.map((c) => c.text).join();
     log(lotto);
+    log(url);
+
+    try {
+      log(widget.idx.toString());
+
+      // Send lotto as query parameter or in body depending on API requirement
+      final res = await http.get(
+        Uri.parse('$url/lotto/draws/check?lotto=$lotto&idx=${widget.idx}'),
+      );
+
+      if (res.statusCode == 200) {
+        log('Response: ${res.body}');
+        // You can decode JSON if needed:
+        // var data = jsonDecode(res.body);
+      } else {
+        log('Error: ${res.statusCode}');
+      }
+    } catch (e) {
+      log('Exception: $e');
+    }
   }
 }

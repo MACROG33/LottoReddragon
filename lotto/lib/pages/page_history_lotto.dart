@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotto/config/config.dart';
 
 class PageHistoryLotto extends StatefulWidget {
   const PageHistoryLotto({super.key});
