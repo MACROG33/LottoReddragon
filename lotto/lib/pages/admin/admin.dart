@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:lotto/config/config.dart';
+
 import 'package:lotto/pages/admin/Random.dart';
 import 'package:lotto/pages/admin/make.dart';
 import 'package:lotto/pages/page_login.dart';
@@ -13,7 +17,18 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+
+  String url = '';
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) {
+      url = config['apiEndpoint'];
+    });
+  }
+
   int selectedIndex = 2;
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +47,10 @@ class _AdminPageState extends State<AdminPage> {
               // Menu Items Section
               Expanded(
                 child: Padding(
+
+
                   padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
+
                   child: Column(
                     children: [
                       _buildMenuItem(
@@ -53,6 +71,7 @@ class _AdminPageState extends State<AdminPage> {
                         icon: Icons.refresh,
                         title: 'รีเซ็ตระบบ',
                         onTap: resetData,
+
                       ),
                       const Spacer(),
                       // Logout Button
@@ -61,6 +80,7 @@ class _AdminPageState extends State<AdminPage> {
                           Get.offAll(
                             () => LoginScreen(),
                           ); //ทำการล้างทุกอย่างเพื่อออกระบบ
+
                         },
                         child: const Text(
                           'ออกจากระบบ',
@@ -103,7 +123,7 @@ class _AdminPageState extends State<AdminPage> {
                   // Profile Avatar with Border
                   Container(
                     width: 100,
-                    height: 100,
+                    height: 50,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.yellow[700]!, width: 3),
@@ -167,6 +187,17 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
+
+  void reSet() {
+    http
+        .delete(Uri.parse("$url/lotto/draws/delete"))
+        .then((value) {
+          log(value.body);
+        })
+        .catchError((err) {
+          log(err.toString());
+        });
+
   void resetData() {
     Get.dialog(
       AlertDialog(
@@ -191,6 +222,7 @@ class _AdminPageState extends State<AdminPage> {
         ],
       ),
     );
+
   }
 
   Widget _buildMenuItem({
