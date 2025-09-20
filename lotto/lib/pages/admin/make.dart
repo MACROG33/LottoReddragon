@@ -131,6 +131,7 @@ class _MakePageState extends State<MakePage> {
                 ),
               ),
             ),
+
             ...List.generate(lottoGetPes.length, (i) {
               final lotto = lottoGetPes[i];
               final date = DateTime.parse(lotto.dateLotto);
@@ -219,6 +220,7 @@ class _MakePageState extends State<MakePage> {
                 ),
               );
             }),
+
           ],
         ),
       ),

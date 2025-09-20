@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   );
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   int selectedIndex = 0;
+
   List<GetDrowsLottoRes> latestDraws = []; // เก็บรางวัลล่าสุด
   String url = '';
 
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
