@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:lotto/config/config.dart';
@@ -17,7 +19,6 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-
   String url = '';
   @override
   void initState() {
@@ -28,7 +29,6 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   int selectedIndex = 2;
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +47,6 @@ class _AdminPageState extends State<AdminPage> {
               // Menu Items Section
               Expanded(
                 child: Padding(
-
-
                   padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
 
                   child: Column(
@@ -71,7 +69,6 @@ class _AdminPageState extends State<AdminPage> {
                         icon: Icons.refresh,
                         title: 'รีเซ็ตระบบ',
                         onTap: resetData,
-
                       ),
                       const Spacer(),
                       // Logout Button
@@ -80,7 +77,6 @@ class _AdminPageState extends State<AdminPage> {
                           Get.offAll(
                             () => LoginScreen(),
                           ); //ทำการล้างทุกอย่างเพื่อออกระบบ
-
                         },
                         child: const Text(
                           'ออกจากระบบ',
@@ -123,7 +119,7 @@ class _AdminPageState extends State<AdminPage> {
                   // Profile Avatar with Border
                   Container(
                     width: 100,
-                    height: 50,
+                    height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.yellow[700]!, width: 3),
@@ -187,16 +183,14 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-
-  void reSet() {
-    http
-        .delete(Uri.parse("$url/lotto/draws/delete"))
-        .then((value) {
-          log(value.body);
-        })
-        .catchError((err) {
-          log(err.toString());
-        });
+  Future<void> reSet() async {
+    try {
+      final response = await http.delete(Uri.parse("$url/admin/reset/app"));
+      log(response.body);
+    } catch (err) {
+      log(err.toString());
+    }
+  }
 
   void resetData() {
     Get.dialog(
@@ -210,19 +204,19 @@ class _AdminPageState extends State<AdminPage> {
         actions: [
           FilledButton(
             style: FilledButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: Color(0xFFD10934),
               foregroundColor: Colors.white,
             ),
             onPressed: () {
+              reSet();
               Get.back();
             },
             child: Text("ยืนยันการรีเซ็ตระบบ", textAlign: TextAlign.center),
           ),
-          // TextButton(onPressed: () => Get.back(), child: Text("ยกเลิก")),
+          TextButton(onPressed: () => Get.back(), child: Text("ยกเลิก")),
         ],
       ),
     );
-
   }
 
   Widget _buildMenuItem({

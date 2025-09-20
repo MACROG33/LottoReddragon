@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class PageClaimLotto extends StatefulWidget {
   const PageClaimLotto({super.key});
@@ -125,20 +127,15 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                           Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: FilledButton(
-                              onPressed: () {},
+                              onPressed: popUpClaimLotto,
                               style: FilledButton.styleFrom(
                                 backgroundColor: Color(0xFFFFD700),
                                 foregroundColor: Colors.black,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
-                                minimumSize: Size(
-                                  300,
-                                  48,
-                                ), // ความกว้างเต็ม + สูง 48px
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 12,
-                                ), // padding เพิ่มความสูง
+                                minimumSize: Size(300, 48),
+                                padding: EdgeInsets.symmetric(vertical: 12),
                               ),
                               child: Text("ขึ้นเงินรางวัล"),
                             ),
@@ -152,6 +149,75 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  void popUpClaimLotto() {
+    Get.dialog(
+      AlertDialog(
+        insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+        content: const Text(
+          'คุณแน่ใจไหมที่จะขึ้นเงิน',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD700),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  Get.back();
+
+                  Get.dialog(
+                    const AlertDialog(
+                      content: Text(
+                        "ขึ้นเงินรางวัลสำเร็จ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    barrierDismissible: false,
+                  );
+
+                  Future.delayed(const Duration(seconds: 1), () {
+                    Get.back();
+                  });
+                },
+                child: const Text(
+                  'ยืนยัน',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFD700),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () => Get.back(),
+                child: const Text(
+                  'ยกเลิก',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

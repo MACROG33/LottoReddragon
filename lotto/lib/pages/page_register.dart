@@ -234,6 +234,29 @@ class _PageRegisterState extends State<PageRegister> {
 
   //Dialog register
   void _showCustomDialog() {
+    // ตรวจสอบรหัสผ่านก่อน
+    if (passwordController.text != checkPasswordController.text) {
+      Get.dialog(
+        AlertDialog(
+          content: const Text(
+            "รหัสผ่านไม่ตรงกัน",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () => Get.back(),
+                child: const Text("ปิด"),
+              ),
+            ),
+          ],
+        ),
+      );
+      return; // ออกจากฟังก์ชันทันที
+    }
+
+    // ถ้ารหัสผ่านตรงกัน ให้แสดง Dialog ยืนยันการสมัคร
     Get.dialog(
       AlertDialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),

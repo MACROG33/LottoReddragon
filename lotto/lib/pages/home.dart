@@ -1,6 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:lotto/config/config.dart';
+import 'package:lotto/model/response/drows_lotto_get_Res.dart';
 import 'package:lotto/pages/info.dart';
 import 'package:lotto/pages/page_search_lotto.dart';
 
@@ -19,10 +22,25 @@ class _HomePageState extends State<HomePage> {
   List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   int selectedIndex = 0;
 
+  List<GetDrowsLottoRes> latestDraws = []; // เก็บรางวัลล่าสุด
+  String url = '';
+
+  @override
+  void initState() {
+    super.initState();
+    Configuration.getConfig().then((config) async {
+      url = config['apiEndpoint'];
+      var res = await http.get(Uri.parse('$url/lotto/getdraws'));
+      setState(() {
+        latestDraws = getDrowsLottoResFromJson(res.body);
+      });
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color.fromRGBO(209, 9, 34, 1)),
       body: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(
@@ -106,19 +124,40 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: SizedBox(
-                  height: 500, // ความสูงของ Card
-                  child: ListView(
+                  height: 500,
+                  child: ListView.builder(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 8,
                     ),
-                    children: [
-                      buildPrizeCard("รางวัลที่ 1", "666666", "6,000,000 บาท"),
-                      SizedBox(width: 16),
-                      buildPrizeCard("รางวัลที่ 2", "123456", "2,000,000 บาท"),
-                      SizedBox(width: 16),
-                      buildPrizeCard("รางวัลที่ 3", "654321", "1,000,000 บาท"),
-                    ],
+                    itemCount: latestDraws.length,
+                    itemBuilder: (context, index) {
+                      final draw = latestDraws[index];
+
+                      String prizeAmount;
+                      if (draw.reward == 'รางวัลที่1') {
+                        prizeAmount = '6,000,000 บาท';
+                      } else if (draw.reward == 'รางวัลที่2') {
+                        prizeAmount = '200,000 บาท';
+                      } else if (draw.reward == 'รางวัลที่3') {
+                        prizeAmount = '80,000 บาท';
+                      } else if (draw.reward == 'รางวัลเลขท้าย 3 ตัว') {
+                        prizeAmount = '4,000 บาท';
+                      } else if (draw.reward == 'รางวัลเลขท้าย 2 ตัว') {
+                        prizeAmount = '2,000 บาท';
+                      } else {
+                        prizeAmount = '-';
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: buildPrizeCard(
+                          draw.reward ?? '',
+                          draw.prize.toString(),
+                          prizeAmount,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
