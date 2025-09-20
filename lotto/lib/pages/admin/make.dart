@@ -175,7 +175,7 @@ class _MakePageState extends State<MakePage> {
                             color: Colors.grey,
                           ),
                         ),
-                      
+
                         Positioned(
                           left: 205,
                           top: 15,
@@ -269,13 +269,12 @@ class _MakePageState extends State<MakePage> {
       int price = int.parse(controllerPrice.text);
       Random random = Random();
       log(url);
-      Set<String> lottoNumbers = {};  
+      Set<String> lottoNumbers = {};
 
       while (lottoNumbers.length < count) {
         String number = random.nextInt(1000000).toString().padLeft(6, '0');
         lottoNumbers.add(number);
       }
-      setState(() {});
 
       DateTime now = DateTime.now();
       String dateLotto = now.toIso8601String().split("T")[0];
@@ -296,11 +295,12 @@ class _MakePageState extends State<MakePage> {
                 Uri.parse("$url/lotto/insert"),
                 headers: {"Content-Type": "application/json; charset=utf-8"},
                 body: jsonEncode(reqList.map((e) => e.toJson()).toList()),
-
               )
-              
               .then((value) {
                 log(value.body);
+                setState(() {
+                  loadData = getloaddate();
+                });
               })
               .catchError((onError) {
                 log(onError);
@@ -323,7 +323,6 @@ class _MakePageState extends State<MakePage> {
       log(res.body);
       lottoGetPes = getLottoResFromJson(res.body);
       setloadData = lottoGetPes;
-      
 
       if (!mounted) return; // ป้องกัน widget ถูก dispose แล้ว
       setState(() {});

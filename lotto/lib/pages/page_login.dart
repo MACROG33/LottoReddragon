@@ -8,7 +8,6 @@ import 'package:lotto/model/request/Users_login_Post_Req.dart';
 import 'package:lotto/model/response/Users_login_Post_Res.dart';
 import 'package:lotto/pages/admin/admin.dart';
 import 'package:lotto/pages/home.dart';
-import 'package:lotto/pages/info.dart';
 import 'package:lotto/pages/page_register.dart';
 
 class LoginScreen extends StatefulWidget {

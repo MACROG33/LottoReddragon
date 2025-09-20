@@ -31,7 +31,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
   @override
   void initState() {
     super.initState();
-    // โหลด config + ดึงข้อมูล
     loadData = Configuration.getConfig().then((config) async {
       await initializeDateFormatting('th_TH', null);
       url = config['apiEndpoint'];

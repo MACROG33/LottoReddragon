@@ -31,7 +31,6 @@ class _RandomPageState extends State<RandomPage> {
     super.initState();
     Configuration.getConfig().then((config) {
       url = config['apiEndpoint'];
-      
     });
     loadData = loadDataShow();
   }
@@ -39,7 +38,16 @@ class _RandomPageState extends State<RandomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("RandomPage")),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: const Center(
+          child: Text('สุ่มรางวัล', style: TextStyle(color: Colors.white)),
+        ),
+        backgroundColor: const Color(0xFFD10922),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -85,7 +93,7 @@ class _RandomPageState extends State<RandomPage> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
                           child: FilledButton(
                             style: FilledButton.styleFrom(
                               backgroundColor: Color(0xFFD10934),
@@ -111,11 +119,12 @@ class _RandomPageState extends State<RandomPage> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 return SizedBox(
-                  height: 400,
+                  height: 1000,
                   child: ListView(
                     children: getDrawslotto
                         .map(
                           (trip) => Card(
+                            color: Colors.white,
                             margin: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 8,
@@ -126,12 +135,33 @@ class _RandomPageState extends State<RandomPage> {
                             elevation: 3,
                             child: Padding(
                               padding: const EdgeInsets.all(12),
-                              child: Row(
+                              child: Column(
                                 children: [
-                                  const SizedBox(width: 12),
+                                  Text(
+                                    trip.reward ??
+                                        "", // หรือ trip.Reward แล้วแต่ model
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFFD10922),
+                                    ),
+                                  ),
+                                  
+                                  Divider(
+                                    color: Colors.grey.shade300,
+                                    thickness: 1,
+                                    height: 20,
+                                    indent: 40,
+                                    endIndent: 40,
+                                  ),
                                   Text(
                                     trip.prize.toString(),
-                                  ), // ถ้าเป็น int ต้อง .toString()
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),

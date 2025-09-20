@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lotto/pages/admin/Random.dart';
 import 'package:lotto/pages/admin/admin.dart';
 import 'package:lotto/pages/admin/make.dart';
 import 'package:lotto/pages/info.dart';
@@ -19,9 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData(textTheme: GoogleFonts.notoSansThaiLoopedTextTheme(),),
       home: const ProfilePage(),
     );
   }
