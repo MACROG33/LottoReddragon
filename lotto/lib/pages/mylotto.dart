@@ -22,13 +22,18 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
   List<ResLottoMeLotto> lottoGetPes = [];
   List<ResLottoMeLotto> setloadData = [];
   String url = '';
+
   @override
   void initState() {
     super.initState();
-    Configuration.getConfig().then((config) {
-      url = config['apiEndpoint'];
-      loadData = getloaddate();
-    });
+    initializeDateFormatting('th_TH', null); // เรียกครั้งเดียว
+    loadData = _initConfigAndLoadData();
+  }
+
+  Future<void> _initConfigAndLoadData() async {
+    final config = await Configuration.getConfig();
+    url = config['apiEndpoint'];
+    await getloaddate();
   }
 
   @override
@@ -59,21 +64,17 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
             return Column(
               children: List.generate(lottoGetPes.length, (i) {
                 final lotto = lottoGetPes[i];
-        
+
                 // แปลงวันที่ + พ.ศ.
                 String formattedDate = '';
                 try {
                   final date = DateTime.parse(lotto.dateLotto);
                   final buddhistYear = date.year + 543;
-
-                  // Initialize locale
-                  initializeDateFormatting('th_TH', null);
-
                   final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
                   formattedDate = '$dayMonth $buddhistYear';
                 } catch (e) {
                   log('Error parsing date: $e');
-                  formattedDate = lotto.dateLotto; 
+                  formattedDate = lotto.dateLotto;
                 }
 
                 return Padding(
@@ -97,7 +98,6 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
                               color: Colors.grey,
                             ),
                           ),
-
                           Positioned(
                             left: 195,
                             top: 65,

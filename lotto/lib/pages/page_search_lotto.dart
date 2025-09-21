@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -50,7 +51,6 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     return Scaffold(
       body: Stack(
         children: [
-         
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -294,7 +294,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
 
       final data = jsonDecode(response.body);
 
-      if (!context.mounted) return; // 🔹 ตรวจสอบว่า context ยัง valid
+      if (!context.mounted) return;
 
       if (response.statusCode == 200) {
       } else if (response.statusCode == 400 &&
@@ -303,10 +303,10 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
           context: context,
           builder: (_) => AlertDialog(
             title: Center(child: const Text("ซื้อไม่สำเร็จ")),
-            content: Center(child: const Text("เงินในระบบไม่เพียงพอ")),
+            content: const Text("เงินในระบบไม่เพียงพอ"),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Get.back(),
                 child: const Text("ตกลง"),
               ),
             ],
@@ -327,7 +327,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
           content: Text(error.toString()),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Get.back(),
               child: const Text("ตกลง"),
             ),
           ],
@@ -353,7 +353,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
               children: [
                 TextButton(
                   onPressed: () {
-                    buylotto(lotto, money, context); // ส่ง context เข้าไป
+                    buylotto(lotto, money, context);
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(

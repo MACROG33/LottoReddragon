@@ -195,7 +195,7 @@ class _AdminPageState extends State<AdminPage> {
   void resetData() {
     Get.dialog(
       AlertDialog(
-        content: Text(
+        content: const Text(
           "รีเซ็ตระบบใหม่ทั้งหมด",
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -204,16 +204,35 @@ class _AdminPageState extends State<AdminPage> {
         actions: [
           FilledButton(
             style: FilledButton.styleFrom(
-              backgroundColor: Color(0xFFD10934),
+              backgroundColor: const Color(0xFFD10934),
               foregroundColor: Colors.white,
             ),
             onPressed: () {
-              reSet();
-              Get.back();
+              reSet(); // รีเซ็ตระบบ
+              Get.back(); // ปิด dialog เก่า
+              // แสดง dialog ใหม่แจ้งเสร็จสิ้น
+              Get.dialog(
+                const AlertDialog(
+                  content: Text(
+                    "รีเซ็ตระบบสำเร็จ",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              );
+              // ปิด dialog ใหม่อัตโนมัติหลัง 2 วินาที
+              Future.delayed(const Duration(seconds: 1), () {
+                if (Get.isDialogOpen ?? false) {
+                  Get.back();
+                }
+              });
             },
-            child: Text("ยืนยันการรีเซ็ตระบบ", textAlign: TextAlign.center),
+            child: const Text(
+              "ยืนยันการรีเซ็ตระบบ",
+              textAlign: TextAlign.center,
+            ),
           ),
-          TextButton(onPressed: () => Get.back(), child: Text("ยกเลิก")),
+          TextButton(onPressed: () => Get.back(), child: const Text("ยกเลิก")),
         ],
       ),
     );
