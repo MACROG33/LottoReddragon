@@ -277,6 +277,58 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void showLottoCheck({
+    required bool isWin,
+    required String message,
+    required String lotto,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              isWin
+                  ? 'assets/images/winlotto.png'
+                  : 'assets/images/loselotto.png',
+              width: 200,
+              height: 200,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              isWin ? 'ยินดีด้วย!' : 'เสียใจด้วย!',
+              style: const TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              message, // ข้อความจาก API
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: isWin ? Colors.green : Colors.red,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'เลขที่ตรวจ: $lotto',
+              style: TextStyle(fontSize: 16, color: Colors.black),
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('ตกลง'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> LottoCheck() async {
     String lotto = controllers.map((c) => c.text).join();
     log(lotto);
@@ -292,8 +344,11 @@ class _HomePageState extends State<HomePage> {
 
       if (res.statusCode == 200) {
         log('Response: ${res.body}');
-        // You can decode JSON if needed:
-        // var data = jsonDecode(res.body);
+        var data = jsonDecode(res.body);
+
+        bool isWin = data['isWinner'] ?? false;
+        String message = data['message'] ?? '';
+        showLottoCheck(isWin: isWin, message: message, lotto: lotto);
       } else {
         log('Error: ${res.statusCode}');
       }
@@ -301,4 +356,5 @@ class _HomePageState extends State<HomePage> {
       log('Exception: $e');
     }
   }
+
 }

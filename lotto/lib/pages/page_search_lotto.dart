@@ -311,34 +311,45 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("ยืนยันการซื้อ"),
+          title: Center(child: const Text("ยืนยันการซื้อ")),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [Text("เลขที่เลือก: $lotto"), Text("ราคา: $money บาท")],
           ),
+          contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
           actions: [
-            TextButton(
-              child: const Text("ไม่ใช่"),
-              onPressed: () {
-                Navigator.of(context).pop(false); // กด No
-              },
-            ),
-            ElevatedButton(
-              child: const Text("ใช่"),
-              onPressed: () {
-                Navigator.of(context).pop(true); // กด Yes
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // แยกซ้าย-ขวา
+              children: [
+                // ปุ่มยืนยัน
+                TextButton(
+                  onPressed: () {
+                    buylotto(lotto, money);
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color(0xFFFFD700),
+                    foregroundColor: Colors.black,
+                  ),
+                  child: const Text("ยืนยัน"),
+                ),
+                // ปุ่มยกเลิก
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.grey[300],
+                    foregroundColor: Colors.black,
+                  ),
+                  child: const Text("ยกเลิก"),
+                ),
+              ],
             ),
           ],
         );
       },
-    ).then((value) {
-      if (value == true) {
-        buylotto(lotto, money);
-      } else {
-        debugPrint(" ยกเลิกการซื้อ");
-      }
-    });
+    );
   }
 
   Widget TextFieldRow() {
