@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto/config/config.dart';
 import 'package:lotto/model/response/User_lotto_me_res.dart';
@@ -58,11 +59,22 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
             return Column(
               children: List.generate(lottoGetPes.length, (i) {
                 final lotto = lottoGetPes[i];
+        
                 // แปลงวันที่ + พ.ศ.
-                // final date = DateTime.parse(lotto.dateLotto);
-                // final buddhistYear = date.year + 543;
-                // final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
-                // final formattedDate = '$dayMonth $buddhistYear';
+                String formattedDate = '';
+                try {
+                  final date = DateTime.parse(lotto.dateLotto);
+                  final buddhistYear = date.year + 543;
+
+                  // Initialize locale
+                  initializeDateFormatting('th_TH', null);
+
+                  final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
+                  formattedDate = '$dayMonth $buddhistYear';
+                } catch (e) {
+                  log('Error parsing date: $e');
+                  formattedDate = lotto.dateLotto; 
+                }
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -118,18 +130,18 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
                             ),
                           ),
                           // วันที่
-                          // Positioned(
-                          //   left: 200,
-                          //   top: 65,
-                          //   child: Text(
-                          //     "วันที่ $formattedDate",
-                          //     style: const TextStyle(
-                          //       fontSize: 14,
-                          //       fontWeight: FontWeight.bold,
-                          //       color: Colors.black,
-                          //     ),
-                          //   ),
-                          // ),
+                          Positioned(
+                            left: 200,
+                            top: 65,
+                            child: Text(
+                              "วันที่ $formattedDate",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
                           // ราคา
                           Positioned(
                             left: 40,

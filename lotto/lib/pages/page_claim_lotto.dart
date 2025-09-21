@@ -43,90 +43,92 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
         ),
         backgroundColor: const Color(0xFFD10922),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            FutureBuilder(
-              future: loadData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (lottoGetPes.isEmpty) {
-                  return const Center(child: Text('ไม่พบข้อมูลสลาก'));
-                }
-
-                return Column(
-                  children: List.generate(lottoGetPes.length, (i) {
-                    final lotto = lottoGetPes[i];
-
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Card(
-                          color: Colors.white,
-                          child: Stack(
-                            children: [
-                              InkWell(
-                                child: Image.asset('assets/images/lotto.png'),
-                              ),
-
-                              // กล่องตกแต่ง
-                              Positioned(
-                                left: 195,
-                                top: 15,
-                                child: Container(
-                                  width: 155,
-                                  height: 40,
-                                  color: Colors.grey,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              FutureBuilder(
+                future: loadData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (lottoGetPes.isEmpty) {
+                    return const Center(child: Text('ไม่พบข้อมูลสลาก'));
+                  }
+        
+                  return Column(
+                    children: List.generate(lottoGetPes.length, (i) {
+                      final lotto = lottoGetPes[i];
+        
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Card(
+                            color: Colors.white,
+                            child: Stack(
+                              children: [
+                                InkWell(
+                                  child: Image.asset('assets/images/lotto.png'),
                                 ),
-                              ),
-
-                              Positioned(
-                                left: 195,
-                                top: 65,
-                                child: Container(
-                                  width: 155,
-                                  height: 20,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Positioned(
-                                left: 25,
-                                top: 115,
-                                child: Container(
-                                  width: 70,
-                                  height: 60,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              // เลขสลาก
-                              Positioned(
-                                left: 205,
-                                top: 15,
-                                child: Text(
-                                  lotto.lottoNumber.split('').join(' '),
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+        
+                                // กล่องตกแต่ง
+                                Positioned(
+                                  left: 195,
+                                  top: 15,
+                                  child: Container(
+                                    width: 155,
+                                    height: 40,
+                                    color: Colors.grey,
                                   ),
                                 ),
-                              ),
-                            ],
+        
+                                Positioned(
+                                  left: 195,
+                                  top: 65,
+                                  child: Container(
+                                    width: 155,
+                                    height: 20,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 25,
+                                  top: 115,
+                                  child: Container(
+                                    width: 70,
+                                    height: 60,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                // เลขสลาก
+                                Positioned(
+                                  left: 205,
+                                  top: 15,
+                                  child: Text(
+                                    lotto.lottoNumber.split('').join(' '),
+                                    style: const TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
-                );
-              },
-            ),
-            FilledButton(
-              onPressed: popUpClaimLotto,
-              child: Text("ขึ้นเงิยรางวัล"),
-            ),
-          ],
+                      );
+                    }),
+                  );
+                },
+              ),
+              FilledButton(
+                onPressed: popUpClaimLotto,
+                child: Text("ขึ้นเงิยรางวัล"),
+              ),
+            ],
+          ),
         ),
       ),
     );

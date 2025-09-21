@@ -328,7 +328,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: Color(0xFFFFD700),
+                    backgroundColor: Color(0xFFFFD700), // สีทอง
                     foregroundColor: Colors.black,
                   ),
                   child: const Text("ยืนยัน"),
