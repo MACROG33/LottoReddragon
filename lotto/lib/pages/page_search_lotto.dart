@@ -326,10 +326,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
           title: const Text("เกิดข้อผิดพลาด"),
           content: Text(error.toString()),
           actions: [
-            TextButton(
-              onPressed: () => Get.back(),
-              child: const Text("ตกลง"),
-            ),
+            TextButton(onPressed: () => Get.back(), child: const Text("ตกลง")),
           ],
         ),
       );
@@ -440,7 +437,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
       url = config['apiEndpoint'];
       log(url);
       var res = await http.get(Uri.parse('$url/lotto/showall'));
-      log(res.body);
+
       final data = getLottoResFromJson(res.body);
       setState(() {
         lottoGetPes = data;

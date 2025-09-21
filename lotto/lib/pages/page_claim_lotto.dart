@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -56,11 +57,11 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                   if (lottoGetPes.isEmpty) {
                     return const Center(child: Text('ไม่พบข้อมูลสลาก'));
                   }
-        
+
                   return Column(
                     children: List.generate(lottoGetPes.length, (i) {
                       final lotto = lottoGetPes[i];
-        
+
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
@@ -69,9 +70,13 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                             child: Stack(
                               children: [
                                 InkWell(
+                                  onTap: () => claimLotto(
+                                    lotto.reward.toString(),
+                                    lotto.isWinner,
+                                  ),
                                   child: Image.asset('assets/images/lotto.png'),
                                 ),
-        
+
                                 // กล่องตกแต่ง
                                 Positioned(
                                   left: 195,
@@ -82,7 +87,7 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                                     color: Colors.grey,
                                   ),
                                 ),
-        
+
                                 Positioned(
                                   left: 195,
                                   top: 65,
@@ -99,8 +104,21 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                                     width: 70,
                                     height: 60,
                                     color: Colors.grey,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      lotto.reward != null
+                                          ? lotto.reward.toString()
+                                          : "ไม่ถูกรางวัล",
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
+
                                 // เลขสลาก
                                 Positioned(
                                   left: 205,
@@ -122,10 +140,6 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                     }),
                   );
                 },
-              ),
-              FilledButton(
-                onPressed: popUpClaimLotto,
-                child: Text("ขึ้นเงิยรางวัล"),
               ),
             ],
           ),
@@ -215,6 +229,54 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
       setState(() {});
     } catch (e) {
       log(e.toString());
+    }
+  }
+
+  void claimLotto(String reward, bool isWinner) async {
+    if (!isWinner) {
+      log("ตั๋วนี้ไม่ถูกรางวัล");
+      return;
+    }
+    // แปลง reward เป็นจำนวนเงิน
+    int prizeMoney = getPrizeMoney(reward);
+
+    log(
+      "ถูกรางวัล $reward จำนวนเงิน $prizeMoney บาท " +
+          widget.idx.toString() +
+          "id",
+    );
+
+    try {
+      final response = await http.put(
+        Uri.parse('$url/user/claim'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({"user_id": widget.idx, "amount": prizeMoney}),
+      );
+
+      if (response.statusCode == 200) {
+        log("ขึ้นเงินรางวัลสำเร็จ: ${response.body}");
+      } else {
+        log("เกิดข้อผิดพลาด: ${response.statusCode} ${response.body}");
+      }
+    } catch (e) {
+      log("ไม่สามารถเรียก API ได้: $e");
+    }
+  }
+
+  int getPrizeMoney(String reward) {
+    switch (reward) {
+      case "รางวัลที่1":
+        return 6000000;
+      case "รางวัลที่2":
+        return 200000;
+      case "รางวัลที่3":
+        return 80000;
+      case "รางวัลเลขท้าย 3 ตัว":
+        return 4000;
+      case "รางวัลเลขท้าย 2 ตัว":
+        return 2000;
+      default:
+        return 0;
     }
   }
 }
