@@ -95,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           },
                         ),
                         const SizedBox(height: 250),
-                        
+
                         TextButton(
                           onPressed: () {
                             Get.offAll(() => LoginScreen());
@@ -298,55 +298,57 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadProfile() async {
-  try {
-    final config = await Configuration.getConfig();
-    url = config['apiEndpoint'];
+    try {
+      final config = await Configuration.getConfig();
+      url = config['apiEndpoint'];
 
-    final res = await http.get(Uri.parse('$url/user/show/${widget.idx}'));
-    log(widget.idx.toString());
-    log(url);
-    log(res.body);
+      final res = await http.get(Uri.parse('$url/user/show/${widget.idx}'));
+      log(widget.idx.toString());
+      log(url);
+      log(res.body);
 
-    if (res.statusCode == 201) {
-      var decoded = jsonDecode(res.body);
+      if (res.statusCode == 201) {
+        var decoded = jsonDecode(res.body);
 
-      if (decoded is List && decoded.isNotEmpty) {
-        var data = decoded[0]; // ใช้ element แรกอย่างปลอดภัย
+        if (decoded is List && decoded.isNotEmpty) {
+          var data = decoded[0]; // ใช้ element แรกอย่างปลอดภัย
 
-        setState(() {
-          balance = data['wallet'] != null
-              ? double.tryParse(data['wallet'].toString()) ?? 0
-              : 0;
-          email = data['email'] ?? '';
+          setState(() {
+            balance = data['wallet'] != null
+                ? double.tryParse(data['wallet'].toString()) ?? 0
+                : 0;
+            email = data['email'] ?? '';
 
-          // แปลงวันเกิดเป็น "วันที่ 20 กันยายน พ.ศ. 2568"
-          if (data['birthday'] != null && data['birthday'].toString().isNotEmpty) {
-            DateTime dt = DateTime.parse(data['birthday']);
-            int buddhistYear = dt.year + 543; // แปลงเป็น พ.ศ.
-            String monthThai = DateFormat.MMMM('th').format(dt); // เดือนเป็นภาษาไทย
-            birthday = 'วันที่ ${dt.day} $monthThai พ.ศ. $buddhistYear';
-          } else {
+            // แปลงวันเกิดเป็น "วันที่ 20 กันยายน พ.ศ. 2568"
+            if (data['birthday'] != null &&
+                data['birthday'].toString().isNotEmpty) {
+              DateTime dt = DateTime.parse(data['birthday']);
+              int buddhistYear = dt.year + 543; // แปลงเป็น พ.ศ.
+              String monthThai = DateFormat.MMMM(
+                'th',
+              ).format(dt); // เดือนเป็นภาษาไทย
+              birthday = 'วันที่ ${dt.day} $monthThai พ.ศ. $buddhistYear';
+            } else {
+              birthday = '';
+            }
+
+            username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
+          });
+        } else {
+          log('No user data found.');
+          // กรณี list ว่าง ให้รีเซ็ตค่า UI
+          setState(() {
+            balance = 0;
+            email = '';
             birthday = '';
-          }
-
-          username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
-        });
+            username = '';
+          });
+        }
       } else {
-        log('No user data found.');
-        // กรณี list ว่าง ให้รีเซ็ตค่า UI
-        setState(() {
-          balance = 0;
-          email = '';
-          birthday = '';
-          username = '';
-        });
+        log('Error fetching profile: ${res.statusCode}');
       }
-    } else {
-      log('Error fetching profile: ${res.statusCode}');
+    } catch (e) {
+      log('Exception fetching profile: $e');
     }
-  } catch (e) {
-    log('Exception fetching profile: $e');
   }
-}
-
 }
