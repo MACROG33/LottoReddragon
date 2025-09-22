@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:math' hide log;
@@ -266,6 +267,9 @@ class _MakePageState extends State<MakePage> {
 
   void makeLotto() async {
     if (controllerCount.text.isNotEmpty && controllerPrice.text.isNotEmpty) {
+      animateLottoFields();
+      await Future.delayed(const Duration(seconds: 3));
+
       int count = int.parse(controllerCount.text);
       int price = int.parse(controllerPrice.text);
       Random random = Random();
@@ -327,5 +331,27 @@ class _MakePageState extends State<MakePage> {
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  void animateLottoFields() {
+    const duration = Duration(milliseconds: 50); // เปลี่ยนเลขทุก 50ms
+    int tick = 0;
+    int maxTick = 3000 ~/ 50; // 3 วินาที
+
+    Random random = Random();
+
+    Timer.periodic(duration, (timer) {
+      tick++;
+      for (int i = 0; i < controllers.length; i++) {
+        controllers[i].text = random.nextInt(10).toString(); // 0-9 วิ่งทุกช่อง
+      }
+
+      if (tick >= maxTick) {
+        timer.cancel();
+        for (var c in controllers) {
+        c.clear();
+      }
+      }
+    });
   }
 }

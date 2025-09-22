@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:lotto/config/config.dart';
 import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/page_claim_lotto.dart';
@@ -30,34 +32,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    Configuration.getConfig().then((config) async {
-      url = config['apiEndpoint'];
-      try {
-      url = (await Configuration.getConfig())['apiEndpoint'];
-      final res = await http.get(Uri.parse('$url/user/show/${widget.idx}'));
-      log(widget.idx.toString());
-      log(url);
-      if (res.statusCode == 201) {
-        var data = jsonDecode(res.body);
-
-        setState(() {
-          balance = data['wallet'] != null
-              ? double.tryParse(data['wallet'].toString()) ?? 0
-              : 0;
-          email = data['email'] ?? '';
-          birthday = data['birthday'] ?? '';
-          username =
-              '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
-        });
-      } else {
-        log('Error fetching profile: ${res.statusCode}');
-      }
-    } catch (e) {
-      log('Exception fetching profile: $e');
-    }
+    initializeDateFormatting('th', null).then((_) {
+      _loadProfile();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +94,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             );
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 250),
+                        
                         TextButton(
                           onPressed: () {
                             Get.offAll(() => LoginScreen());
@@ -142,7 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.grey[700],
+                    color: Colors.grey,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
@@ -161,14 +140,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                              color: Colors.yellow[700]!, width: 3),
+                            color: Colors.yellow[700]!,
+                            width: 3,
+                          ),
                         ),
                         child: CircleAvatar(
                           radius: 48,
                           backgroundColor: Colors.grey[300],
-                          backgroundImage: const AssetImage(
-                                  'assets/images/person.jpg')
-                              as ImageProvider,
+                          backgroundImage:
+                              const AssetImage('assets/images/person.jpg')
+                                  as ImageProvider,
                           onBackgroundImageError: (_, __) {},
                         ),
                       ),
@@ -188,14 +169,18 @@ class _ProfilePageState extends State<ProfilePage> {
                             const TextSpan(
                               text: 'ยอดเงินคงเหลือ : ',
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 14),
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
                             ),
                             TextSpan(
                               text: balance != null
                                   ? '${balance!.toStringAsFixed(2)} บาท'
                                   : 'กำลังโหลด...',
                               style: const TextStyle(
-                                  color: Colors.yellow, fontSize: 14),
+                                color: Colors.yellow,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
@@ -206,7 +191,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Text(
                           'อีเมล: $email',
                           style: const TextStyle(
-                              color: Colors.white, fontSize: 14),
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -215,7 +202,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Text(
                           'วันเกิด: $birthday',
                           style: const TextStyle(
-                              color: Colors.white, fontSize: 14),
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ],
@@ -236,7 +225,9 @@ class _ProfilePageState extends State<ProfilePage> {
           if (value == 0) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage(idx: widget.idx)),
+              MaterialPageRoute(
+                builder: (context) => HomePage(idx: widget.idx),
+              ),
             );
           } else if (value == 1) {
             Navigator.push(
@@ -250,7 +241,9 @@ class _ProfilePageState extends State<ProfilePage> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าหลัก'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_basket), label: 'ซื้อสลาก'),
+            icon: Icon(Icons.shopping_basket),
+            label: 'ซื้อสลาก',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'ฉัน'),
         ],
       ),
@@ -286,9 +279,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: 24,
                   height: 24,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      Icon(Icons.image_not_supported,
-                          color: Colors.grey[600], size: 24),
+                  errorBuilder: (context, error, stackTrace) => Icon(
+                    Icons.image_not_supported,
+                    color: Colors.grey[600],
+                    size: 24,
+                  ),
                 ),
               )
             : Icon(icon, color: Colors.grey[600]),
@@ -301,4 +296,57 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
+  Future<void> _loadProfile() async {
+  try {
+    final config = await Configuration.getConfig();
+    url = config['apiEndpoint'];
+
+    final res = await http.get(Uri.parse('$url/user/show/${widget.idx}'));
+    log(widget.idx.toString());
+    log(url);
+    log(res.body);
+
+    if (res.statusCode == 201) {
+      var decoded = jsonDecode(res.body);
+
+      if (decoded is List && decoded.isNotEmpty) {
+        var data = decoded[0]; // ใช้ element แรกอย่างปลอดภัย
+
+        setState(() {
+          balance = data['wallet'] != null
+              ? double.tryParse(data['wallet'].toString()) ?? 0
+              : 0;
+          email = data['email'] ?? '';
+
+          // แปลงวันเกิดเป็น "วันที่ 20 กันยายน พ.ศ. 2568"
+          if (data['birthday'] != null && data['birthday'].toString().isNotEmpty) {
+            DateTime dt = DateTime.parse(data['birthday']);
+            int buddhistYear = dt.year + 543; // แปลงเป็น พ.ศ.
+            String monthThai = DateFormat.MMMM('th').format(dt); // เดือนเป็นภาษาไทย
+            birthday = 'วันที่ ${dt.day} $monthThai พ.ศ. $buddhistYear';
+          } else {
+            birthday = '';
+          }
+
+          username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
+        });
+      } else {
+        log('No user data found.');
+        // กรณี list ว่าง ให้รีเซ็ตค่า UI
+        setState(() {
+          balance = 0;
+          email = '';
+          birthday = '';
+          username = '';
+        });
+      }
+    } else {
+      log('Error fetching profile: ${res.statusCode}');
+    }
+  } catch (e) {
+    log('Exception fetching profile: $e');
+  }
+}
+
 }
