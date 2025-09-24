@@ -1,18 +1,18 @@
+import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:lotto/config/config.dart';
-
 import 'package:lotto/pages/admin/Random.dart';
 import 'package:lotto/pages/admin/make.dart';
 import 'package:lotto/pages/page_login.dart';
 
 class AdminPage extends StatefulWidget {
-  const AdminPage({super.key});
+  final int idx;
+  const AdminPage({super.key, required this.idx});
 
   @override
   State<AdminPage> createState() => _AdminPageState();
@@ -20,15 +20,17 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   String url = '';
+  String username = '';
+  String email = '';
+  String birthday = '';
+
   @override
   void initState() {
     super.initState();
-    Configuration.getConfig().then((config) {
-      url = config['apiEndpoint'];
+    initializeDateFormatting('th', null).then((_) {
+      _loadProfile();
     });
   }
-
-  int selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -38,46 +40,29 @@ class _AdminPageState extends State<AdminPage> {
         children: [
           Column(
             children: [
-              // Top Profile Section with Red Background
               Container(
                 width: double.infinity,
                 height: 280,
                 decoration: const BoxDecoration(color: Color(0xFFD10922)),
               ),
-              // Menu Items Section
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
-
+                  padding: const EdgeInsets.fromLTRB(20, 35, 20, 20),
                   child: Column(
                     children: [
                       _buildMenuItem(
                         icon: Icons.create,
                         title: 'สร้าง Lotto',
-                        onTap: () {
-                          Get.to(() => MakePage());
-                        },
+                        onTap: () => Get.to(() => MakePage()),
                       ),
                       _buildMenuItem(
                         icon: Icons.shuffle,
                         title: 'สุ่ม Lotto',
-                        onTap: () {
-                          Get.to(() => RandomPage());
-                        },
-                      ),
-                      _buildMenuItem(
-                        icon: Icons.refresh,
-                        title: 'รีเซ็ตระบบ',
-                        onTap: resetData,
+                        onTap: () => Get.to(() => RandomPage()),
                       ),
                       const Spacer(),
-                      // Logout Button
                       TextButton(
-                        onPressed: () async {
-                          Get.offAll(
-                            () => LoginScreen(),
-                          ); //ทำการล้างทุกอย่างเพื่อออกระบบ
-                        },
+                        onPressed: () => Get.offAll(() => LoginScreen()),
                         child: const Text(
                           'ออกจากระบบ',
                           style: TextStyle(
@@ -87,24 +72,23 @@ class _AdminPageState extends State<AdminPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-          // Overlapping Grey Rectangle with Profile Content
+
+          /// Profile Card
           Positioned(
             top: 20,
             left: 20,
             right: 20,
             child: Container(
               padding: const EdgeInsets.all(20),
-
               decoration: BoxDecoration(
-                color: Colors.grey[500],
-                borderRadius: BorderRadius.circular(5),
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -116,7 +100,6 @@ class _AdminPageState extends State<AdminPage> {
               ),
               child: Column(
                 children: [
-                  // Profile Avatar with Border
                   Container(
                     width: 100,
                     height: 100,
@@ -124,115 +107,44 @@ class _AdminPageState extends State<AdminPage> {
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.yellow[700]!, width: 3),
                     ),
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 48,
-                      backgroundColor: Colors.grey,
-                      backgroundImage: AssetImage('assets/images/person.jpg'),
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage:
+                          const AssetImage('assets/images/person.jpg')
+                              as ImageProvider,
+                      onBackgroundImageError: (_, __) {},
                     ),
                   ),
                   const SizedBox(height: 15),
-                  // Name
-                  const Text(
-                    'Admin Admin',
-                    style: TextStyle(
-                      color: Colors.black87,
+                  Text(
+                    username,
+                    style: const TextStyle(
+                      color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  // Subtitle
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'ยอดเงินคงเหลือ : ',
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                        TextSpan(
-                          text: '200 บาท',
-                          style: TextStyle(color: Colors.yellow, fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ),
                   const SizedBox(height: 15),
-                  // Email
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'อีเมล:Karn.klangdee@gmail.com',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    child: Text(
+                      'อีเมล: $email',
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
                   const SizedBox(height: 5),
-                  // Date
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'วันเกิด:01/01/1990',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    child: Text(
+                      'วันเกิด: $birthday',
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> reSet() async {
-    try {
-      final response = await http.delete(Uri.parse("$url/admin/reset/app"));
-      log(response.body);
-    } catch (err) {
-      log(err.toString());
-    }
-  }
-
-  void resetData() {
-    Get.dialog(
-      AlertDialog(
-        content: const Text(
-          "รีเซ็ตระบบใหม่ทั้งหมด",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        actionsAlignment: MainAxisAlignment.center,
-        actions: [
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFD10934),
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () {
-              reSet(); // รีเซ็ตระบบ
-              Get.back(); // ปิด dialog เก่า
-              // แสดง dialog ใหม่แจ้งเสร็จสิ้น
-              Get.dialog(
-                const AlertDialog(
-                  content: Text(
-                    "รีเซ็ตระบบสำเร็จ",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              );
-              // ปิด dialog ใหม่อัตโนมัติหลัง 2 วินาที
-              Future.delayed(const Duration(seconds: 1), () {
-                if (Get.isDialogOpen ?? false) {
-                  Get.back();
-                }
-              });
-            },
-            child: const Text(
-              "ยืนยันการรีเซ็ตระบบ",
-              textAlign: TextAlign.center,
-            ),
-          ),
-          TextButton(onPressed: () => Get.back(), child: const Text("ยกเลิก")),
         ],
       ),
     );
@@ -251,6 +163,7 @@ class _AdminPageState extends State<AdminPage> {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 3,
@@ -267,13 +180,8 @@ class _AdminPageState extends State<AdminPage> {
                   width: 24,
                   height: 24,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.image_not_supported,
-                      color: Colors.grey[600],
-                      size: 24,
-                    );
-                  },
+                  errorBuilder: (context, error, stackTrace) =>
+                      Icon(Icons.image_not_supported, color: Colors.grey[600]),
                 ),
               )
             : Icon(icon, color: Colors.grey[600]),
@@ -285,5 +193,56 @@ class _AdminPageState extends State<AdminPage> {
         onTap: onTap,
       ),
     );
+  }
+
+  Future<void> _loadProfile() async {
+    try {
+      final config = await Configuration.getConfig();
+      url = config['apiEndpoint'];
+
+      final res = await http.get(Uri.parse('$url/user/show/${widget.idx}'));
+      log(widget.idx.toString());
+      log(url);
+      log(res.body);
+
+      if (res.statusCode == 201) {
+        var json = jsonDecode(res.body);
+
+        if (json is List && json.isNotEmpty) {
+          var data = json[0];
+
+        setState(() {
+          email = data['email'] ?? '';
+          username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
+
+          if (data['birthday'] != null &&
+              data['birthday'].toString().isNotEmpty) {
+            DateTime dt = DateTime.parse(data['birthday']);
+            int buddhistYear = dt.year + 543;
+            String monthThai = DateFormat.MMMM('th').format(dt);
+            birthday = 'วันที่ ${dt.day} $monthThai พ.ศ. $buddhistYear';
+          } else {
+            birthday = '';
+          }
+        });
+        } else {
+          log('No user data found');
+          setState(() {
+            email = '';
+            birthday = '';
+            username = '';
+          });
+        }
+      } else {
+        log('Error fetching admin profile: ${res.statusCode}');
+        setState(() {
+          email = '';
+          birthday = '';
+          username = '';
+        });
+      }
+    } catch (e) {
+      log('Exception fetching admin profile: $e');
+    }
   }
 }

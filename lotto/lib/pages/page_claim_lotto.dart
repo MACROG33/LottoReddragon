@@ -241,9 +241,7 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
     int prizeMoney = getPrizeMoney(reward);
 
     log(
-      "ถูกรางวัล $reward จำนวนเงิน $prizeMoney บาท " +
-          widget.idx.toString() +
-          "id",
+      "ถูกรางวัล $reward จำนวนเงิน $prizeMoney บาท ${widget.idx}id",
     );
 
     try {
