@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() async {
     String email = emailController.text;
     String password = passwordController.text;
-    log(email + " " + password);
+    log("$email $password");
     if (email.isEmpty || password.isEmpty) {
       showError("โปรดใส่อีเมลและรหัสผ่าน");
       return;
@@ -191,7 +191,9 @@ class _LoginScreenState extends State<LoginScreen> {
         if (data['user']['role'] == "admin") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AdminPage()),
+            MaterialPageRoute(
+              builder: (context) => AdminPage(idx: data['user']['user_id']),
+            ),
           );
         } else {
           Navigator.push(

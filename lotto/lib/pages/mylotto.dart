@@ -170,7 +170,7 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
 
   Future<void> getloaddate() async {
     try {
-      log(widget.idx.toString() + " " + url);
+      log("${widget.idx} $url");
 
       var res = await http.get(Uri.parse('$url/user/lottoMe?id=${widget.idx}'));
       log(res.body);

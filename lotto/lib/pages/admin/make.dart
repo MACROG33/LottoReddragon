@@ -5,7 +5,6 @@ import 'dart:math' hide log;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:lotto/config/config.dart';
 import 'package:lotto/model/request/admin_make_post_Req.dart';
