@@ -297,6 +297,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
           )
           .then((value) {
             log(value.body);
+            setState(() {});
           })
           .catchError((onError) {
             log(onError);
@@ -399,9 +400,8 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     try {
       var config = await Configuration.getConfig();
       url = config['apiEndpoint'];
-      log(url);
-      var res = await http.get(Uri.parse('$url/lotto/showall'));
-      log(res.body);
+      var res = await http.get(Uri.parse('$url/lotto/show/unsold'));
+
       final data = getLottoResFromJson(res.body);
       setState(() {
         lottoGetPes = data;
