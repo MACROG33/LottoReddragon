@@ -31,50 +31,55 @@ class _AdminPageState extends State<AdminPage> {
       _loadProfile();
     });
   }
+  int selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 280,
-                  decoration: const BoxDecoration(color: Color(0xFFD10922)),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 35, 20, 20),
-                    child: Column(
-                      children: [
-                        _buildMenuItem(
-                          icon: Icons.create,
-                          title: 'สร้าง Lotto',
-                          onTap: () => Get.to(() => MakePage()),
-                        ),
-                        _buildMenuItem(
-                          icon: Icons.shuffle,
-                          title: 'สุ่ม Lotto',
-                          onTap: () => Get.to(() => RandomPage()),
-                        ),
-                        const Spacer(),
-                        TextButton(
-                          onPressed: () => Get.offAll(() => LoginScreen()),
-                          child: const Text(
-                            'ออกจากระบบ',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              decoration: TextDecoration.underline,
-                            ),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 280,
+                decoration: const BoxDecoration(color: Color(0xFFD10922)),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 35, 20, 20),
+                  child: Column(
+                    children: [
+                      _buildMenuItem(
+                        icon: Icons.create,
+                        title: 'สร้าง Lotto',
+                        onTap: () => Get.to(() => MakePage()),
+                      ),
+                      _buildMenuItem(
+                        icon: Icons.shuffle,
+                        title: 'สุ่ม Lotto',
+                        onTap: () => Get.to(() => RandomPage()),
+                      ),
+                      _buildMenuItem(
+                        icon: Icons.refresh,
+                        title: 'รีเซ็ตระบบ',
+                        onTap: resetData,
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () => Get.offAll(() => LoginScreen()),
+                        child: const Text(
+                          'ออกจากระบบ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
-                      ],
-                    ),
+                        
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -148,6 +153,59 @@ class _AdminPageState extends State<AdminPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+   Future<void> reSet() async {
+    try {
+      final response = await http.delete(Uri.parse("$url/admin/reset/app"));
+      log(response.body);
+    } catch (err) {
+      log(err.toString());
+    }
+  }
+   void resetData() {
+    Get.dialog(
+      AlertDialog(
+         content: const Text(
+          "รีเซ็ตระบบใหม่ทั้งหมด",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          FilledButton(
+            style: FilledButton.styleFrom(
+                 backgroundColor: const Color(0xFFD10934),
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+                  reSet(); // รีเซ็ตระบบ
+              Get.back(); // ปิด dialog เก่า
+              // แสดง dialog ใหม่แจ้งเสร็จสิ้น
+              Get.dialog(
+                const AlertDialog(
+                  content: Text(
+                    "รีเซ็ตระบบสำเร็จ",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              );
+              // ปิด dialog ใหม่อัตโนมัติหลัง 2 วินาที
+              Future.delayed(const Duration(seconds: 1), () {
+                if (Get.isDialogOpen ?? false) {
+                  Get.back();
+                }
+              });
+            },
+            child: const Text(
+              "ยืนยันการรีเซ็ตระบบ",
+              textAlign: TextAlign.center,
+            ),
+          ),
+            TextButton(onPressed: () => Get.back(), child: const Text("ยกเลิก")),
+        ],
       ),
     );
   }
