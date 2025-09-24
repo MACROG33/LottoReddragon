@@ -146,7 +146,7 @@ class _RandomPageState extends State<RandomPage> {
                                       color: Color(0xFFD10922),
                                     ),
                                   ),
-                                  
+
                                   Divider(
                                     color: Colors.grey.shade300,
                                     thickness: 1,
@@ -178,95 +178,23 @@ class _RandomPageState extends State<RandomPage> {
     );
   }
 
-  void drawLottoWinners({bool onlySold = false}) async {
+  Future<void> drawLottoWinners({bool onlySold = false}) async {
     try {
-      var res = await http.get(Uri.parse('$url/lotto/showall'));
-      List<GetLottoRes> allLotto = getLottoResFromJson(res.body);
+      final uri = Uri.parse("$url/admin/generate/draws?onlySold=$onlySold");
+      final res = await http.post(uri);
 
-      List<GetLottoRes> eligibleLotto = [];
-
-      if (onlySold) {
-        eligibleLotto = allLotto.where((l) => l.lottoStatus == 'sold').toList();
-      } else {
-        eligibleLotto = allLotto;
-      }
-
-      if (eligibleLotto.length < 3) {
-        log('จำนวนสลากไม่เพียงพอสำหรับสุ่มรางวัลที่ 1,2,3');
-        return;
-      }
-
-      Random random = Random();
-      Set<String> selectedNumbers = {}; // เก็บเลขสลากที่ถูกเลือกแล้ว
-
-      // ฟังก์ชันสุ่มเลขสลากโดยไม่ซ้ำ
-      GetLottoRes pickUniqueLotto() {
-        GetLottoRes lotto;
-        do {
-          lotto = eligibleLotto[random.nextInt(eligibleLotto.length)];
-        } while (selectedNumbers.contains(lotto.lottoNumber));
-        selectedNumbers.add(lotto.lottoNumber);
-        return lotto;
-      }
-
-      GetLottoRes firstPrize = pickUniqueLotto();
-      GetLottoRes secondPrize = pickUniqueLotto();
-      GetLottoRes thirdPrize = pickUniqueLotto();
-
-      GetLottoRes last2Digits = pickUniqueLotto();
-
-      String last3Digits = firstPrize.lottoNumber.substring(3, 6);
-      String last2Digitsget = last2Digits.lottoNumber.substring(4, 6);
-
-      Map<String, String> winners = {
-        'รางวัลที่1': firstPrize.lottoNumber,
-        'รางวัลที่2': secondPrize.lottoNumber,
-        'รางวัลที่3': thirdPrize.lottoNumber,
-        'รางวัลเลขท้าย 3 ตัว': last3Digits,
-        'รางวัลเลขท้าย 2 ตัว': last2Digitsget,
-      };
-      try {
-        // แปลง winners เป็น List<Map>
-        List<Map<String, String>> jsonList = [];
-        DateTime now = DateTime.now();
-        String dateLotto = now.toIso8601String().split("T")[0];
-        winners.forEach((key, value) {
-          jsonList.add({"prize": value, "Reward": key, "date": dateLotto});
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body);
+        final winners = data['winners'];
+        print("✅ รางวัลทั้ง 5: $winners");
+        setState(() {
+          loadData = loadDataShow();
         });
-
-        log(url);
-
-        // delete ทุก Colum ก่อนลง databass
-        http
-            .delete(Uri.parse("$url/lotto/draws/delete"))
-            .then((value) {
-              log(value.body);
-            })
-            .catchError((err) {
-              log(err.toString());
-            });
-
-        // Insert To DB  Draws
-        http
-            .post(
-              Uri.parse("$url/lotto/draws"),
-              headers: {"Content-Type": "application/json; charset=utf-8"},
-              body: jsonEncode(jsonList),
-            )
-            .then((value) {
-              log(value.body);
-              setState(() {
-                loadData = loadDataShow();
-              });
-            })
-            .catchError((onError) {
-              log(onError.toString());
-            });
-      } catch (e) {
-        log("Error: $e");
+      } else {
+        print(" สุ่มรางวัลไม่สำเร็จ: ${res.body}");
       }
     } catch (e) {
-      log('Error: $e');
+      print("Exception: $e");
     }
   }
 

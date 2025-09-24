@@ -276,37 +276,19 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     );
 
     try {
-      final response = await http.post(
-        Uri.parse("$url/lotto/buy"),
-        headers: {"Content-Type": "application/json; charset=utf-8"},
-        body: jsonEncode(reqBuyLotto.toJson()),
-      );
-
-      log(response.body);
-
-      final data = jsonDecode(response.body);
-
-      if (!context.mounted) return;
-
-      if (response.statusCode == 200) {
-      } else if (response.statusCode == 400 &&
-          data['error'] == "Insufficient wallet balance") {
-        showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Center(child: const Text("ซื้อไม่สำเร็จ")),
-            content: const Text("เงินในระบบไม่เพียงพอ"),
-            actions: [
-              TextButton(
-                onPressed: () => Get.back(),
-                child: const Text("ตกลง"),
-              ),
-            ],
-          ),
-        );
-      } else {
-        log("Unexpected error: ${response.statusCode} | ${data['error']}");
-      }
+      await http
+          .post(
+            Uri.parse("$url/lotto/buy"),
+            headers: {"Content-Type": "application/json; charset=utf-8"},
+            body: jsonEncode(reqBuyLotto.toJson()),
+          )
+          .then((value) {
+            log(value.body);
+            setState(() {});
+          })
+          .catchError((onError) {
+            log(onError);
+          });
     } catch (error) {
       log("Error: $error");
 
@@ -427,8 +409,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     try {
       var config = await Configuration.getConfig();
       url = config['apiEndpoint'];
-      log(url);
-      var res = await http.get(Uri.parse('$url/lotto/showall'));
+      var res = await http.get(Uri.parse('$url/lotto/show/unsold'));
 
       final data = getLottoResFromJson(res.body);
       setState(() {
