@@ -31,6 +31,7 @@ class _AdminPageState extends State<AdminPage> {
       _loadProfile();
     });
   }
+  int selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +61,11 @@ class _AdminPageState extends State<AdminPage> {
                         title: 'สุ่ม Lotto',
                         onTap: () => Get.to(() => RandomPage()),
                       ),
+                      _buildMenuItem(
+                        icon: Icons.refresh,
+                        title: 'รีเซ็ตระบบ',
+                        onTap: resetData,
+                      ),
                       const Spacer(),
                       TextButton(
                         onPressed: () => Get.offAll(() => LoginScreen()),
@@ -71,6 +77,7 @@ class _AdminPageState extends State<AdminPage> {
                             decoration: TextDecoration.underline,
                           ),
                         ),
+                        
                       ),
                     ],
                   ),
@@ -149,6 +156,59 @@ class _AdminPageState extends State<AdminPage> {
       ),
     );
   }
+   Future<void> reSet() async {
+    try {
+      final response = await http.delete(Uri.parse("$url/admin/reset/app"));
+      log(response.body);
+    } catch (err) {
+      log(err.toString());
+    }
+  }
+   void resetData() {
+    Get.dialog(
+      AlertDialog(
+         content: const Text(
+          "รีเซ็ตระบบใหม่ทั้งหมด",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          FilledButton(
+            style: FilledButton.styleFrom(
+                 backgroundColor: const Color(0xFFD10934),
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+                  reSet(); // รีเซ็ตระบบ
+              Get.back(); // ปิด dialog เก่า
+              // แสดง dialog ใหม่แจ้งเสร็จสิ้น
+              Get.dialog(
+                const AlertDialog(
+                  content: Text(
+                    "รีเซ็ตระบบสำเร็จ",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              );
+              // ปิด dialog ใหม่อัตโนมัติหลัง 2 วินาที
+              Future.delayed(const Duration(seconds: 1), () {
+                if (Get.isDialogOpen ?? false) {
+                  Get.back();
+                }
+              });
+            },
+            child: const Text(
+              "ยืนยันการรีเซ็ตระบบ",
+              textAlign: TextAlign.center,
+            ),
+          ),
+            TextButton(onPressed: () => Get.back(), child: const Text("ยกเลิก")),
+        ],
+      ),
+    );
+  }
 
   Widget _buildMenuItem({
     IconData? icon,
@@ -211,20 +271,20 @@ class _AdminPageState extends State<AdminPage> {
         if (json is List && json.isNotEmpty) {
           var data = json[0];
 
-        setState(() {
-          email = data['email'] ?? '';
-          username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
+          setState(() {
+            email = data['email'] ?? '';
+            username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
 
-          if (data['birthday'] != null &&
-              data['birthday'].toString().isNotEmpty) {
-            DateTime dt = DateTime.parse(data['birthday']);
-            int buddhistYear = dt.year + 543;
-            String monthThai = DateFormat.MMMM('th').format(dt);
-            birthday = 'วันที่ ${dt.day} $monthThai พ.ศ. $buddhistYear';
-          } else {
-            birthday = '';
-          }
-        });
+            if (data['birthday'] != null &&
+                data['birthday'].toString().isNotEmpty) {
+              DateTime dt = DateTime.parse(data['birthday']);
+              int buddhistYear = dt.year + 543;
+              String monthThai = DateFormat.MMMM('th').format(dt);
+              birthday = 'วันที่ ${dt.day} $monthThai พ.ศ. $buddhistYear';
+            } else {
+              birthday = '';
+            }
+          });
         } else {
           log('No user data found');
           setState(() {
