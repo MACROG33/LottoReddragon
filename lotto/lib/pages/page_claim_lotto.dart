@@ -70,7 +70,7 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                             child: Stack(
                               children: [
                                 InkWell(
-                                  onTap: () => claimLotto(
+                                  onTap: () => popUpClaimLotto(
                                     lotto.reward.toString(),
                                     lotto.isWinner,
                                   ),
@@ -148,7 +148,12 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
     );
   }
 
-  void popUpClaimLotto() {
+  void popUpClaimLotto(String reward, bool isWinner) {
+    if (!isWinner) {
+      log("ตั๋วนี้ไม่ถูกรางวัล");
+      return;
+    }
+
     Get.dialog(
       AlertDialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
@@ -170,9 +175,9 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   Get.back();
-
+                  claimLotto(reward, isWinner);
                   Get.dialog(
                     const AlertDialog(
                       content: Text(
@@ -187,7 +192,7 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                     barrierDismissible: false,
                   );
 
-                  Future.delayed(const Duration(seconds: 1), () {
+                  Future.delayed(const Duration(seconds: 2), () {
                     Get.back();
                   });
                 },
