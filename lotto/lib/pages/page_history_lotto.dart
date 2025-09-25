@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +11,7 @@ import 'package:lotto/model/response/๊User_claim_lotto_res.dart';
 class PageHistoryLotto extends StatefulWidget {
   final int idx;
   const PageHistoryLotto({super.key, required this.idx});
+  
 
   @override
   State<PageHistoryLotto> createState() => _PageHistoryLottoState();
@@ -17,7 +19,9 @@ class PageHistoryLotto extends StatefulWidget {
 
 class _PageHistoryLottoState extends State<PageHistoryLotto> {
   late Future<void> loadData;
-  String? selectedItem;
+   String? selectedItem;
+  List<ResLottoMeLotto> lottoGetPes = [];
+  List<ResLottoMeLotto> setloadData = [];
 
   List<ResLottoCkeckLotto> lottoHistory = [];
   List<ResLottoCkeckLotto> filteredHistory = [];
@@ -28,7 +32,7 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
   @override
   void initState() {
     super.initState();
-    initializeDateFormatting('th_TH', null);
+    initializeDateFormatting('th_TH', null); 
     Configuration.getConfig().then((config) {
       url = config['apiEndpoint'];
       setState(() {
@@ -49,6 +53,22 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
       log("Error: $e");
     }
   }
+  
+  Future<void> getloaddate() async {
+    try {
+      log("${widget.idx} $url");
+
+      var res = await http.get(Uri.parse('$url/user/lottoMe?id=${widget.idx}'));
+      log(res.body);
+      lottoGetPes = resLottoMeLottoFromJson(res.body);
+      setloadData = lottoGetPes;
+
+      if (!mounted) return; // ป้องกัน widget ถูก dispose แล้ว
+      setState(() {});
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 
   String getPrizeAmount(String? reward) {
     final Map<String, String> prizeTable = {
@@ -59,6 +79,19 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
       'รางวัลเลขท้าย 2 ตัว': '2,000',
     };
     return prizeTable[reward] ?? "-";
+  }
+
+  String formatDateThai(String? dateStr) {
+    if (dateStr == null) return "วันที่ไม่ระบุ";
+    try {
+      final date = DateTime.parse(dateStr);
+      final buddhistYear = date.year + 543;
+      final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
+      return "$dayMonth $buddhistYear";
+    } catch (e) {
+      log("Error parsing date: $e");
+      return dateStr;
+    }
   }
 
   String formatPrice(String? priceStr) {
@@ -88,9 +121,8 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
       padding: const EdgeInsets.all(8.0),
       child: FilledButton(
         style: FilledButton.styleFrom(
-          backgroundColor: filter == text
-              ? const Color(0xFFD10922)
-              : Colors.grey,
+          backgroundColor:
+              filter == text ? const Color(0xFFD10922) : Colors.grey,
         ),
         onPressed: () {
           setState(() {
@@ -188,12 +220,36 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                     ),
                                   ),
                                   Positioned(
+                                    left: 200,
+                                    top: 65,
+                                    child: Text(
+                                      formatDateThai(item.date),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
                                     left: 205,
                                     top: 15,
                                     child: Text(
                                       item.lottoNumber ?? "-",
                                       style: const TextStyle(
                                         fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    left: 40,
+                                    top: 115,
+                                    child: Text(
+                                      "${formatPrice(item.price)}\nบาท",
+                                      style: const TextStyle(
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       ),
@@ -206,15 +262,11 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      item.isWinner
-                                          ? item.reward ?? "ถูกรางวัล"
-                                          : "ไม่ถูกรางวัล",
+                                      item.isWinner ? item.reward ?? "ถูกรางวัล" : "ไม่ถูกรางวัล",
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        color: item.isWinner
-                                            ? Colors.green
-                                            : Colors.red,
+                                        color: item.isWinner ? Colors.green : Colors.red,
                                       ),
                                     ),
                                     if (item.isWinner)
