@@ -22,7 +22,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  double? balance;
+  double? wallet;
   String email = '';
   String birthday = '';
   String username = '';
@@ -174,8 +174,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             TextSpan(
-                              text: balance != null
-                                  ? '${balance!.toStringAsFixed(2)} บาท'
+                              text: wallet != null
+                                  ? '${wallet!.toStringAsFixed(2)} บาท'
                                   : 'กำลังโหลด...',
                               style: const TextStyle(
                                 color: Colors.yellow,
@@ -308,47 +308,64 @@ class _ProfilePageState extends State<ProfilePage> {
       log(res.body);
 
       if (res.statusCode == 201) {
-        var decoded = jsonDecode(res.body);
+        var json = jsonDecode(res.body);
 
-        if (decoded is List && decoded.isNotEmpty) {
-          var data = decoded[0]; // ใช้ element แรกอย่างปลอดภัย
+        if (json is List && json.isNotEmpty) {
+          var data = json[0];
 
           setState(() {
-            balance = data['wallet'] != null
-                ? double.tryParse(data['wallet'].toString()) ?? 0
-                : 0;
             email = data['email'] ?? '';
+            username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
+            wallet = (data['wallet'] != null)
+                ? double.tryParse(data['wallet'].toString()) ?? 0.0
+                : 0.0;
 
-            // แปลงวันเกิดเป็น "วันที่ 20 กันยายน พ.ศ. 2568"
             if (data['birthday'] != null &&
                 data['birthday'].toString().isNotEmpty) {
               DateTime dt = DateTime.parse(data['birthday']);
-              int buddhistYear = dt.year + 543; // แปลงเป็น พ.ศ.
-              String monthThai = DateFormat.MMMM(
-                'th',
-              ).format(dt); // เดือนเป็นภาษาไทย
+              int buddhistYear = dt.year + 543;
+              String monthThai = DateFormat.MMMM('th').format(dt);
               birthday = 'วันที่ ${dt.day} $monthThai พ.ศ. $buddhistYear';
             } else {
               birthday = '';
             }
-
-            username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
           });
         } else {
-          log('No user data found.');
-          // กรณี list ว่าง ให้รีเซ็ตค่า UI
-          setState(() {
-            balance = 0;
-            email = '';
-            birthday = '';
-            username = '';
-          });
+          log('No user data found');
+          var json = jsonDecode(res.body);
+
+          if (json is List && json.isNotEmpty) {
+            var data = json[0];
+            setState(() {
+              email = data['email'] ?? '';
+              username = '${data['Firstname'] ?? ''} ${data['LastName'] ?? ''}';
+              wallet = (data['wallet'] != null)
+                  ? double.tryParse(data['wallet'].toString()) ?? 0.0
+                  : 0.0;
+
+              if (data['birthday'] != null &&
+                  data['birthday'].toString().isNotEmpty) {
+                DateTime dt = DateTime.parse(data['birthday']);
+                int buddhistYear = dt.year + 543;
+                String monthThai = DateFormat.MMMM('th').format(dt);
+                birthday = 'วันที่ ${dt.day} $monthThai พ.ศ. $buddhistYear';
+              } else {
+                birthday = '';
+              }
+            });
+          }
         }
       } else {
-        log('Error fetching profile: ${res.statusCode}');
+        log('Error fetching user profile: ${res.statusCode}');
+        setState(() {
+          email = '';
+          birthday = '';
+          username = '';
+          wallet = 0.0;
+        });
       }
     } catch (e) {
-      log('Exception fetching profile: $e');
+      log('Exception fetching user profile: $e');
     }
   }
 }

@@ -233,7 +233,31 @@ class _PageRegisterState extends State<PageRegister> {
 
   //Dialog register
   void _showCustomDialog() {
-    // ตรวจสอบรหัสผ่านก่อน
+    // ตรวจสอบว่าทุก field ต้องไม่ว่าง
+    if (firstNameController.text.isEmpty ||
+        lastNameController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        checkPasswordController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        walletController.text.isEmpty) {
+      Get.dialog(
+        const AlertDialog(
+          content: SizedBox(
+            height: 150,
+            child: Center(
+              child: Text(
+                "กรุณากรอกข้อมูลให้ครบทุกช่อง",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
+    // ✅ ตรวจสอบรหัสผ่านว่าตรงกันหรือไม่
     if (passwordController.text != checkPasswordController.text) {
       Get.dialog(
         AlertDialog(
@@ -255,7 +279,6 @@ class _PageRegisterState extends State<PageRegister> {
       return; // ออกจากฟังก์ชันทันที
     }
 
-    // ถ้ารหัสผ่านตรงกัน ให้แสดง Dialog ยืนยันการสมัคร
     Get.dialog(
       AlertDialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
@@ -271,7 +294,7 @@ class _PageRegisterState extends State<PageRegister> {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFD700),
+                  backgroundColor: const Color(0xFFFFD700),
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -307,7 +330,7 @@ class _PageRegisterState extends State<PageRegister> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFD700),
+                  backgroundColor: const Color(0xFFFFD700),
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
