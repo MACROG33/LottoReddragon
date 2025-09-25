@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:lotto/config/config.dart';
 
 import 'package:lotto/model/request/Users_login_Post_Req.dart';
-import 'package:lotto/model/response/Users_login_Post_Res.dart';
 import 'package:lotto/pages/admin/admin.dart';
 import 'package:lotto/pages/home.dart';
 import 'package:lotto/pages/page_register.dart';

@@ -15,7 +15,7 @@ import 'package:lotto/pages/page_search_lotto.dart';
 
 class ProfilePage extends StatefulWidget {
   final int idx;
-  const ProfilePage({Key? key, required this.idx}) : super(key: key);
+  const ProfilePage({super.key, required this.idx});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PageHistoryLotto(),
+                                builder: (context) => PageHistoryLotto(idx: widget.idx,),
                               ),
                             );
                           },

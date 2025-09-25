@@ -6,7 +6,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto/config/config.dart';
 import 'package:lotto/model/response/User_lotto_me_res.dart';
-import 'package:lotto/model/response/lotto_all_get_Res.dart';
 
 class PageLottoTicketScreen extends StatefulWidget {
   int idx = 0;
