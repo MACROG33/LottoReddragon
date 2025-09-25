@@ -39,6 +39,10 @@ class ResLottoMeLotto {
         dateLotto: json["date_lotto"],
       );
 
+  bool? get isWinner => null;
+
+  get reward => null;
+
   Map<String, dynamic> toJson() => {
     "order_id": orderId,
     "Firstname": firstname,

@@ -77,6 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PageHistoryLotto(idx: widget.idx,),
+                                // 
                               ),
                             );
                           },

@@ -44,6 +44,12 @@ class ResLottoCkeckLotto {
 
   get date => null;
 
+  get price => null;
+
+  get prizeAmount => null;
+
+  String? get priceLotto => null;
+
   Map<String, dynamic> toJson() => {
     "user_id": userId,
     "firstname": firstname,
