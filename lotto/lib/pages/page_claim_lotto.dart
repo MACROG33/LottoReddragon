@@ -20,7 +20,6 @@ class PageClaimLotto extends StatefulWidget {
 }
 
 class _PageClaimLottoState extends State<PageClaimLotto> {
-  // กำหนดค่าเริ่มต้นให้ loadData เพื่อแก้ปัญหา "Field not initialized"
   late Future<void> loadData = Future.value();
 
   List<ResLottoCkeckLotto> lottoGetPes = [];
@@ -59,125 +58,125 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                  return Column(
-                    children: List.generate(lottoGetPes.length, (i) {
-                      final lotto = lottoGetPes[i];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Card(
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                IntrinsicWidth(
-                                  child: Column(
-                                    children: [
-                                      Stack(
-                                        children: [
-                                          InkWell(
-                                            onTap: () => popUpClaimLotto(
-                                              lotto.reward.toString(),
-                                              lotto.isWinner,
-                                            ),
-                                            child: Image.asset(
-                                              'assets/images/lotto.png',
-                                            ),
+                return Column(
+                  children: List.generate(lottoGetPes.length, (i) {
+                    final lotto = lottoGetPes[i];
+                    final lotto2 = loadDate[i];
+                    final date = DateTime.parse(lotto2.dateLotto);
+                    final buddhistYear = date.year + 543;
+                    final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
+                    final formattedDate = '$dayMonth $buddhistYear';
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Card(
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              IntrinsicWidth(
+                                child: Column(
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        InkWell(
+                                          onTap: () => popUpClaimLotto(
+                                            lotto.reward.toString(),
+                                            lotto.isWinner,
                                           ),
+                                          child: Image.asset(
+                                            'assets/images/lotto.png',
+                                          ),
+                                        ),
 
-                                          // Your existing Positioned widgets
-                                          Positioned(
-                                            left: 195,
-                                            top: 15,
-                                            child: Container(
-                                              width: 155,
-                                              height: 40,
-                                              color: Colors.grey,
-                                            ),
+                                        // Your existing Positioned widgets
+                                        Positioned(
+                                          left: 195,
+                                          top: 15,
+                                          child: Container(
+                                            width: 155,
+                                            height: 40,
+                                            color: Colors.grey,
                                           ),
-                                          Positioned(
-                                            left: 195,
-                                            top: 65,
-                                            child: Container(
-                                              width: 155,
-                                              height: 20,
-                                              color: Colors.grey,
-                                              child: Text(
-                                                "วันที่ 1 ธันวาคม 2569",
-                                              ),
-                                            ),
+                                        ),
+                                        Positioned(
+                                          left: 195,
+                                          top: 65,
+                                          child: Container(
+                                            width: 155,
+                                            height: 20,
+                                            color: Colors.grey,
+                                            child: Text(formattedDate),
                                           ),
-                                          Positioned(
-                                            left: 25,
-                                            top: 115,
-                                            child: Container(
-                                              width: 70,
-                                              height: 60,
-                                              color: Colors.grey,
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "80 บาท",
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            left: 205,
-                                            top: 15,
+                                        ),
+                                        Positioned(
+                                          left: 25,
+                                          top: 115,
+                                          child: Container(
+                                            width: 70,
+                                            height: 60,
+                                            color: Colors.grey,
+                                            alignment: Alignment.center,
                                             child: Text(
-                                              lotto.lottoNumber
-                                                  .split('')
-                                                  .join(' '),
+                                              "80 บาท",
+                                              textAlign: TextAlign.center,
                                               style: const TextStyle(
-                                                fontSize: 30,
+                                                fontSize: 12,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.black,
+                                                color: Colors.white,
                                               ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 205,
+                                          top: 15,
+                                          child: Text(
+                                            lotto.lottoNumber
+                                                .split('')
+                                                .join(' '),
+                                            style: const TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    Container(
+                                      width: double.infinity,
+                                      color: Colors.grey[300],
+                                      padding: const EdgeInsets.all(12),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            lotto.reward != null
+                                                ? lotto.reward.toString()
+                                                : "ไม่ถูกรางวัล",
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            "จำนวนเงินรางวัล: ${getPrizeMoney(lotto.reward.toString())} บาท",
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.black87,
                                             ),
                                           ),
                                         ],
                                       ),
-
-                                      // Container that will match the image width
-                                      Container(
-                                        width: double
-                                            .infinity, // Takes full width of IntrinsicWidth parent
-                                        color: Colors.grey[300],
-                                        padding: const EdgeInsets.all(12),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              lotto.reward != null
-                                                  ? lotto.reward.toString()
-                                                  : "ไม่ถูกรางวัล",
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              "จำนวนเงินรางวัล: ${getPrizeMoney(lotto.reward.toString())} บาท",
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal,
-                                                color: Colors.black87,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                             
+                              ),
                             ],
                           ),
                         ),
