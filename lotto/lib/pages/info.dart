@@ -15,7 +15,7 @@ import 'package:lotto/pages/page_search_lotto.dart';
 
 class ProfilePage extends StatefulWidget {
   final int idx;
-  const ProfilePage({Key? key, required this.idx}) : super(key: key);
+  const ProfilePage({super.key, required this.idx});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -41,18 +41,98 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 280,
-                  decoration: const BoxDecoration(color: Color(0xFFD10922)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 35, 20, 20),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 280,
+                    decoration: const BoxDecoration(color: Color(0xFFD10922)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 35, 20, 20),
+                    child: Column(
+                      children: [
+                        _buildMenuItem(
+                          imagePath: 'assets/images/slip.jpg',
+                          title: 'ฉลากของฉัน',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PageLottoTicketScreen(idx: widget.idx),
+                              ),
+                            );
+                          },
+                        ),
+                        _buildMenuItem(
+                          imagePath: 'assets/images/celebate.jpg',
+                          title: 'ประวัติการถูกรางวัล',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PageHistoryLotto(idx: widget.idx,),
+                                // 
+                              ),
+                            );
+                          },
+                        ),
+                        _buildMenuItem(
+                          imagePath: 'assets/images/money.jpg',
+                          title: 'ขึ้นเงินรางวัล',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PageClaimLotto(idx: widget.idx),
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 250),
+
+                        TextButton(
+                          onPressed: () {
+                            Get.offAll(() => LoginScreen());
+                          },
+                          child: const Text(
+                            'ออกจากระบบ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                top: 20,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 2,
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
                   child: Column(
                     children: [
                       _buildMenuItem(
