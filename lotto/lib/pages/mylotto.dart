@@ -5,7 +5,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto/config/config.dart';
 import 'package:lotto/model/response/User_lotto_me_res.dart';
-import 'package:lotto/model/response/lotto_all_get_Res.dart';
 
 class PageLottoTicketScreen extends StatefulWidget {
   int idx = 0;
@@ -59,6 +58,8 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
             if (lottoGetPes.isEmpty) {
               return const Center(child: Text('ไม่พบข้อมูลสลาก'));
             }
+            final width = MediaQuery.of(context).size.width;
+            final height = MediaQuery.of(context).size.height;
             return Column(
               children: List.generate(lottoGetPes.length, (i) {
                 final lotto = lottoGetPes[i];
@@ -82,41 +83,44 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
                       color: Colors.white,
                       child: Stack(
                         children: [
-                          InkWell(
-                            child: Image.asset('assets/images/lotto.png'),
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: InkWell(
+                              child: Image.asset('assets/images/lotto.png'),
+                            ),
                           ),
                           // กล่องตกแต่ง
                           Positioned(
-                            left: 195,
-                            top: 15,
+                            left: width * 0.40,
+                            top: height * 0.02,
                             child: Container(
-                              width: 155,
-                              height: 40,
+                              width: width * 0.33,
+                              height: height * 0.06,
                               color: Colors.grey,
                             ),
                           ),
                           Positioned(
-                            left: 195,
-                            top: 65,
+                            left: width * 0.40,
+                            top: height * 0.09,
                             child: Container(
-                              width: 155,
-                              height: 20,
+                              width: width * 0.33,
+                              height: height * 0.025,
                               color: Colors.grey,
                             ),
                           ),
                           Positioned(
-                            left: 25,
-                            top: 115,
+                            left: width * 0.08,
+                            top: height * 0.15,
                             child: Container(
-                              width: 70,
-                              height: 60,
+                              width: width * 0.18,
+                              height: height * 0.08,
                               color: Colors.grey,
                             ),
                           ),
                           // เลขสลาก
                           Positioned(
-                            left: 205,
-                            top: 15,
+                            left: width * 0.42,
+                            top: height * 0.02,
                             child: Text(
                               lotto.lottoNumber.split('').join(' '),
                               style: const TextStyle(
@@ -128,8 +132,8 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
                           ),
                           // วันที่
                           Positioned(
-                            left: 200,
-                            top: 65,
+                            left: width * 0.42,
+                            top: height * 0.09,
                             child: Text(
                               "วันที่ $formattedDate",
                               style: const TextStyle(
@@ -141,8 +145,8 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
                           ),
                           // ราคา
                           Positioned(
-                            left: 40,
-                            top: 115,
+                            left: width * 0.13,
+                            top: height * 0.15,
                             child: Text(
                               "${double.parse(lotto.priceLotto).toInt()}\nบาท",
                               style: const TextStyle(
