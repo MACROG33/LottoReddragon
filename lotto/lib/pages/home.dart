@@ -250,7 +250,7 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(6, (index) {
         return Container(
-          width: 40,
+          width: MediaQuery.of(context).size.width * 0.1,
           margin: EdgeInsets.symmetric(horizontal: 4),
           child: TextField(
             controller: controllers[index],
@@ -356,5 +356,4 @@ class _HomePageState extends State<HomePage> {
       log('Exception: $e');
     }
   }
-
 }

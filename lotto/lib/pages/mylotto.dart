@@ -5,7 +5,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:lotto/config/config.dart';
 import 'package:lotto/model/response/User_lotto_me_res.dart';
-import 'package:lotto/model/response/lotto_all_get_Res.dart';
 
 class PageLottoTicketScreen extends StatefulWidget {
   int idx = 0;
@@ -21,7 +20,8 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
   List<ResLottoMeLotto> lottoGetPes = [];
   List<ResLottoMeLotto> setloadData = [];
   String url = '';
-
+  int countLotto = 0;
+  bool iscount = false;
   @override
   void initState() {
     super.initState();
@@ -50,116 +50,132 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
       ),
       backgroundColor: Colors.grey[100],
       body: SingleChildScrollView(
-        child: FutureBuilder(
-          future: loadData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (lottoGetPes.isEmpty) {
-              return const Center(child: Text('ไม่พบข้อมูลสลาก'));
-            }
-            return Column(
-              children: List.generate(lottoGetPes.length, (i) {
-                final lotto = lottoGetPes[i];
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              iscount
+                  ? "คุณยังไม่ได้ซื้อลอตเตอรี่"
+                  : 'จำนวนสลาก ${countLotto} ใบ',
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
 
-                // แปลงวันที่ + พ.ศ.
-                String formattedDate = '';
-                try {
-                  final date = DateTime.parse(lotto.dateLotto);
-                  final buddhistYear = date.year + 543;
-                  final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
-                  formattedDate = '$dayMonth $buddhistYear';
-                } catch (e) {
-                  log('Error parsing date: $e');
-                  formattedDate = lotto.dateLotto;
+            FutureBuilder(
+              future: loadData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
                 }
+                if (lottoGetPes.isEmpty) {
+                  return const Center(child: Text('ไม่พบข้อมูลสลาก'));
+                }
+                return Column(
+                  children: List.generate(lottoGetPes.length, (i) {
+                    final lotto = lottoGetPes[i];
 
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Card(
-                      color: Colors.white,
-                      child: Stack(
-                        children: [
-                          InkWell(
-                            child: Image.asset('assets/images/lotto.png'),
-                          ),
-                          // กล่องตกแต่ง
-                          Positioned(
-                            left: 195,
-                            top: 15,
-                            child: Container(
-                              width: 155,
-                              height: 40,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Positioned(
-                            left: 195,
-                            top: 65,
-                            child: Container(
-                              width: 155,
-                              height: 20,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Positioned(
-                            left: 25,
-                            top: 115,
-                            child: Container(
-                              width: 70,
-                              height: 60,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          // เลขสลาก
-                          Positioned(
-                            left: 205,
-                            top: 15,
-                            child: Text(
-                              lotto.lottoNumber.split('').join(' '),
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                    // แปลงวันที่ + พ.ศ.
+                    String formattedDate = '';
+                    try {
+                      final date = DateTime.parse(lotto.dateLotto);
+                      final buddhistYear = date.year + 543;
+                      final dayMonth = DateFormat(
+                        'd MMMM',
+                        'th_TH',
+                      ).format(date);
+                      formattedDate = '$dayMonth $buddhistYear';
+                    } catch (e) {
+                      log('Error parsing date: $e');
+                      formattedDate = lotto.dateLotto;
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Card(
+                          color: Colors.white,
+                          child: Stack(
+                            children: [
+                              InkWell(
+                                child: Image.asset('assets/images/lotto.png'),
                               ),
-                            ),
-                          ),
-                          // วันที่
-                          Positioned(
-                            left: 200,
-                            top: 65,
-                            child: Text(
-                              "วันที่ $formattedDate",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                              // กล่องตกแต่ง
+                              Positioned(
+                                left: 195,
+                                top: 15,
+                                child: Container(
+                                  width: 155,
+                                  height: 40,
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
-                          ),
-                          // ราคา
-                          Positioned(
-                            left: 40,
-                            top: 115,
-                            child: Text(
-                              "${double.parse(lotto.priceLotto).toInt()}\nบาท",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                              Positioned(
+                                left: 195,
+                                top: 65,
+                                child: Container(
+                                  width: 155,
+                                  height: 20,
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
+                              Positioned(
+                                left: 25,
+                                top: 115,
+                                child: Container(
+                                  width: 70,
+                                  height: 60,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              // เลขสลาก
+                              Positioned(
+                                left: 205,
+                                top: 15,
+                                child: Text(
+                                  lotto.lottoNumber.split('').join(' '),
+                                  style: const TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              // วันที่
+                              Positioned(
+                                left: 200,
+                                top: 65,
+                                child: Text(
+                                  "วันที่ $formattedDate",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              // ราคา
+                              Positioned(
+                                left: 40,
+                                top: 115,
+                                child: Text(
+                                  "${double.parse(lotto.priceLotto).toInt()}\nบาท",
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 );
-              }),
-            );
-          },
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -167,12 +183,17 @@ class _PageLottoTicketScreenState extends State<PageLottoTicketScreen> {
 
   Future<void> getloaddate() async {
     try {
-      log("${widget.idx} $url");
       var res = await http.get(Uri.parse('$url/user/lottoMe?id=${widget.idx}'));
-      log(res.body);
+
       lottoGetPes = resLottoMeLottoFromJson(res.body);
       setloadData = lottoGetPes;
-      if (!mounted) return; // ป้องกัน widget ถูก dispose แล้ว
+      countLotto = lottoGetPes.length;
+      if (lottoGetPes.isNotEmpty) {
+        countLotto = lottoGetPes.length;
+      } else {
+        iscount = true;
+        countLotto = 0;
+      }
       setState(() {});
     } catch (e) {
       log(e.toString());
