@@ -151,152 +151,154 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildFilterButton("ทั้งหมด"),
-                  buildFilterButton("ถูกรางวัล"),
-                  buildFilterButton("ไม่ถูกรางวัล"),
-                ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildFilterButton("ทั้งหมด"),
+                    buildFilterButton("ถูกรางวัล"),
+                    buildFilterButton("ไม่ถูกรางวัล"),
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: FutureBuilder(
-              future: loadData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (filteredHistory.isEmpty) {
-                  return const Center(child: Text('ไม่พบข้อมูลประวัติ'));
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 0),
-                  itemCount: filteredHistory.length,
-                  itemBuilder: (context, i) {
-                    final item = filteredHistory[i];
-                    final item2 = lottoGetPes[i];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Card(
-                          color: const Color(0xFFD9D9D9),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Stack(
-                                children: [
-                                  Image.asset("assets/images/lotto.png"),
-                                  Positioned(
-                                    left: 195,
-                                    top: 15,
-                                    child: Container(
-                                      width: 155,
-                                      height: 40,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 195,
-                                    top: 65,
-                                    child: Container(
-                                      width: 155,
-                                      height: 20,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 25,
-                                    top: 115,
-                                    child: Container(
-                                      width: 70,
-                                      height: 60,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 200,
-                                    top: 65,
-                                    child: Text(
-                                      formatDateThai(item2.dateLotto),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 205,
-                                    top: 15,
-                                    child: Text(
-                                      item.lottoNumber ?? "-",
-                                      style: const TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 40,
-                                    top: 115,
-                                    child: Text(
-                                      "${formatPrice(item2.priceLotto)}\nบาท",
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
+            Expanded(
+              child: FutureBuilder(
+                future: loadData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (filteredHistory.isEmpty) {
+                    return const Center(child: Text('ไม่พบข้อมูลประวัติ'));
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 0),
+                    itemCount: filteredHistory.length,
+                    itemBuilder: (context, i) {
+                      final item = filteredHistory[i];
+                      final item2 = lottoGetPes[i];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Card(
+                            color: const Color(0xFFD9D9D9),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Stack(
                                   children: [
-                                    Text(
-                                      item.isWinner
-                                          ? item.reward ?? "ถูกรางวัล"
-                                          : "ไม่ถูกรางวัล",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: item.isWinner
-                                            ? Colors.green
-                                            : Colors.red,
+                                    Image.asset("assets/images/lotto.png"),
+                                    Positioned(
+                                      left: 195,
+                                      top: 15,
+                                      child: Container(
+                                        width: 155,
+                                        height: 40,
+                                        color: Colors.grey,
                                       ),
                                     ),
-                                    if (item.isWinner)
-                                      Text(
-                                        "จำนวนเงิน ${getPrizeAmount(item.reward)} บาท",
+                                    Positioned(
+                                      left: 195,
+                                      top: 65,
+                                      child: Container(
+                                        width: 155,
+                                        height: 20,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 25,
+                                      top: 115,
+                                      child: Container(
+                                        width: 70,
+                                        height: 60,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 200,
+                                      top: 65,
+                                      child: Text(
+                                        formatDateThai(item2.dateLotto),
                                         style: const TextStyle(
                                           fontSize: 16,
+                                          fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
                                       ),
+                                    ),
+                                    Positioned(
+                                      left: 205,
+                                      top: 15,
+                                      child: Text(
+                                        item.lottoNumber ?? "-",
+                                        style: const TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 40,
+                                      top: 115,
+                                      child: Text(
+                                        "${formatPrice(item2.priceLotto)}\nบาท",
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        item.isWinner
+                                            ? item.reward ?? "ถูกรางวัล"
+                                            : "ไม่ถูกรางวัล",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: item.isWinner
+                                              ? Colors.green
+                                              : Colors.red,
+                                        ),
+                                      ),
+                                      if (item.isWinner)
+                                        Text(
+                                          "จำนวนเงิน ${getPrizeAmount(item.reward)} บาท",
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

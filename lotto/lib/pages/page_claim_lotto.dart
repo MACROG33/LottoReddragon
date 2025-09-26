@@ -48,145 +48,179 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
         ),
         backgroundColor: const Color(0xFFD10922),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            FutureBuilder(
-              future: loadData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              FutureBuilder(
+                future: loadData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                return Column(
-                  children: List.generate(lottoGetPes.length, (i) {
-                    final lotto = lottoGetPes[i];
-                    final lotto2 = loadDate[i];
-                    final date = DateTime.parse(lotto2.dateLotto);
-                    final buddhistYear = date.year + 543;
-                    final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
-                    final formattedDate = '$dayMonth $buddhistYear';
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Card(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              IntrinsicWidth(
-                                child: Column(
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        InkWell(
-                                          onTap: () => popUpClaimLotto(
-                                            lotto.reward.toString(),
-                                            lotto.isWinner,
-                                          ),
-                                          child: Image.asset(
+                  return Column(
+                    children: List.generate(lottoGetPes.length, (i) {
+                      final lotto = lottoGetPes[i];
+                      final lotto2 = loadDate[i];
+                      final date = DateTime.parse(lotto2.dateLotto);
+                      final buddhistYear = date.year + 543;
+                      final dayMonth = DateFormat(
+                        'd MMMM',
+                        'th_TH',
+                      ).format(date);
+                      final formattedDate = '$dayMonth $buddhistYear';
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Card(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                IntrinsicWidth(
+                                  child: Column(
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Image.asset(
                                             'assets/images/lotto.png',
                                           ),
-                                        ),
 
-                                        // Your existing Positioned widgets
-                                        Positioned(
-                                          left: 195,
-                                          top: 15,
-                                          child: Container(
-                                            width: 155,
-                                            height: 40,
-                                            color: Colors.grey,
+                                          // Your existing Positioned widgets
+                                          Positioned(
+                                            left: 195,
+                                            top: 15,
+                                            child: Container(
+                                              width: 155,
+                                              height: 40,
+                                              color: Colors.grey,
+                                            ),
                                           ),
-                                        ),
-                                        Positioned(
-                                          left: 195,
-                                          top: 65,
-                                          child: Container(
-                                            width: 155,
-                                            height: 20,
-                                            color: Colors.grey,
-                                            child: Text(formattedDate),
+                                          Positioned(
+                                            left: 195,
+                                            top: 65,
+                                            child: Container(
+                                              width: 155,
+                                              height: 20,
+                                              color: Colors.grey,
+                                              child: Text(formattedDate),
+                                            ),
                                           ),
-                                        ),
-                                        Positioned(
-                                          left: 25,
-                                          top: 115,
-                                          child: Container(
-                                            width: 70,
-                                            height: 60,
-                                            color: Colors.grey,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "80 บาท",
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
+                                          Positioned(
+                                            left: 25,
+                                            top: 115,
+                                            child: Container(
+                                              width: 70,
+                                              height: 60,
+                                              color: Colors.grey,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "80 บาท",
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Positioned(
-                                          left: 205,
-                                          top: 15,
-                                          child: Text(
-                                            lotto.lottoNumber
-                                                .split('')
-                                                .join(' '),
-                                            style: const TextStyle(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-                                    Container(
-                                      width: double.infinity,
-                                      color: Colors.grey[300],
-                                      padding: const EdgeInsets.all(12),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            lotto.reward != null
-                                                ? lotto.reward.toString()
-                                                : "ไม่ถูกรางวัล",
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "จำนวนเงินรางวัล: ${getPrizeMoney(lotto.reward.toString())} บาท",
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                              color: Colors.black87,
+                                          Positioned(
+                                            left: 205,
+                                            top: 15,
+                                            child: Text(
+                                              lotto.lottoNumber
+                                                  .split('')
+                                                  .join(' '),
+                                              style: const TextStyle(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
+
+                                      Container(
+                                        width: double.infinity,
+                                        color: Colors.grey[300],
+                                        padding: const EdgeInsets.all(12),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              lotto.reward != null
+                                                  ? lotto.reward.toString()
+                                                  : "ไม่ถูกรางวัล",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: lotto.reward != null
+                                                    ? Colors.green
+                                                    : Colors.red, // ✅ เปลี่ยนสี
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "จำนวนเงินรางวัล: ${getPrizeMoney(lotto.reward.toString())} บาท",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal,
+                                                color: lotto.reward != null
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                              ),
+                                            ),
+                                            //  เงื่อนไขแสดงปุ่มเฉพาะตอนถูกรางวัล
+                                            if (lotto.reward != null) ...[
+                                              const SizedBox(height: 10),
+                                              FilledButton(
+                                                onPressed: () {
+                                                  popUpClaimLotto(
+                                                    lotto.reward.toString(),
+                                                    lotto.isWinner,
+                                                  );
+                                                },
+                                                style: FilledButton.styleFrom(
+                                                  minimumSize: Size(
+                                                    double.infinity,
+                                                    50,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          5,
+                                                        ),
+                                                  ),
+                                                  backgroundColor: Color(
+                                                    0xFFFFD700,
+                                                  ),
+                                                  foregroundColor: Colors.black,
+                                                ),
+                                                child: const Text(
+                                                  "ขึ้นเงินรางวัล",
+                                                ),
+                                              ),
+                                            ],
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
-                );
-              },
-            ),
-          ],
+                      );
+                    }),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

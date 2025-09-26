@@ -49,130 +49,136 @@ class _RandomPageState extends State<RandomPage> {
         backgroundColor: const Color(0xFFD10922),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Card(
-              color: Colors.white,
-              shadowColor: Colors.black,
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min, // ให้ Card ขนาดพอดีกับเนื้อหา
-                  children: [
-                    const Text(
-                      "สุ่มฉลากกินแบ่งรัฐบาล",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFieldRow(),
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
-                          child: FilledButton(
-                            style: FilledButton.styleFrom(
-                              backgroundColor: Color(0xFFD10934),
-                            ),
-                            onPressed: drawLottoWinners,
-                            child: const Text(
-                              "สุ่มเลขทั้งหมด",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 20, 8, 8),
-                          child: FilledButton(
-                            style: FilledButton.styleFrom(
-                              backgroundColor: Color(0xFFD10934),
-                            ),
-                            onPressed: () => drawLottoWinners(onlySold: true),
-                            child: const Text(
-                              "สุ่มเลขที่ถูกชื้อไปแล้ว",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+        child: SafeArea(
+          child: Column(
+            children: [
+              Card(
+                color: Colors.white,
+                shadowColor: Colors.black,
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ),
-            ),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisSize:
+                        MainAxisSize.min, // ให้ Card ขนาดพอดีกับเนื้อหา
+                    children: [
+                      const Text(
+                        "สุ่มฉลากกินแบ่งรัฐบาล",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFieldRow(),
+                      ),
 
-            FutureBuilder(
-              future: loadData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return SizedBox(
-                  height: 1000,
-                  child: ListView(
-                    children: getDrawslotto
-                        .map(
-                          (trip) => Card(
-                            color: Colors.white,
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    trip.reward ??
-                                        "", // หรือ trip.Reward แล้วแต่ model
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFD10922),
-                                    ),
-                                  ),
-
-                                  Divider(
-                                    color: Colors.grey.shade300,
-                                    thickness: 1,
-                                    height: 20,
-                                    indent: 40,
-                                    endIndent: 40,
-                                  ),
-                                  Text(
-                                    trip.prize.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(1, 20, 8, 1),
+                              child: FilledButton(
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: Color(0xFFD10934),
+                                ),
+                                onPressed: drawLottoWinners,
+                                child: const Text(
+                                  "สุ่มเลขทั้งหมด",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                        .toList(),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(1, 20, 8, 1),
+                              child: FilledButton(
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: Color(0xFFD10934),
+                                ),
+                                onPressed: () =>
+                                    drawLottoWinners(onlySold: true),
+                                child: const Text(
+                                  "สุ่มเลขที่ถูกชื้อไปแล้ว",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+              ),
+
+              FutureBuilder(
+                future: loadData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return SizedBox(
+                    height: 500,
+                    child: ListView(
+                      children: getDrawslotto
+                          .map(
+                            (trip) => Card(
+                              color: Colors.white,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 3,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      trip.reward ?? "",
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFFD10922),
+                                      ),
+                                    ),
+
+                                    Divider(
+                                      color: Colors.grey.shade300,
+                                      thickness: 1,
+                                      height: 20,
+                                      indent: 40,
+                                      endIndent: 40,
+                                    ),
+                                    Text(
+                                      trip.prize.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

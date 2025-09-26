@@ -42,127 +42,129 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFD10934), Color(0xFFD10934), Colors.white],
-              stops: [0.0, 0.3, 0.0],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFFD10934), Color(0xFFD10934), Colors.white],
+                stops: [0.0, 0.3, 0.0],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
-          ),
-          child: Column(
-            children: [
-              Center(
-                child: Image.asset(
-                  'assets/images/lotto-Photoroom.png',
-                  width: 200,
-                ),
-              ),
-              Card(
-                color: Colors.white,
-                shadowColor: Colors.black,
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        "ตรวจผลสลากกินแบ่งรัฐบาล",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFieldRow(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: FilledButton(
-                          style: FilledButton.styleFrom(
-                            backgroundColor: Color(0xFFD10934),
-                          ),
-                          onPressed: LottoCheck,
-                          child: const Text(
-                            "ตรวจสลาก ของคุณ",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
+            child: Column(
+              children: [
+                Center(
+                  child: Image.asset(
+                    'assets/images/lotto-Photoroom.png',
+                    width: 200,
                   ),
                 ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-
-                child: SizedBox(
-                  height: 220,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    children: [
-                      buildFlashSaleCard('assets/images/flashsale.jpg'),
-                      SizedBox(width: 16),
-                      buildFlashSaleCard('assets/images/flashsale.jpg'),
-                      SizedBox(width: 16),
-                      buildFlashSaleCard('assets/images/flashsale.jpg'),
-                    ],
+                Card(
+                  color: Colors.white,
+                  shadowColor: Colors.black,
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                ),
-              ),
-              SizedBox(width: 16),
-              Text("เงินการถูกรางวัล", style: TextStyle(fontSize: 30)),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: SizedBox(
-                  height: 500,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "ตรวจผลสลากกินแบ่งรัฐบาล",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFieldRow(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FilledButton(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: Color(0xFFD10934),
+                            ),
+                            onPressed: LottoCheck,
+                            child: const Text(
+                              "ตรวจสลาก ของคุณ",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    itemCount: latestDraws.length,
-                    itemBuilder: (context, index) {
-                      final draw = latestDraws[index];
-
-                      String prizeAmount;
-                      if (draw.reward == 'รางวัลที่1') {
-                        prizeAmount = '6,000,000 บาท';
-                      } else if (draw.reward == 'รางวัลที่2') {
-                        prizeAmount = '200,000 บาท';
-                      } else if (draw.reward == 'รางวัลที่3') {
-                        prizeAmount = '80,000 บาท';
-                      } else if (draw.reward == 'รางวัลเลขท้าย 3 ตัว') {
-                        prizeAmount = '4,000 บาท';
-                      } else if (draw.reward == 'รางวัลเลขท้าย 2 ตัว') {
-                        prizeAmount = '2,000 บาท';
-                      } else {
-                        prizeAmount = '-';
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: buildPrizeCard(
-                          draw.reward ?? '',
-                          draw.prize.toString(),
-                          prizeAmount,
-                        ),
-                      );
-                    },
                   ),
                 ),
-              ),
-            ],
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+
+                  child: SizedBox(
+                    height: 220,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      children: [
+                        buildFlashSaleCard('assets/images/flashsale.jpg'),
+                        SizedBox(width: 16),
+                        buildFlashSaleCard('assets/images/flashsale.jpg'),
+                        SizedBox(width: 16),
+                        buildFlashSaleCard('assets/images/flashsale.jpg'),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16),
+                Text("เงินการถูกรางวัล", style: TextStyle(fontSize: 30)),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: SizedBox(
+                    height: 500,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      itemCount: latestDraws.length,
+                      itemBuilder: (context, index) {
+                        final draw = latestDraws[index];
+
+                        String prizeAmount;
+                        if (draw.reward == 'รางวัลที่1') {
+                          prizeAmount = '6,000,000 บาท';
+                        } else if (draw.reward == 'รางวัลที่2') {
+                          prizeAmount = '200,000 บาท';
+                        } else if (draw.reward == 'รางวัลที่3') {
+                          prizeAmount = '80,000 บาท';
+                        } else if (draw.reward == 'รางวัลเลขท้าย 3 ตัว') {
+                          prizeAmount = '4,000 บาท';
+                        } else if (draw.reward == 'รางวัลเลขท้าย 2 ตัว') {
+                          prizeAmount = '2,000 บาท';
+                        } else {
+                          prizeAmount = '-';
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: buildPrizeCard(
+                            draw.reward ?? '',
+                            draw.prize.toString(),
+                            prizeAmount,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

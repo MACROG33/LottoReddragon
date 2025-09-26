@@ -60,167 +60,169 @@ class _MakePageState extends State<MakePage> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Card(
-              color: Colors.white,
-              shadowColor: Colors.black,
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "สร้างสลากกินแบ่ง",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Card(
+                color: Colors.white,
+                shadowColor: Colors.black,
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "สร้างสลากกินแบ่ง",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFieldRow(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFieldRow(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("จำนวน"),
+                            SizedBox(
+                              width: 70,
+                              child: TextField(
+                                controller: controllerCount,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                            Text("ใบ"),
+                            SizedBox(width: 16),
+                            Text("ราคา"),
+                            SizedBox(
+                              width: 70,
+                              child: TextField(
+                                controller: controllerPrice,
+                                keyboardType: TextInputType.text,
+                              ),
+                            ),
+                            Text("บาท"),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Color(0xFFD10934),
+                          ),
+                          onPressed: makeLotto,
+                          child: const Text(
+                            "สร้าง",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              ...List.generate(lottoGetPes.length, (i) {
+                final lotto = lottoGetPes[i];
+                final date = DateTime.parse(lotto.dateLotto);
+                final buddhistYear = date.year + 543;
+                // วัน/เดือน ภาษาไทย
+                final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
+                final formattedDate = '$dayMonth $buddhistYear';
+
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Card(
+                      color: Colors.white,
+                      child: Stack(
                         children: [
-                          Text("จำนวน"),
-                          SizedBox(
-                            width: 70,
-                            child: TextField(
-                              controller: controllerCount,
-                              keyboardType: TextInputType.number,
+                          Image.asset("assets/images/lotto.png"),
+                          // กล่องตกแต่ง
+                          Positioned(
+                            left: 195,
+                            top: 15,
+                            child: Container(
+                              width: 155,
+                              height: 40,
+                              color: Colors.grey,
                             ),
                           ),
-                          Text("ใบ"),
-                          SizedBox(width: 16),
-                          Text("ราคา"),
-                          SizedBox(
-                            width: 70,
-                            child: TextField(
-                              controller: controllerPrice,
-                              keyboardType: TextInputType.text,
+                          Positioned(
+                            left: 195,
+                            top: 65,
+                            child: Container(
+                              width: 155,
+                              height: 20,
+                              color: Colors.grey,
                             ),
                           ),
-                          Text("บาท"),
+                          Positioned(
+                            left: 25,
+                            top: 115,
+                            child: Container(
+                              width: 70,
+                              height: 60,
+                              color: Colors.grey,
+                            ),
+                          ),
+
+                          Positioned(
+                            left: 205,
+                            top: 15,
+                            child: Text(
+                              lotto.lottoNumber.split('').join(' '),
+                              style: const TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            left: 200,
+                            top: 65,
+                            child: Text(
+                              "วันที่ $formattedDate",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            left: 40,
+                            top: 115,
+                            child: Text(
+                              "${double.parse(lotto.priceLotto).toInt()}\nบาท",
+
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FilledButton(
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Color(0xFFD10934),
-                        ),
-                        onPressed: makeLotto,
-                        child: const Text(
-                          "สร้าง",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            ...List.generate(lottoGetPes.length, (i) {
-              final lotto = lottoGetPes[i];
-              final date = DateTime.parse(lotto.dateLotto);
-              final buddhistYear = date.year + 543;
-              // วัน/เดือน ภาษาไทย
-              final dayMonth = DateFormat('d MMMM', 'th_TH').format(date);
-              final formattedDate = '$dayMonth $buddhistYear';
-
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Card(
-                    color: Colors.white,
-                    child: Stack(
-                      children: [
-                        Image.asset("assets/images/lotto.png"),
-                        // กล่องตกแต่ง
-                        Positioned(
-                          left: 195,
-                          top: 15,
-                          child: Container(
-                            width: 155,
-                            height: 40,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Positioned(
-                          left: 195,
-                          top: 65,
-                          child: Container(
-                            width: 155,
-                            height: 20,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Positioned(
-                          left: 25,
-                          top: 115,
-                          child: Container(
-                            width: 70,
-                            height: 60,
-                            color: Colors.grey,
-                          ),
-                        ),
-
-                        Positioned(
-                          left: 205,
-                          top: 15,
-                          child: Text(
-                            lotto.lottoNumber.split('').join(' '),
-                            style: const TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 200,
-                          top: 65,
-                          child: Text(
-                            "วันที่ $formattedDate",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 40,
-                          top: 115,
-                          child: Text(
-                            "${double.parse(lotto.priceLotto).toInt()}\nบาท",
-
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
-                ),
-              );
-            }),
-          ],
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
@@ -348,8 +350,8 @@ class _MakePageState extends State<MakePage> {
       if (tick >= maxTick) {
         timer.cancel();
         for (var c in controllers) {
-        c.clear();
-      }
+          c.clear();
+        }
       }
     });
   }
