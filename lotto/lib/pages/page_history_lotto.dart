@@ -11,7 +11,6 @@ import 'package:lotto/model/response/๊User_claim_lotto_res.dart';
 class PageHistoryLotto extends StatefulWidget {
   final int idx;
   const PageHistoryLotto({super.key, required this.idx});
-  
 
   @override
   State<PageHistoryLotto> createState() => _PageHistoryLottoState();
@@ -19,7 +18,7 @@ class PageHistoryLotto extends StatefulWidget {
 
 class _PageHistoryLottoState extends State<PageHistoryLotto> {
   late Future<void> loadData;
-   String? selectedItem;
+  String? selectedItem;
   List<ResLottoMeLotto> lottoGetPes = [];
   List<ResLottoMeLotto> setloadData = [];
 
@@ -32,11 +31,12 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
   @override
   void initState() {
     super.initState();
-    initializeDateFormatting('th_TH', null); 
+    initializeDateFormatting('th_TH', null);
     Configuration.getConfig().then((config) {
       url = config['apiEndpoint'];
       setState(() {
         loadData = loadHistory();
+        loadData = getloaddate();
       });
     });
   }
@@ -53,7 +53,7 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
       log("Error: $e");
     }
   }
-  
+
   Future<void> getloaddate() async {
     try {
       log("${widget.idx} $url");
@@ -121,8 +121,9 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
       padding: const EdgeInsets.all(8.0),
       child: FilledButton(
         style: FilledButton.styleFrom(
-          backgroundColor:
-              filter == text ? const Color(0xFFD10922) : Colors.grey,
+          backgroundColor: filter == text
+              ? const Color(0xFFD10922)
+              : Colors.grey,
         ),
         onPressed: () {
           setState(() {
@@ -181,6 +182,7 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                   itemCount: filteredHistory.length,
                   itemBuilder: (context, i) {
                     final item = filteredHistory[i];
+                    final item2 = lottoGetPes[i];
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
@@ -223,7 +225,7 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                     left: 200,
                                     top: 65,
                                     child: Text(
-                                      formatDateThai(item.date),
+                                      formatDateThai(item2.dateLotto),
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -247,7 +249,7 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                     left: 40,
                                     top: 115,
                                     child: Text(
-                                      "${formatPrice(item.price)}\nบาท",
+                                      "${formatPrice(item2.priceLotto)}\nบาท",
                                       style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -262,11 +264,15 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      item.isWinner ? item.reward ?? "ถูกรางวัล" : "ไม่ถูกรางวัล",
+                                      item.isWinner
+                                          ? item.reward ?? "ถูกรางวัล"
+                                          : "ไม่ถูกรางวัล",
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        color: item.isWinner ? Colors.green : Colors.red,
+                                        color: item.isWinner
+                                            ? Colors.green
+                                            : Colors.red,
                                       ),
                                     ),
                                     if (item.isWinner)
