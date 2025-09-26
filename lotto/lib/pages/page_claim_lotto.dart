@@ -59,111 +59,125 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                if (lottoGetPes.isEmpty || loadDate.isEmpty) {
-                  return const Center(child: Text('ไม่พบข้อมูลสลาก'));
-                }
+                  return Column(
+                    children: List.generate(lottoGetPes.length, (i) {
+                      final lotto = lottoGetPes[i];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Card(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                IntrinsicWidth(
+                                  child: Column(
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          InkWell(
+                                            onTap: () => popUpClaimLotto(
+                                              lotto.reward.toString(),
+                                              lotto.isWinner,
+                                            ),
+                                            child: Image.asset(
+                                              'assets/images/lotto.png',
+                                            ),
+                                          ),
 
-                // ป้องกัน RangeError
-                int itemCount = lottoGetPes.length < loadDate.length
-                    ? lottoGetPes.length
-                    : loadDate.length;
+                                          // Your existing Positioned widgets
+                                          Positioned(
+                                            left: 195,
+                                            top: 15,
+                                            child: Container(
+                                              width: 155,
+                                              height: 40,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: 195,
+                                            top: 65,
+                                            child: Container(
+                                              width: 155,
+                                              height: 20,
+                                              color: Colors.grey,
+                                              child: Text(
+                                                "วันที่ 1 ธันวาคม 2569",
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: 25,
+                                            top: 115,
+                                            child: Container(
+                                              width: 70,
+                                              height: 60,
+                                              color: Colors.grey,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "80 บาท",
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: 205,
+                                            top: 15,
+                                            child: Text(
+                                              lotto.lottoNumber
+                                                  .split('')
+                                                  .join(' '),
+                                              style: const TextStyle(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
 
-                return Column(
-                  children: List.generate(itemCount, (i) {
-                    final lotto = lottoGetPes[i];
-                    final lotto2 = loadDate[i];
-
-                    // แปลงวันที่เป็นแบบไทย พ.ศ.
-                    String formattedDate = lotto2.dateLotto;
-                    try {
-                      DateTime date = DateTime.parse(lotto2.dateLotto);
-                      final buddhistYear = date.year + 543;
-                      final dayMonth = DateFormat(
-                        'd MMMM',
-                        'th_TH',
-                      ).format(date);
-                      formattedDate = '$dayMonth $buddhistYear';
-                    } catch (e) {
-                      // ถ้า parse ผิด ใช้ค่าเดิม
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Card(
-                          color: Colors.white,
-                          child: Stack(
-                            children: [
-                              InkWell(
-                                onTap: () => popUpClaimLotto(
-                                  lotto.reward.toString(),
-                                  lotto.isWinner,
-                                ),
-                                child: Image.asset('assets/images/lotto.png'),
-                              ),
-                              Positioned(
-                                left: 195,
-                                top: 15,
-                                child: Container(
-                                  width: 155,
-                                  height: 40,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Positioned(
-                                left: 195,
-                                top: 65,
-                                child: Container(
-                                  width: 155,
-                                  height: 20,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Positioned(
-                                left: 25,
-                                top: 115,
-                                child: Container(
-                                  width: 70,
-                                  height: 60,
-                                  color: Colors.grey,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    lotto.reward != null
-                                        ? lotto.reward.toString()
-                                        : "ไม่ถูกรางวัล",
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
+                                      // Container that will match the image width
+                                      Container(
+                                        width: double
+                                            .infinity, // Takes full width of IntrinsicWidth parent
+                                        color: Colors.grey[300],
+                                        padding: const EdgeInsets.all(12),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              lotto.reward != null
+                                                  ? lotto.reward.toString()
+                                                  : "ไม่ถูกรางวัล",
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "จำนวนเงินรางวัล: ${getPrizeMoney(lotto.reward.toString())} บาท",
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                left: 205,
-                                top: 15,
-                                child: Text(
-                                  lotto.lottoNumber.split('').join(' '),
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 200,
-                                top: 65,
-                                child: Text(
-                                  formattedDate,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
+                             
                             ],
                           ),
                         ),
@@ -269,8 +283,9 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
       var res = await http.get(
         Uri.parse('$url/user/checkLotto?user_id=${widget.idx}'),
       );
-      log(res.body);
+      // log(res.body);
       lottoGetPes = resLottoCkeckLottoFromJson(res.body);
+      // log(setloadData.length.toString());
       setState(() {});
     } catch (e) {
       log(e.toString());
