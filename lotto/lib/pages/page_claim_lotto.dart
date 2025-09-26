@@ -70,8 +70,10 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
                         'th_TH',
                       ).format(date);
                       final formattedDate = '$dayMonth $buddhistYear';
+                      final width = MediaQuery.of(context).size.width;
+                      final height = MediaQuery.of(context).size.height;
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(width * 0.02),
                         child: Center(
                           child: Card(
                             color: Colors.white,
@@ -88,52 +90,58 @@ class _PageClaimLottoState extends State<PageClaimLotto> {
 
                                           // Your existing Positioned widgets
                                           Positioned(
-                                            left: 195,
-                                            top: 15,
+                                            left: width * 0.49,
+                                            top: height * 0.02,
                                             child: Container(
-                                              width: 155,
-                                              height: 40,
+                                              width: width * 0.40,
+                                              height: height * 0.05,
                                               color: Colors.grey,
                                             ),
                                           ),
                                           Positioned(
-                                            left: 195,
-                                            top: 65,
+                                            left: width * 0.49,
+                                            top: height * 0.08,
                                             child: Container(
-                                              width: 155,
-                                              height: 20,
+                                              width: width * 0.40,
+                                              height: height * 0.026,
                                               color: Colors.grey,
-                                              child: Text(formattedDate),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            left: 25,
-                                            top: 115,
-                                            child: Container(
-                                              width: 70,
-                                              height: 60,
-                                              color: Colors.grey,
-                                              alignment: Alignment.center,
                                               child: Text(
-                                                "80 บาท",
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  fontSize: 12,
+                                                formattedDate,
+                                                style: TextStyle(
+                                                  fontSize: width * 0.035,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
                                                 ),
                                               ),
                                             ),
                                           ),
                                           Positioned(
-                                            left: 205,
-                                            top: 15,
+                                            left: width * 0.08,
+                                            top: height * 0.13,
+                                            child: Container(
+                                              width: width * 0.18,
+                                              height: height * 0.08,
+                                              color: Colors.grey,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "${lotto2.priceLotto}\nบาท",
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: width * 0.50,
+                                            top: height * 0.02,
                                             child: Text(
                                               lotto.lottoNumber
                                                   .split('')
                                                   .join(' '),
-                                              style: const TextStyle(
-                                                fontSize: 30,
+                                              style: TextStyle(
+                                                fontSize: width * 0.07,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black,
                                               ),

@@ -178,7 +178,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                                         left: width * 0.49,
                                         top: height * 0.02,
                                         child: Container(
-                                          width: width * 0.36,
+                                          width: width * 0.40,
                                           height: height * 0.06,
                                           color: Colors.grey,
                                         ),

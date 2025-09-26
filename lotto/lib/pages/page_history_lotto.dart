@@ -184,8 +184,10 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                     itemBuilder: (context, i) {
                       final item = filteredHistory[i];
                       final item2 = lottoGetPes[i];
+                      final width = MediaQuery.of(context).size.width;
+                      final height = MediaQuery.of(context).size.height;
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(width * 0.02),
                         child: Center(
                           child: Card(
                             color: const Color(0xFFD9D9D9),
@@ -196,63 +198,64 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
                                   children: [
                                     Image.asset("assets/images/lotto.png"),
                                     Positioned(
-                                      left: 195,
-                                      top: 15,
+                                      left: width * 0.49,
+                                      top: height * 0.02,
                                       child: Container(
-                                        width: 155,
-                                        height: 40,
+                                        width: width * 0.40,
+                                        height: height * 0.05,
                                         color: Colors.grey,
                                       ),
                                     ),
                                     Positioned(
-                                      left: 195,
-                                      top: 65,
+                                      left: width * 0.49,
+                                      top: height * 0.08,
                                       child: Container(
-                                        width: 155,
-                                        height: 20,
+                                        width: width * 0.40,
+                                        height: height * 0.026,
                                         color: Colors.grey,
                                       ),
                                     ),
                                     Positioned(
-                                      left: 25,
-                                      top: 115,
+                                      left: width * 0.08,
+                                      top: height * 0.13,
                                       child: Container(
-                                        width: 70,
-                                        height: 60,
+                                        width: width * 0.18,
+                                        height: height * 0.08,
                                         color: Colors.grey,
                                       ),
                                     ),
                                     Positioned(
-                                      left: 200,
-                                      top: 65,
+                                      left: width * 0.49,
+                                      top: height * 0.08,
                                       child: Text(
                                         formatDateThai(item2.dateLotto),
-                                        style: const TextStyle(
-                                          fontSize: 16,
+                                        style: TextStyle(
+                                          fontSize: width * 0.035,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
                                       ),
                                     ),
                                     Positioned(
-                                      left: 205,
-                                      top: 15,
+                                      left: width * 0.50,
+                                      top: height * 0.02,
                                       child: Text(
-                                        item.lottoNumber ?? "-",
-                                        style: const TextStyle(
-                                          fontSize: 30,
+                                        item.lottoNumber.split('').join(' '),
+
+                                        style: TextStyle(
+                                          fontSize: width * 0.07,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
                                       ),
                                     ),
                                     Positioned(
-                                      left: 40,
-                                      top: 115,
+                                      left: width * 0.12,
+                                      top: height * 0.13,
                                       child: Text(
                                         "${formatPrice(item2.priceLotto)}\nบาท",
-                                        style: const TextStyle(
-                                          fontSize: 20,
+                                        style: TextStyle(
+                                          fontSize: width * 0.05,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
