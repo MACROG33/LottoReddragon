@@ -118,7 +118,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
               ),
 
               SizedBox(
-                height: 500,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: FutureBuilder(
                   future: loadData,
                   builder: (context, snapshot) {
@@ -298,7 +298,9 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
           )
           .then((value) {
             log(value.body);
-            setState(() {});
+            setState(() {
+              loadData = getloaddate();
+            });
           })
           .catchError((onError) {
             log(onError);
@@ -370,7 +372,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(6, (index) {
         return Container(
-          width: 40,
+          width: MediaQuery.of(context).size.width * 0.1,
           margin: const EdgeInsets.symmetric(horizontal: 4),
           child: TextField(
             controller: controllers[index],

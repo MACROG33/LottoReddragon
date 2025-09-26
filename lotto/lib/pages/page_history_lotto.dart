@@ -46,7 +46,7 @@ class _PageHistoryLottoState extends State<PageHistoryLotto> {
       var res = await http.get(
         Uri.parse('$url/user/checkLotto?user_id=${widget.idx}'),
       );
-      log(res.body);
+
       lottoHistory = resLottoCkeckLottoFromJson(res.body);
       applyFilter();
     } catch (e) {
