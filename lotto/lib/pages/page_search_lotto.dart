@@ -295,21 +295,49 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
     );
 
     try {
-      await http
-          .post(
-            Uri.parse("$url/lotto/buy"),
-            headers: {"Content-Type": "application/json; charset=utf-8"},
-            body: jsonEncode(reqBuyLotto.toJson()),
-          )
-          .then((value) {
-            log(value.body);
-            setState(() {
-              loadData = getloaddate();
-            });
-          })
-          .catchError((onError) {
-            log(onError);
-          });
+      final response = await http.post(
+        Uri.parse("$url/lotto/buy"),
+        headers: {"Content-Type": "application/json; charset=utf-8"},
+        body: jsonEncode(reqBuyLotto.toJson()),
+      );
+
+      log(response.body);
+
+      setState(() {
+        loadData = getloaddate();
+      });
+
+      if (!context.mounted) return;
+
+      if (response.statusCode == 200) {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text("ซื้อสำเร็จ"),
+            content: const Text("ซื้อสลากสำเร็จ"),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text("ตกลง"),
+              ),
+            ],
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text("ซื้อไม่สำเร็จ"),
+            content: const Text("เงินในบัญชีไม่พอ"),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text("ตกลง"),
+              ),
+            ],
+          ),
+        );
+      }
     } catch (error) {
       log("Error: $error");
 
@@ -329,11 +357,13 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
   }
 
   void confirmBuyLotto(BuildContext context, String lotto, String money) {
+    final pageContext = context;
+
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
+      context: pageContext,
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Center(child: const Text("ยืนยันการซื้อ")),
+          title: const Center(child: Text("ยืนยันการซื้อ")),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [Text("เลขที่เลือก: $lotto"), Text("ราคา: $money บาท")],
@@ -345,8 +375,10 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
               children: [
                 TextButton(
                   onPressed: () {
-                    buylotto(lotto, money, context);
-                    Navigator.of(context).pop();
+                    // ปิด dialog ก่อน
+                    Navigator.of(dialogContext).pop();
+                    // ใช้ pageContext เรียก buylotto
+                    buylotto(lotto, money, pageContext);
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: const Color(0xFFFFD700),
@@ -356,7 +388,7 @@ class _PageSearchLottoState extends State<PageSearchLotto> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(dialogContext).pop();
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.grey[300],
